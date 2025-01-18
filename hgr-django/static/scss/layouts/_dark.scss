@@ -1,0 +1,104 @@
+// --------------------------------------------------
+// Css Variables with class
+// --------------------------------------------------
+
+
+.tooltip-inner {
+    color: $body-color-dark !important;
+}
+
+.card-title {
+    color: #e6e5e8;
+}
+
+.card-subtitle,
+.text-muted {
+    color: #adb0bb !important;
+}
+
+.btn {
+    box-shadow: none;
+}
+
+.preloader {
+    background: $body-bg-dark !important;
+}
+
+.bg-white {
+    background-color: $body-bg-dark !important;
+    --bs-card-border-color: rgba(255,255,255,.07);
+    border: 1px solid $border-color-dark;
+}
+
+body {
+    background-color: #282c34;
+}  
+
+.table> :not(caption)>*>* {
+    color: $body-color-dark !important;
+}
+
+.table-hover>tbody>tr:hover>* {
+    --bs-table-bg-state: $body-bg-dark;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd)>* {
+    --bs-table-bg-type: transparent;
+}
+
+hr {
+    border-color: $border-color-dark;
+}
+
+.form-check-input {
+    border: 1px solid $light-bg-subtle-dark;
+}
+
+.link-dark,
+.blockquote-footer {
+    color: $body-color-dark !important;
+}
+
+.border-white {
+    border-color: $border-color-dark !important;
+}
+
+.form-select,
+.form-control {
+    border-color: $border-color-dark !important;
+    color: $body-color-dark;
+    background-color: $body-bg-dark;
+}
+
+.form-select:focus,
+.form-control:focus {
+    border-color: $primary !important;
+}
+
+.form-select {
+    background-color: #282c34 !important;
+    border: 1px solid $border-color-dark !important;
+}
+
+.text-bg-light,
+.bg-light {
+    background-color: $light-bg-subtle-dark !important;
+    color: var(--bs-card-title-color) !important;
+}
+
+.text-dark,
+.form-label {
+    color: $body-color-dark !important;
+}
+
+.nav-tabs .nav-link,
+.nav-pills .nav-link,
+.breadcrumb-item+.breadcrumb-item::before {
+    color: $link-color-dark;
+}
+
+.bg-hover-light-black:hover,
+.dropdown-item:hover,
+.dropdown-item:focus{
+    background-color: $dark-bg-subtle-dark;
+}

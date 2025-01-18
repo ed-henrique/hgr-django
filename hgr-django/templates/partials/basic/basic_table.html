@@ -1,0 +1,62 @@
+{% load l10n %}
+<table id="tabela" class="table text-nowrap my-3 align-middle table-responsive border rounded-1">
+  <thead class="text-dark fs-4">
+    <tr>
+      <th>
+        <h6 class="fs-4 fw-semibold mb-0">Nome</h6>
+      </th>
+      <th>
+        <h6 class="fs-4 fw-semibold mb-0">Cor</h6>
+      </th>
+      <th>
+        <h6 class="fs-4 fw-semibold mb-0">
+          Participação
+        </h6>
+      </th>
+      <th class="d-md-table-cell d-none"></th>
+    </tr>
+  </thead>
+  <tbody id="{{ caminho }}">
+    {% for b in basicos %}
+    <tr>
+      <td>
+        <h6 class="fw-semibold mb-0">{{ b.nome }}</h6>
+      </td>
+      <td><span class="badge d-inline-flex align-items-center gap-1"
+          style="background-color: {{ b.cor }};">&nbsp;</span></td>
+      <td>
+        <div class="d-flex align-items-center gap-3">
+          <div class="progress text-bg-light w-100 h-4">
+            <div class="progress-bar" style="width: {{ b.participacao_formatada }}%;" role="progressbar"
+              aria-label="Example 4px high" aria-valuenow={{ b.participacao_formatada }} aria-valuemin="0"
+              aria-valuemax="100">
+            </div>
+          </div>
+          <span class="d-md-block d-none fw-normal">{{ b.participacao|floatformat:2|localize }}%</span>
+        </div>
+      </td>
+      <td>
+      <td class="d-md-table-cell d-none text-end">
+        <div class="dropdown dropstart">
+          <span href="javascript:void(0)" class="text-muted" id="dropdownMenuButton" data-bs-toggle="dropdown"
+            aria-expanded="false" style="cursor: pointer;">
+            <i class="ti ti-dots-vertical fs-6"></i>
+          </span>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li>
+              <button class="dropdown-item d-flex align-items-center gap-3">
+                <i class="fs-6 ti ti-edit"></i>Edit
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item d-flex align-items-center gap-3" class="text-danger">
+                <i class="fs-6 ti ti-trash"></i>Delete
+              </button>
+            </li>
+          </ul>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
