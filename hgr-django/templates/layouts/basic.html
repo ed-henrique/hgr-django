@@ -6,7 +6,8 @@
     <div class="card d-md-flex d-none">
       <div class="card-body">
         <h4 class="card-title mb-3">{{ mensagem_de_cadastro }}</h4>
-        <form>
+        <form method="POST">
+          {% csrf_token %}
           <div class="input-group">
             <button class="btn" data-jscolor="{alphaChannel:false, format:'hex', valueElement:'#cor'}"></button>
             <input id="cor" value="FFA000" name="cor" type="hidden" />
@@ -23,7 +24,19 @@
         <h4 class="card-title mb-0">{{ titulo }}</h4>
       </div>
       <div class="card-body p-4">
+        {% if basicos %}
+        <form method="get" class="d-flex mb-3">
+          {% csrf_token %}
+          <input type="text" name="q" class="form-control me-3" placeholder="Busca por Nome"
+            value="{{ request.GET.q }}" />
+          <button type="submit" class="btn btn-primary">
+            <i class="ti ti-search"></i>
+          </button>
+        </form>
         {% include 'partials/basic/basic_table.html' %}
+        {% else %}
+        <p class="mb-0 text-center">Não há nenhum registro.</p>
+        {% endif %}
       </div>
     </div>
   </div>

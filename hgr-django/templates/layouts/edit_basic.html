@@ -1,0 +1,29 @@
+{% extends "partials/base.html" %}
+
+{% block content %}
+<div class="col-12">
+  <a style="margin-bottom: var(--bs-gutter-x);" class="fs-5 d-flex align-items-center gap-2" href="{{ caminho }}"
+    target="_self">
+    <i class="ti ti-arrow-left fs-5"></i>
+    <span>Voltar</span>
+  </a>
+</div>
+<div class="col-12">
+  <div class="card d-md-flex d-none">
+    <div class="card-body">
+      <h4 class="card-title mb-3">{{ mensagem_de_edicao }}</h4>
+      <form method="POST">
+        {% csrf_token %}
+        <div class="input-group">
+          <button class="btn" data-jscolor="{alphaChannel:false, format:'hex', valueElement:'#cor'}"></button>
+          <input id="cor" value="{{ cor }}" name="cor" type="hidden" />
+          <input id="nome" name="nome" type="text" class="form-control" placeholder="Nome" value="{{ nome }}" />
+          <button type="submit" class="btn btn-primary d-flex align-items-center justify-content-center">
+            <i class="ti ti-check fs-4"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

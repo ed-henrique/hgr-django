@@ -1,5 +1,5 @@
 {% load l10n %}
-<table id="tabela" class="table text-nowrap my-3 align-middle table-responsive border rounded-1">
+<table id="tabela" class="table text-nowrap my-3 align-middle table-responsive border rounded-3">
   <thead class="text-dark fs-4">
     <tr>
       <th>
@@ -35,28 +35,80 @@
           <span class="d-md-block d-none fw-normal">{{ b.participacao|floatformat:2|localize }}%</span>
         </div>
       </td>
-      <td>
       <td class="d-md-table-cell d-none text-end">
-        <div class="dropdown dropstart">
-          <span href="javascript:void(0)" class="text-muted" id="dropdownMenuButton" data-bs-toggle="dropdown"
-            aria-expanded="false" style="cursor: pointer;">
-            <i class="ti ti-dots-vertical fs-6"></i>
-          </span>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li>
-              <button class="dropdown-item d-flex align-items-center gap-3">
-                <i class="fs-6 ti ti-edit"></i>Edit
-              </button>
-            </li>
-            <li>
-              <button class="dropdown-item d-flex align-items-center gap-3" class="text-danger">
-                <i class="fs-6 ti ti-trash"></i>Delete
-              </button>
-            </li>
-          </ul>
+        <div class="d-flex gap-3 align-items-center justify-content-end">
+          <a class="text-primary" style="max-height: 20px;" href="{{ caminho }}{{ b.id}}">
+            <i class="fs-6 ti ti-edit"></i>
+          </a>
+          <a class="text-danger" style="max-height: 20px;" href="{{ caminho }}{{ b.id}}">
+            <i class="fs-6 ti ti-trash"></i>
+          </a>
         </div>
       </td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
+<div class="d-flex justify-content-end pagination">
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center mb-0">
+
+      <!-- First Page -->
+      {% if basicos.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page=1" aria-label="Primeira Página">
+          <i class="ti ti-chevrons-left ti-xs"></i>
+        </a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ basicos.previous_page_number }}" aria-label="Página Anterior">
+          <i class="ti ti-chevron-left ti-xs"></i>
+        </a>
+      </li>
+      {% else %}
+      <li class="page-item disabled">
+        <span class="page-link">
+          <i class="ti ti-chevrons-left ti-xs"></i>
+        </span>
+      </li>
+      <li class="page-item disabled">
+        <span class="page-link">
+          <i class="ti ti-chevron-left ti-xs"></i>
+        </span>
+      </li>
+      {% endif %}
+
+      <!-- Current Page Display -->
+      <li class="page-item disabled">
+        <span class="page-link">
+          Página {{ basicos.number }} de {{ basicos.paginator.num_pages }}
+        </span>
+      </li>
+
+      <!-- Next Page -->
+      {% if basicos.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ basicos.next_page_number }}" aria-label="Pŕoxima Página">
+          <i class="ti ti-chevron-right ti-xs"></i>
+        </a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ basicos.paginator.num_pages }}" aria-label="Última Página">
+          <i class="ti ti-chevrons-right ti-xs"></i>
+        </a>
+      </li>
+      {% else %}
+      <li class="page-item disabled">
+        <span class="page-link">
+          <i class="ti ti-chevron-right ti-xs"></i>
+        </span>
+      </li>
+      <li class="page-item disabled">
+        <span class="page-link">
+          <i class="ti ti-chevrons-right ti-xs"></i>
+        </span>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
+</div>

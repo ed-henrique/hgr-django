@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-aomn)g8o&c5)9f%*)(oj20ywvs1(l0gw_!%%^4790y1c&j4l+y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -92,7 +92,7 @@ TEMPLATES = [
     },
 ]
 
-LOGGING = {
+"""LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "handlers": {
@@ -109,7 +109,7 @@ LOGGING = {
             "propagate": True,
         },
     },
-}
+}"""
 
 WSGI_APPLICATION = 'hgr_django.wsgi.application'
 

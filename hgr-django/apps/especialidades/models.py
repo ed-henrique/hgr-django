@@ -8,13 +8,13 @@ class Especialidade(models.Model):
     def get_participacao(self):
         from apps.pacientes.models import Paciente
 
-        total_patient_count = Paciente.objects.filter(removido_em__isnull=True).count()
-        total_patient_especialidade_count = Paciente.objects.filter(removido_em__isnull=True, especialidade=self).count()
+        total = Paciente.objects.filter(removido_em__isnull=True).count()
+        partial = Paciente.objects.filter(removido_em__isnull=True, especialidade=self).count()
 
-        if total_patient_count == 0:
+        if total == 0:
             return 0
         
-        return (total_patient_especialidade_count / total_patient_count) * 100
+        return (partial / total) * 100
 
 
     class Meta:
