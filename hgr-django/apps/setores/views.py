@@ -8,6 +8,14 @@ class SetorForm(forms.ModelForm):
     class Meta:
         model = Setor
         fields = ['nome', 'cor']
+        error_messages = {
+            'nome': {
+                'unique': 'O nome informado já está cadastrado. Por favor, escolha outro.',
+            },
+            'cor': {
+                'unique': 'A cor informada já está em uso. Escolha uma cor diferente.',
+            },
+        }
 
 def setores_view(request):
     if request.method == 'POST':

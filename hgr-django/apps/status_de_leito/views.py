@@ -8,6 +8,14 @@ class StatusDeLeitoForm(forms.ModelForm):
     class Meta:
         model = StatusDeLeito
         fields = ['nome', 'cor']
+        error_messages = {
+            'nome': {
+                'unique': 'O nome informado já está cadastrado. Por favor, escolha outro.',
+            },
+            'cor': {
+                'unique': 'A cor informada já está em uso. Escolha uma cor diferente.',
+            },
+        }
 
 def status_de_leito_view(request):
     if request.method == 'POST':
