@@ -12,7 +12,7 @@ RUN apk update && apk add --no-cache build-base libpq-dev
 RUN python3 -m pip install -r requirements.txt --no-cache-dir
 
 COPY ./hgr-django /app
-RUN printf $HGRPGPASSFILE > /app/.hgr_pgpass && printf $HGRPGSERVICEFILE > /app/.pg_service.conf
+RUN printf $HGRPGPASSFILE > $PGPASSFILE && printf $HGRPGSERVICEFILE > $PGSERVICEFILE && chmod 600 $PGPASSFILE $PGSERVICEFILE
 
 ENTRYPOINT ["python3"]
 CMD ["manage.py", "runserver", "0.0.0.0:8000"]
