@@ -1,5 +1,7 @@
 FROM python:3.13-alpine3.21 AS builder
 
+ARG HGRPGPASSFILE
+ARG HGRPGSERVICEFILE
 ENV PGSERVICEFILE="/app/.pg_service.conf"
 
 EXPOSE 8000
@@ -9,5 +11,7 @@ RUN apk update && apk add --no-cache build-base libpq-dev
 RUN python3 -m pip install -r requirements.txt --no-cache-dir
 
 COPY ./hgr-django /app
+RUN printf $HGRPGPASSFILE > /app/.hgr_pgpass && printf $HGRPGSERVICEFILE > /app/.pg_service.conf
+
 ENTRYPOINT ["python3"]
 CMD ["manage.py", "runserver", "0.0.0.0:8000"]
