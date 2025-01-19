@@ -122,7 +122,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'OPTIONS': {
             'service': 'hgr',
-            'passfile': '.hgr_pgpass',
+            'passfile': os.environ.get('PGPASSFILE'),
         },
     }
 }
