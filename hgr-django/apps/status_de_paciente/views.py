@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Q
 from django import forms
@@ -17,6 +18,7 @@ class StatusDePacienteForm(forms.ModelForm):
             },
         }
 
+@login_required
 def status_de_paciente_view(request):
     if request.method == 'POST':
         form = StatusDePacienteForm(request.POST)
@@ -51,6 +53,7 @@ def status_de_paciente_view(request):
 
     return render(request, 'status_de_paciente/index.html', context)
 
+@login_required
 def editar_status_de_paciente_view(request, id):
     obj = get_object_or_404(StatusDePaciente, id=id)
 
@@ -72,6 +75,7 @@ def editar_status_de_paciente_view(request, id):
 
     return render(request, 'status_de_paciente/editar.html', context)
 
+@login_required
 def excluir_status_de_paciente_view(request, id):
     obj = get_object_or_404(StatusDePaciente, id=id)
 

@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Q
 from django import forms
@@ -17,6 +18,7 @@ class PortaDeEntradaForm(forms.ModelForm):
             },
         }
 
+@login_required
 def portas_de_entrada_view(request):
     if request.method == 'POST':
         form = PortaDeEntradaForm(request.POST)
@@ -51,6 +53,7 @@ def portas_de_entrada_view(request):
 
     return render(request, 'portas_de_entrada/index.html', context)
 
+@login_required
 def editar_porta_de_entrada_view(request, id):
     obj = get_object_or_404(PortaDeEntrada, id=id)
 
@@ -72,6 +75,7 @@ def editar_porta_de_entrada_view(request, id):
 
     return render(request, 'portas_de_entrada/editar.html', context)
 
+@login_required
 def excluir_porta_de_entrada_view(request, id):
     obj = get_object_or_404(PortaDeEntrada, id=id)
 

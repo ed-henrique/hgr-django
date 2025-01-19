@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Q
 from django import forms
@@ -17,6 +18,7 @@ class TipoDeCirurgiaForm(forms.ModelForm):
             },
         }
 
+@login_required
 def tipos_de_cirurgia_view(request):
     if request.method == 'POST':
         form = TipoDeCirurgiaForm(request.POST)
@@ -51,6 +53,7 @@ def tipos_de_cirurgia_view(request):
 
     return render(request, 'tipos_de_cirurgia/index.html', context)
 
+@login_required
 def editar_tipo_de_cirurgia_view(request, id):
     obj = get_object_or_404(TipoDeCirurgia, id=id)
 
@@ -72,6 +75,7 @@ def editar_tipo_de_cirurgia_view(request, id):
 
     return render(request, 'tipos_de_cirurgia/editar.html', context)
 
+@login_required
 def excluir_tipo_de_cirurgia_view(request, id):
     obj = get_object_or_404(TipoDeCirurgia, id=id)
 
