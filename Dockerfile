@@ -2,6 +2,7 @@ FROM python:3.13-alpine3.21 AS builder
 
 ARG HGRPGPASSFILE
 ARG HGRPGSERVICEFILE
+ENV PGPASSFILE="/app/.hgr_pgpass"
 ENV PGSERVICEFILE="/app/.pg_service.conf"
 
 EXPOSE 8000
