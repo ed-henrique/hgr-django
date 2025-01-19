@@ -63,3 +63,10 @@ def editar_especialidade_view(request, id):
     }
 
     return render(request, 'especialidades/editar.html', context)
+
+def excluir_especialidade_view(request, id):
+    obj = get_object_or_404(Especialidade, id=id)
+
+    if request.method == 'POST':
+        obj.delete()
+        return redirect("/gestao/especialidades")

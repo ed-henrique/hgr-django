@@ -1,0 +1,116 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12">
+    <div class="card d-md-flex d-none">
+      <div class="card-body">
+        <h4 class="card-title mb-3">Cadastrar Novo Leito</h4>
+        <form class="d-flex flex-column gap-3" hx-post="/api/leitos" hx-target="#gdatatables" hx-target-error="#toasts"
+          hx-swap="afterbegin">
+          <div class="d-flex gap-3 align-items-center justify-content-between">
+            <div class="form-group flex-grow-1">
+              <select class="form-select mr-sm-2" id="setor" name="setor">
+                <option selected disabled>Setor</option>
+                {% for setor in setores %}
+                <option value="{{ setor.id }}">{{ setor.nome }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group flex-grow-1">
+              <select class="form-select mr-sm-2" id="especialidade" name="especialidade">
+                <option selected disabled>Especialidade</option>
+                {% for especialidade in especialidades %}
+                <option value="{{ especialidade.id }}">{{ especialidade.nome }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="d-flex gap-3 align-items-center justify-content-between">
+            <div class="form-group flex-grow-1">
+              <select class="form-select mr-sm-2" id="tipo" name="tipo">
+                <option selected disabled>Tipo de Leito</option>
+                {% for tipo in tipos_de_leito %}
+                <option value="{{ tipo.id }}">{{ tipo.nome }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group flex-grow-1">
+              <select class="form-select mr-sm-2" id="status" name="status">
+                <option selected disabled>Status</option>
+                {% for status in status_de_leito %}
+                <option value="{{ status.id }}">{{ status.nome }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="d-flex gap-3 align-items-center justify-content-between">
+            <div class="d-flex gap-3 align-items-center justify-content-between flex-grow-1">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="tem-o2" name="tem-o2"
+                  onchange="toggleInput('tem-o2', 'tipo-de-o2')" />
+                <label class="form-check-label" for="tem-o2">O2</label>
+              </div>
+              <div class="form-group">
+                <select class="form-select mr-sm-2" id="tipo-de-o2" name="tipo-de-o2" disabled>
+                  <option selected disabled>Tipo de O2</option>
+                  {% for tipo_o2 in tipos_de_o2 %}
+                  <option value="{{ tipo_o2.id }}">{{ tipo_o2.nome }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="tem-vacuo" name="tem-vacuo"
+                  onchange="toggleInput('tem-vacuo', 'tipo-de-vacuo')" />
+                <label class="form-check-label" for="tem-vacuo">Vácuo</label>
+              </div>
+              <div class="form-group">
+                <select class="form-select mr-sm-2" id="tipo-de-vacuo" name="tipo-de-vacuo" disabled>
+                  <option selected disabled>Tipo de Vácuo</option>
+                  {% for tipo_vacuo in tipos_de_vacuo %}
+                  <option value="{{ tipo_vacuo.id }}">{{ tipo_vacuo.nome }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="tem-codigo-sus" name="tem-codigo-sus"
+                  onchange="toggleInput('tem-codigo-sus', 'codigo-sus')" />
+                <label class="form-check-label" for="tem-codigo-sus">SUS</label>
+              </div>
+              <div class="form-group flex-grow-1">
+                <input type="text" class="form-control" id="codigo-sus" name="codigo-sus" placeholder="Código do SUS"
+                  disabled />
+              </div>
+            </div>
+            <button type="submit" style="width: fit-content;"
+              class="btn btn-primary d-flex align-items-center justify-content-center">
+              <i class="ti ti-plus fs-6"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="card w-100 position-relative overflow-hidden">
+      <div class="px-4 py-3 border-bottom">
+        <h4 class="card-title mb-0">Leitos</h4>
+      </div>
+      <div class="card-body p-4">
+        {% if basicos %}
+        <form method="get" class="d-flex mb-3">
+          {% csrf_token %}
+          <input type="text" name="q" class="form-control me-3"
+            placeholder="Busca por ID, Setor, Tipo, Status ou Código SUS" value="{{ request.GET.q }}" />
+          <button type="submit" class="btn btn-primary">
+            <i class="ti ti-search"></i>
+          </button>
+        </form>
+        {% include "leitos/tabela_leitos.html" %}
+        {% else %}
+        <p class="mb-0 text-center">Não há nenhum registro.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

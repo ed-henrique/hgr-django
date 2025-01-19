@@ -1,0 +1,115 @@
+<div id="gdatatables" class="datatables">
+  <table id="gwrapper" class="table text-nowrap my-3 align-middle table-responsive border rounded-1">
+    <thead class="text-dark fs-4">
+      <tr>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">N°</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">Setor</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">Ocupado</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">Tipo</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">Status</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">O2</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">Vácuo</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">SUS</h6>
+        </th>
+        <th class="d-md-table-cell d-none"></th>
+      </tr>
+    </thead>
+    <tbody id="leitos">
+      {% for leito in leitos %}
+      <tr id="gb-{{ leito.id }}" class="align-items-center">
+        <td>
+          <h6 class="fw-semibold mb-0">{{ leito.id }}</h6>
+        </td>
+        <td>
+          <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center {{ leito.cor_setor }}">
+            {{ leito.setor }}
+          </span>
+        </td>
+        <td>
+          {% if leito.ocupado %}
+          <span class="d-flex align-items-center text-success text-center">
+            <i class="fs-6 ti ti-square-check"></i>
+          </span>
+          {% else %}
+          <span class="d-flex align-items-center text-danger text-center">
+            <i class="fs-6 ti ti-square-x"></i>
+          </span>
+          {% endif %}
+        </td>
+        <td>
+          <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center {{ leito.cor_tipo_leito }}">
+            {{ leito.tipo_leito }}
+          </span>
+        </td>
+        <td>
+          <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center {{ leito.cor_status }}">
+            {{ leito.status }}
+          </span>
+        </td>
+        <td>
+          {% if leito.o2 %}
+          <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center {{ leito.cor_tipo_o2 }}">
+            {{ leito.tipo_o2 }}
+          </span>
+          {% else %}
+          <span class="d-flex align-items-center text-danger text-center">
+            <i class="fs-6 ti ti-square-x"></i>
+          </span>
+          {% endif %}
+        </td>
+        <td>
+          {% if leito.vacuo %}
+          <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center {{ leito.cor_tipo_vacuo }}">
+            {{ leito.tipo_vacuo }}
+          </span>
+          {% else %}
+          <span class="d-flex align-items-center text-danger text-center">
+            <i class="fs-6 ti ti-square-x"></i>
+          </span>
+          {% endif %}
+        </td>
+        <td>
+          {% if leito.cadastro_sus %}
+          <span class="d-flex align-items-center text-success text-center">
+            <i class="fs-6 ti ti-square-check"></i>
+          </span>
+          {% else %}
+          <span class="d-flex align-items-center text-danger text-center">
+            <i class="fs-6 ti ti-square-x"></i>
+          </span>
+          {% endif %}
+        </td>
+        <td class="d-md-table-cell d-none text-end">
+          <div class="d-flex gap-3 align-items-center justify-content-end">
+            {% if leito.ocupado %}
+            <a class="text-primary" href="/gestao/pacientes/{{ leito.id_paciente }}" target="_self">
+              <i class="fs-6 ti ti-user"></i>
+            </a>
+            {% else %}
+            <i class="text-muted fs-6 ti ti-user"></i>
+            {% endif %}
+            <a class="text-dark" href="/gestao/leitos/{{ leito.id }}" target="_self">
+              <i class="fs-6 ti ti-eye"></i>
+            </a>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

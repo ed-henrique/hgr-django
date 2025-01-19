@@ -19,8 +19,18 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('gestao/especialidades/', include('apps.especialidades.urls')),
     path('gestao/nacionalidades-etnias/', include('apps.nacionalidades_etnias.urls')),
     path('gestao/medidas-de-precaucao/', include('apps.medidas_de_precaucao.urls')),
     path('gestao/portas-de-entrada/', include('apps.portas_de_entrada.urls')),
+    path('gestao/tipos-de-cirurgia/', include('apps.tipos_de_cirurgia.urls')),
+    path('gestao/tipos-de-vacuo/', include('apps.tipos_de_vacuo.urls')),
+    path('gestao/tipos-de-o2/', include('apps.tipos_de_o2.urls')),
+    path('gestao/tipos-de-leito/', include('apps.tipos_de_leito.urls')),
+    path('gestao/status-de-leito/', include('apps.status_de_leito.urls')),
+    path('gestao/status-de-paciente/', include('apps.status_de_paciente.urls')),
+    path('gestao/tipos-de-saida/', include('apps.tipos_de_saida.urls')),
+    path('gestao/especialidades/', include('apps.especialidades.urls')),
+    path('gestao/unidades-de-saude/', include('apps.unidades_de_saude.urls')),
+    path('gestao/setores/', include('apps.setores.urls')),
+    path('gestao/leitos/', include('apps.leitos.urls')),
 ]

@@ -37,12 +37,16 @@
       </td>
       <td class="d-md-table-cell d-none text-end">
         <div class="d-flex gap-3 align-items-center justify-content-end">
-          <a class="text-primary" style="max-height: 20px;" href="{{ caminho }}{{ b.id}}">
+          <a class="text-primary" style="max-height: 20px;" href="{{ caminho }}{{ b.id}}/editar">
             <i class="fs-6 ti ti-edit"></i>
           </a>
-          <a class="text-danger" style="max-height: 20px;" href="{{ caminho }}{{ b.id}}">
-            <i class="fs-6 ti ti-trash"></i>
-          </a>
+          <form action="{{ caminho }}{{ b.id}}/excluir" method="POST">
+            {% csrf_token %}
+            <button class="p-0 text-danger" type="submit"
+              style="cursor: pointer; background: none; border: none; outline: none;">
+              <i class="fs-6 ti ti-trash"></i>
+            </button>
+          </form>
         </div>
       </td>
     </tr>
