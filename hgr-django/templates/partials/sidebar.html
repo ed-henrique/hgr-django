@@ -198,12 +198,16 @@
       </a>
     </li>
     <li class="sidebar-item">
-      <a class="sidebar-link text-danger" href="/autenticacao/sair/" aria-expanded="false">
-        <span>
-          <i class="ti ti-arrow-left"></i>
-        </span>
-        <span class="hide-menu">Sair</span>
-      </a>
+      <form class="sidebar-link" action="{% url 'sair' %}" method="post">
+        {% csrf_token %}
+        <button class="sidebar-link text-danger" type="submit"
+          style="background: none; border: none; padding: 0; font: inherit; cursor: pointer; outline: inherit; width: 100%;">
+          <span>
+            <i class="ti ti-arrow-left"></i>
+          </span>
+          <span class="hide-menu">Sair</span>
+        </button>
+      </form>
     </li>
   </ul>
 </nav>
