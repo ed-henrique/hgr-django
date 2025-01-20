@@ -1,1 +1,55 @@
-Oi
+{% extends "partials/base_no_auth.html" %}
+
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+<div class="col-md-8 col-lg-6 col-xxl-3 auth-card">
+  <div class="card mb-0">
+    <div class="card-body">
+      <a href="/" class="text-nowrap logo-img text-center d-block mb-5 w-100">
+        <img src="{% static 'images/logos/full-logo-side.svg' %}" class="dark-logo" alt="Logo-Dark" width="300" />
+      </a>
+      <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="{{ form.username.id_for_label}}" class="form-label">Nome de Usuário</label>
+          {{ form.username }}
+          <div class="invalid-feedback">Insira o seu nome de usuário, por favor.</div>
+          <div class="invalid-feedback">{{ form.username.errors }}</div>
+        </div>
+        <div class="mb-4">
+          <label for="{{ form.password.id_for_label}}" class="form-label">Senha</label>
+          {{ form.password }}
+          <div class="invalid-feedback">Insira a sua senha, por favor.</div>
+          <div class="invalid-feedback">{{ form.username.errors }}</div>
+        </div>
+        <div class="d-flex align-items-center justify-content-end mb-4">
+          <a class="text-primary fw-medium" href="{% url 'esqueci_minha_senha' %}">
+            Esqueceu sua senha?
+          </a>
+        </div>
+        <div class="d-flex flex-column text-danger gap-3" style="hyphens: auto;">
+          <style>
+            ul {
+              margin-bottom: 1.5rem;
+              padding-left: 0;
+              list-style-type: none;
+              text-align: justify;
+              text-align-last: center;
+            }
+          </style>
+          {{ form.non_field_errors }}
+        </div>
+        <button type="submit" class="btn btn-primary w-100 py-8 mb-4 rounded-2">Entrar</button>
+        <div class="d-flex align-items-center justify-content-center">
+          <p class="fs-4 mb-0 fw-medium">Não possui conta?</p>
+          <a class="text-primary fw-medium ms-2" href="{% url 'cadastro' %}">
+            Se cadastrar
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

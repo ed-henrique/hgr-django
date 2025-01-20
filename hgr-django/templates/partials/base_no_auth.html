@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR" dir="ltr" data-bs-theme="light" data-color-theme="Blue_Theme" data-layout="vertical"
+  data-boxed-layout="boxed" data-card="shadow">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" type="image/png" href="{% static 'images/logos/favicon.png' %}" />
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  <style>
+    .form-label.required:after {
+      content: " *";
+      color: red;
+    }
+  </style>
+  <title>{{ title }} - HGR Connect - Gestor de Leitos</title>
+
+  {% block head_scripts %}{% endblock %}
+
+  <script src="{% static 'libs/htmx/htmx.min.js' %}"></script>
+  <script src="{% static 'libs/htmx/response-targets.js' %}"></script>
+  <script src="{% static 'libs/htmx/remove-me.js' %}"></script>
+  <script>
+    function toggleInput(checkboxName, inputName) {
+      const el = document.getElementById(inputName);
+      if (document.getElementById(checkboxName).checked) {
+        el.disabled = false;
+      } else {
+        el.disabled = true;
+      }
+    }
+  </script>
+  <script src="{% static 'js/vendor.min.js' %}"></script>
+</head>
+
+<body data-sidebartype="full">
+  <!-- Preloader -->
+  <div class="preloader">
+    <img src="{% static 'images/logos/preloader.svg' %}" alt="loader" class="lds-ripple img-fluid" />
+  </div>
+  <div id="main-wrapper" class="auth-customizer-none" hx-ext="response-targets, remove-me">
+    <div aria-live="polite" aria-atomic="true" class="position-absolute vh-100 vw-100">
+      <div id="toasts" class="toast-container bottom-0 end-0 p-3"></div>
+    </div>
+    <div
+      class="position-relative overflow-hidden radial-gradient min-vh-100 w-100 d-flex align-items-center justify-content-center">
+      <div class="d-flex align-items-center justify-content-center w-100">
+        <div class="row justify-content-center w-100">
+          {% block content %}{% endblock %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="dark-transparent sidebartoggler"></div>
+  <script src="{% static '/libs/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static '/libs/simplebar/dist/simplebar.min.js' %}"></script>
+  <script src="{% static '/js/theme/app.init.js' %}"></script>
+  <script src="{% static '/js/theme/theme.js' %}"></script>
+  <script src="{% static '/js/theme/app.min.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+  {% block foot_scripts %}{% endblock %}
+</body>
+
+</html>
