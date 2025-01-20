@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'apps.transferencias',
     'apps.unidades_de_saude',
     'apps.usuarios',
+    'apps.dashboard',
 ]
 
 MIDDLEWARE = [
