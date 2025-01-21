@@ -21,6 +21,19 @@ class Usuario(AbstractUser):
         verbose_name="Status de Usuário",
     )
 
+    def get_participacao(self):
+        from apps.pacientes.models import Paciente
+
+        total = Paciente.objects.filter(removido_em__isnull=True).count()
+        partial = Paciente.objects.filter(
+            removido_em__isnull=True, responsavel=self
+        ).count()
+
+        if total == 0:
+            return 0
+
+        return (partial / total) * 100
+
     class Meta:
         verbose_name = "Usuário"
         verbose_name_plural = "Usuários"
