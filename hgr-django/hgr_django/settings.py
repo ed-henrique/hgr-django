@@ -21,75 +21,75 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-aomn)g8o&c5)9f%*)(oj20ywvs1(l0gw_!%%^4790y1c&j4l+y'
+SECRET_KEY = "django-insecure-aomn)g8o&c5)9f%*)(oj20ywvs1(l0gw_!%%^4790y1c&j4l+y"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['hgr-demo.ed-henrique.com', '127.0.0.1', 'localhost']
-CSRF_TRUSTED_ORIGINS = ['https://hgr-demo.ed-henrique.com']
+ALLOWED_HOSTS = ["hgr-demo.ed-henrique.com", "127.0.0.1", "localhost"]
+CSRF_TRUSTED_ORIGINS = ["https://hgr-demo.ed-henrique.com"]
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'apps.autenticacao',
-    'apps.cirurgias',
-    'apps.entradas',
-    'apps.especialidades',
-    'apps.generos',
-    'apps.leitos',
-    'apps.medidas_de_precaucao',
-    'apps.nacionalidades_etnias',
-    'apps.pacientes',
-    'apps.portas_de_entrada',
-    'apps.saidas',
-    'apps.setores',
-    'apps.status_de_leito',
-    'apps.status_de_paciente',
-    'apps.status_de_usuario',
-    'apps.tipos_de_cirurgia',
-    'apps.tipos_de_leito',
-    'apps.tipos_de_o2',
-    'apps.tipos_de_saida',
-    'apps.tipos_de_usuario',
-    'apps.tipos_de_vacuo',
-    'apps.transferencias',
-    'apps.unidades_de_saude',
-    'apps.usuarios',
-    'apps.dashboard',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "apps.autenticacao",
+    "apps.cirurgias",
+    "apps.entradas",
+    "apps.especialidades",
+    "apps.generos",
+    "apps.leitos",
+    "apps.medidas_de_precaucao",
+    "apps.nacionalidades_etnias",
+    "apps.pacientes",
+    "apps.portas_de_entrada",
+    "apps.saidas",
+    "apps.setores",
+    "apps.status_de_leito",
+    "apps.status_de_paciente",
+    "apps.status_de_usuario",
+    "apps.tipos_de_cirurgia",
+    "apps.tipos_de_leito",
+    "apps.tipos_de_o2",
+    "apps.tipos_de_saida",
+    "apps.tipos_de_usuario",
+    "apps.tipos_de_vacuo",
+    "apps.transferencias",
+    "apps.unidades_de_saude",
+    "apps.usuarios",
+    "apps.dashboard",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'apps.autenticacao.middleware.AuthRedirectMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "apps.autenticacao.middleware.AuthRedirectMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
 ]
 
-ROOT_URLCONF = 'hgr_django.urls'
+ROOT_URLCONF = "hgr_django.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
@@ -114,18 +114,18 @@ TEMPLATES = [
     },
 }"""
 
-WSGI_APPLICATION = 'hgr_django.wsgi.application'
+WSGI_APPLICATION = "hgr_django.wsgi.application"
 
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'OPTIONS': {
-            'service': 'hgr',
-            'passfile': os.environ.get('PGPASSFILE'),
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "OPTIONS": {
+            "service": "hgr",
+            "passfile": os.environ.get("PGPASSFILE"),
         },
     }
 }
@@ -136,16 +136,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -153,9 +153,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'pt-br'
+LANGUAGE_CODE = "pt-br"
 
-TIME_ZONE = 'America/Boa_Vista'
+TIME_ZONE = "America/Boa_Vista"
 
 USE_I18N = True
 
@@ -167,20 +167,20 @@ USE_L10N = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'static'
-]
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Auth
-LOGIN_URL = '/autenticacao/entrar'
-LOGIN_REDIRECT_URL = '/dashboard'
-LOGOUT_REDIRECT_URL = '/autenticacao/entrar'
+AUTH_USER_MODEL = "usuarios.Usuario"
+
+LOGIN_URL = "/autenticacao/entrar"
+LOGIN_REDIRECT_URL = "/dashboard"
+LOGOUT_REDIRECT_URL = "/autenticacao/entrar"

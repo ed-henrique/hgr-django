@@ -1,0 +1,49 @@
+{% extends 'partials/base.html' %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12">
+    <div class="card w-100 position-relative overflow-hidden">
+      <div class="px-4 py-3 border-bottom">
+        <h4 class="card-title mb-0">Enfermeiros</h4>
+      </div>
+      <div class="card-body p-4">
+        <div id="gdatatables" class="datatables">
+          <table id="gwrapper" class="table text-nowrap my-3 align-middle table-responsive border rounded-1">
+            <thead class="text-dark fs-4">
+              <tr>
+                <th>
+                  <h6 class="fs-4 fw-semibold mb-0">Nome</h6>
+                </th>
+                <th>
+                  <h6 class="fs-4 fw-semibold mb-0">Email</h6>
+                </th>
+                <th>
+                  <h6 class="fs-4 fw-semibold mb-0">Status</h6>
+                </th>
+                <th>
+                  <h6 class="fs-4 fw-semibold mb-0">Participação</h6>
+                </th>
+                {% if tipo|is_user_admin_or_higher %}
+                <th class="d-md-table-cell d-none"></th>
+                {% endif %}
+              </tr>
+            </thead>
+            <tbody id="enfermeiros">
+              {% for enfermeiro in enfermeiros %}
+              {% if enfermeiro.NomeStatusDeUsuario == "Pending" %}
+              {% include "enfermeiro_pendente.html" with tipo=tipo enfermeiro=enfermeiro %}
+              {% elif enfermeiro.NomeStatusDeUsuario == "Active" %}
+              {% include "enfermeiro_ativo.html" with tipo=tipo enfermeiro=enfermeiro %}
+              {% elif enfermeiro.NomeStatusDeUsuario == "Blocked" %}
+              {% include "enfermeiro_bloqueado.html" with tipo=tipo enfermeiro=enfermeiro %}
+              {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
