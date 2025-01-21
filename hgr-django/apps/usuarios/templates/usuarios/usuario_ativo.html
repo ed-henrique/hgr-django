@@ -1,0 +1,31 @@
+<tr>
+  <td class="flex-grow">
+    {% if u.tipo_de_usuario.nome == 'Super Administrador' %}
+    <h6 class="fw-semibold mb-0">{{ u.first_name }} (Super Administrador)</h6>
+    {% elif u.tipo_de_usuario.nome == 'Administrador' %}
+    <h6 class="fw-semibold mb-0">{{ u.first_name }} (Administrador)</h6>
+    {% else %}
+    <h6 class="fw-semibold mb-0">{{ u.first_name }}</h6>
+    {% endif %}
+  </td>
+  <td class="flex-grow">
+    <h6 class="fw-semibold mb-0">{{ u.email }}</h6>
+  </td>
+  <td>
+    <span class="badge bg-success d-inline-flex align-items-center gap-1 fw-bolder text-center">Ativo</span>
+  </td>
+  <td>
+    <div class="d-flex align-items-center gap-3">
+      <div class="progress text-bg-light w-100 h-4">
+        <div class="progress-bar" style="width: {{ u.participacao_formatada }}%;" role="progressbar"
+          aria-label="Example 4px high" aria-valuenow={{ u.participacao_formatada }} aria-valuemin="0"
+          aria-valuemax="100">
+        </div>
+      </div>
+      <span class="d-md-block d-none fw-normal">{{ u.participacao|floatformat:2|localize }}%</span>
+    </div>
+  </td>
+  <td class="text-danger text-end">
+    <i style="cursor: pointer;" class="fs-6 ti ti-lock"></i>
+  </td>
+</tr>

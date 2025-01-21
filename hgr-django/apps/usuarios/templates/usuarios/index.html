@@ -1,4 +1,5 @@
 {% extends 'partials/base.html' %}
+{% load custom_filters %}
 
 {% block content %}
 <div class="row">
@@ -8,40 +9,116 @@
         <h4 class="card-title mb-0">Enfermeiros</h4>
       </div>
       <div class="card-body p-4">
-        <div id="gdatatables" class="datatables">
-          <table id="gwrapper" class="table text-nowrap my-3 align-middle table-responsive border rounded-1">
-            <thead class="text-dark fs-4">
-              <tr>
-                <th>
-                  <h6 class="fs-4 fw-semibold mb-0">Nome</h6>
-                </th>
-                <th>
-                  <h6 class="fs-4 fw-semibold mb-0">Email</h6>
-                </th>
-                <th>
-                  <h6 class="fs-4 fw-semibold mb-0">Status</h6>
-                </th>
-                <th>
-                  <h6 class="fs-4 fw-semibold mb-0">Participação</h6>
-                </th>
-                {% if tipo|is_user_admin_or_higher %}
-                <th class="d-md-table-cell d-none"></th>
-                {% endif %}
-              </tr>
-            </thead>
-            <tbody id="enfermeiros">
-              {% for enfermeiro in enfermeiros %}
-              {% if enfermeiro.NomeStatusDeUsuario == "Pending" %}
-              {% include "enfermeiro_pendente.html" with tipo=tipo enfermeiro=enfermeiro %}
-              {% elif enfermeiro.NomeStatusDeUsuario == "Active" %}
-              {% include "enfermeiro_ativo.html" with tipo=tipo enfermeiro=enfermeiro %}
-              {% elif enfermeiro.NomeStatusDeUsuario == "Blocked" %}
-              {% include "enfermeiro_bloqueado.html" with tipo=tipo enfermeiro=enfermeiro %}
+        <form method="get" class="d-flex mb-3">
+          {% csrf_token %}
+          <input type="text" name="q" class="form-control me-3" placeholder="Busca por Nome"
+            value="{{ request.GET.q }}" />
+          <button type="submit" class="btn btn-primary">
+            <i class="ti ti-search"></i>
+          </button>
+        </form>
+        {% if usuarios %}
+        <table id="gwrapper" class="table text-nowrap my-3 align-middle table-responsive border rounded-1">
+          <thead class="text-dark fs-4">
+            <tr>
+              <th>
+                <h6 class="fs-4 fw-semibold mb-0">Nome</h6>
+              </th>
+              <th>
+                <h6 class="fs-4 fw-semibold mb-0">Nome de Usuário</h6>
+              </th>
+              <th>
+                <h6 class="fs-4 fw-semibold mb-0">Email</h6>
+              </th>
+              <th>
+                <h6 class="fs-4 fw-semibold mb-0">Status</h6>
+              </th>
+              <th>
+                <h6 class="fs-4 fw-semibold mb-0">Participação</h6>
+              </th>
+              {% if user|is_admin_or_higher %}
+              <th class="d-md-table-cell d-none"></th>
               {% endif %}
-              {% endfor %}
-            </tbody>
-          </table>
+            </tr>
+          </thead>
+          <tbody id="enfermeiros">
+            {% for u in usuarios %}
+            {% if u.status_de_usuario.nome == "Pendente" %}
+            {% include "usuarios/usuario_pendente.html" with u=u %}
+            {% elif u.status_de_usuario.nome == "Ativo" %}
+            {% include "usuarios/usuario_ativo.html" with u=u %}
+            {% elif u.status_de_usuario.nome == "Bloqueado" %}
+            {% include "usuarios/usuario_bloqueado.html" with u=u %}
+            {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+        <div class="d-flex justify-content-end pagination">
+          <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center mb-0">
+
+              <!-- First Page -->
+              {% if basicos.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page=1" aria-label="Primeira Página">
+                  <i class="ti ti-chevrons-left ti-xs"></i>
+                </a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="?page={{ basicos.previous_page_number }}" aria-label="Página Anterior">
+                  <i class="ti ti-chevron-left ti-xs"></i>
+                </a>
+              </li>
+              {% else %}
+              <li class="page-item disabled">
+                <span class="page-link">
+                  <i class="ti ti-chevrons-left ti-xs"></i>
+                </span>
+              </li>
+              <li class="page-item disabled">
+                <span class="page-link">
+                  <i class="ti ti-chevron-left ti-xs"></i>
+                </span>
+              </li>
+              {% endif %}
+
+              <!-- Current Page Display -->
+              <li class="page-item disabled">
+                <span class="page-link">
+                  Página {{ basicos.number }} de {{ basicos.paginator.num_pages }}
+                </span>
+              </li>
+
+              <!-- Next Page -->
+              {% if basicos.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ basicos.next_page_number }}" aria-label="Pŕoxima Página">
+                  <i class="ti ti-chevron-right ti-xs"></i>
+                </a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="?page={{ basicos.paginator.num_pages }}" aria-label="Última Página">
+                  <i class="ti ti-chevrons-right ti-xs"></i>
+                </a>
+              </li>
+              {% else %}
+              <li class="page-item disabled">
+                <span class="page-link">
+                  <i class="ti ti-chevron-right ti-xs"></i>
+                </span>
+              </li>
+              <li class="page-item disabled">
+                <span class="page-link">
+                  <i class="ti ti-chevrons-right ti-xs"></i>
+                </span>
+              </li>
+              {% endif %}
+            </ul>
+          </nav>
         </div>
+        {% else %}
+        <p class="mb-0 text-center">Não há nenhum registro.</p>
+        {% endif %}
       </div>
     </div>
   </div>
