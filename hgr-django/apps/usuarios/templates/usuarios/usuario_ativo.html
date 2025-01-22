@@ -33,18 +33,40 @@
   {% if user|is_admin_or_higher %}
   {% if u|is_superadmin %}
   <td></td>
+  {% elif user|is_admin and u|is_admin %}
+  <td></td>
   {% else %}
   <td class="text-danger text-end">
     <div class="d-flex gap-3 align-items-center justify-content-end fs-6">
-      <span class="text-warning">
+      {% if user|is_superadmin %}
+      <span>
         {% if u|is_admin %}
-        <i style="cursor: pointer;" class="fs-6 ti ti-star-filled"></i>
+        <form action="/usuarios/{{ u.id }}/remover-autoridade">
+          {% csrf_token %}
+          <button class="p-0 text-warning" type="submit"
+            style="cursor: pointer; background: none; border: none; outline: none;">
+            <i class="fs-6 ti ti-star-filled"></i>
+          </button>
+        </form>
         {% else %}
-        <i style="cursor: pointer;" class="fs-6 ti ti-star"></i>
+        <form action="/usuarios/{{ u.id }}/elevar-autoridade">
+          {% csrf_token %}
+          <button class="p-0 text-warning" type="submit"
+            style="cursor: pointer; background: none; border: none; outline: none;">
+            <i class="fs-6 ti ti-star"></i>
+          </button>
+        </form>
         {% endif %}
       </span>
-      <span class="text-danger">
-        <i style="cursor: pointer;" class="fs-6 ti ti-lock"></i>
+      {% endif %}
+      <span>
+        <form action="/usuarios/{{ u.id }}/bloquear">
+          {% csrf_token %}
+          <button class="p-0 text-danger" type="submit"
+            style="cursor: pointer; background: none; border: none; outline: none;">
+            <i class="fs-6 ti ti-lock"></i>
+          </button>
+        </form>
       </span>
     </div>
   </td>
