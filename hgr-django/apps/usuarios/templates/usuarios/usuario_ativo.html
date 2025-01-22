@@ -1,3 +1,4 @@
+{% load custom_filters %}
 {% load l10n %}
 <tr>
   <td class="flex-grow">
@@ -29,7 +30,24 @@
       <span class="d-md-block d-none fw-normal">{{ u.participacao|floatformat:2|localize }}%</span>
     </div>
   </td>
+  {% if user|is_admin_or_higher %}
+  {% if u|is_superadmin %}
+  <td></td>
+  {% else %}
   <td class="text-danger text-end">
-    <i style="cursor: pointer;" class="fs-6 ti ti-lock"></i>
+    <div class="d-flex gap-3 align-items-center justify-content-end fs-6">
+      <span class="text-warning">
+        {% if u|is_admin %}
+        <i style="cursor: pointer;" class="fs-6 ti ti-star-filled"></i>
+        {% else %}
+        <i style="cursor: pointer;" class="fs-6 ti ti-star"></i>
+        {% endif %}
+      </span>
+      <span class="text-danger">
+        <i style="cursor: pointer;" class="fs-6 ti ti-lock"></i>
+      </span>
+    </div>
   </td>
+  {% endif %}
+  {% endif %}
 </tr>

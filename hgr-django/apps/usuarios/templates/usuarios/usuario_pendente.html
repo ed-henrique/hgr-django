@@ -1,3 +1,4 @@
+{% load custom_filters %}
 {% load l10n %}
 <tr>
   <td class="flex-grow">
@@ -29,6 +30,7 @@
       <span class="d-md-block d-none fw-normal">{{ u.participacao|floatformat:2|localize }}%</span>
     </div>
   </td>
+  {% if user|is_admin_or_higher %}
   <td class="text-success text-end">
     <div class="d-flex gap-3 align-items-center justify-content-end fs-6">
       <span class="text-success">
@@ -39,4 +41,5 @@
       </span>
     </div>
   </td>
+  {% endif %}
 </tr>

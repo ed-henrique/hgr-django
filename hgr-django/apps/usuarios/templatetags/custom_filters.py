@@ -15,6 +15,30 @@ def is_active(user):
     return False
 
 
+@register.filter(name="is_admin")
+def is_admin(user):
+    """
+    Custom filter to return if the user is an admin.
+    Example: {{ user|is_active }}
+    """
+    if hasattr(user, "tipo_de_usuario"):
+        if user.tipo_de_usuario.nome == "Administrador":
+            return True
+    return False
+
+
+@register.filter(name="is_superadmin")
+def is_superadmin(user):
+    """
+    Custom filter to return if the user is an superadmin.
+    Example: {{ user|is_active }}
+    """
+    if hasattr(user, "tipo_de_usuario"):
+        if user.tipo_de_usuario.nome == "Super Administrador":
+            return True
+    return False
+
+
 @register.filter(name="is_admin_or_higher")
 def is_admin_or_higher(user):
     """

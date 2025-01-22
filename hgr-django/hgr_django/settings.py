@@ -70,9 +70,7 @@ MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.cache.UpdateCacheMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.cache.FetchFromCacheMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -135,13 +133,6 @@ DATABASES = {
             "service": "hgr",
             "passfile": os.environ.get("PGPASSFILE"),
         },
-    }
-}
-
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": f"redis://{os.environ.get('HGR_REDIS_USERNAME')}:{os.environ.get('HGR_REDIS_PASSWORD')}@{os.environ.get('HGR_REDIS_HOST')}:6379",
     }
 }
 
