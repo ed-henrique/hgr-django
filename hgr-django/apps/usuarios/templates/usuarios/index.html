@@ -6,7 +6,7 @@
   <div class="col-12">
     <div class="card w-100 position-relative overflow-hidden">
       <div class="px-4 py-3 border-bottom">
-        <h4 class="card-title mb-0">Enfermeiros</h4>
+        <h4 class="card-title mb-0">Usuários</h4>
       </div>
       <div class="card-body p-4">
         <form method="get" class="d-flex mb-3">
@@ -58,14 +58,14 @@
             <ul class="pagination justify-content-center mb-0">
 
               <!-- First Page -->
-              {% if basicos.has_previous %}
+              {% if usuarios.has_previous %}
               <li class="page-item">
                 <a class="page-link" href="?page=1" aria-label="Primeira Página">
                   <i class="ti ti-chevrons-left ti-xs"></i>
                 </a>
               </li>
               <li class="page-item">
-                <a class="page-link" href="?page={{ basicos.previous_page_number }}" aria-label="Página Anterior">
+                <a class="page-link" href="?page={{ usuarios.previous_page_number }}" aria-label="Página Anterior">
                   <i class="ti ti-chevron-left ti-xs"></i>
                 </a>
               </li>
@@ -85,19 +85,19 @@
               <!-- Current Page Display -->
               <li class="page-item disabled">
                 <span class="page-link">
-                  Página {{ basicos.number }} de {{ basicos.paginator.num_pages }}
+                  Página {{ usuarios.number }} de {{ usuarios.paginator.num_pages }}
                 </span>
               </li>
 
               <!-- Next Page -->
-              {% if basicos.has_next %}
+              {% if usuarios.has_next %}
               <li class="page-item">
-                <a class="page-link" href="?page={{ basicos.next_page_number }}" aria-label="Pŕoxima Página">
+                <a class="page-link" href="?page={{ usuarios.next_page_number }}" aria-label="Pŕoxima Página">
                   <i class="ti ti-chevron-right ti-xs"></i>
                 </a>
               </li>
               <li class="page-item">
-                <a class="page-link" href="?page={{ basicos.paginator.num_pages }}" aria-label="Última Página">
+                <a class="page-link" href="?page={{ usuarios.paginator.num_pages }}" aria-label="Última Página">
                   <i class="ti ti-chevrons-right ti-xs"></i>
                 </a>
               </li>

@@ -16,7 +16,7 @@
     <h6 class="fw-semibold mb-0">{{ u.email }}</h6>
   </td>
   <td>
-    <span class="badge bg-success d-inline-flex align-items-center gap-1 fw-bolder text-center">Ativo</span>
+    <span class="badge bg-warning d-inline-flex align-items-center gap-1 fw-bolder text-center">Pendente</span>
   </td>
   <td>
     <div class="d-flex align-items-center gap-3">
@@ -29,7 +29,14 @@
       <span class="d-md-block d-none fw-normal">{{ u.participacao|floatformat:2|localize }}%</span>
     </div>
   </td>
-  <td class="text-danger text-end">
-    <i style="cursor: pointer;" class="fs-6 ti ti-lock"></i>
+  <td class="text-success text-end">
+    <div class="d-flex gap-3 align-items-center justify-content-end fs-6">
+      <span class="text-success">
+        <i style="cursor: pointer;" class="fs-6 ti ti-square-check"></i>
+      </span>
+      <span class="text-danger">
+        <i style="cursor: pointer;" class="fs-6 ti ti-square-x"></i>
+      </span>
+    </div>
   </td>
 </tr>
