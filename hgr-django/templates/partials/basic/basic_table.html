@@ -1,3 +1,4 @@
+{% load custom_filters %}
 {% load l10n %}
 <table id="tabela" class="table text-nowrap my-3 align-middle table-responsive border rounded-3">
   <thead class="text-dark fs-4">
@@ -13,7 +14,9 @@
           Participação
         </h6>
       </th>
+      {% if user|is_admin_or_higher %}
       <th class="d-md-table-cell d-none"></th>
+      {% endif %}
     </tr>
   </thead>
   <tbody id="{{ caminho }}">
@@ -35,6 +38,7 @@
           <span class="d-md-block d-none fw-normal">{{ b.participacao|floatformat:2|localize }}%</span>
         </div>
       </td>
+      {% if user|is_admin_or_higher %}
       <td class="d-md-table-cell d-none text-end">
         <div class="d-flex gap-3 align-items-center justify-content-end">
           <a class="text-primary" style="max-height: 20px;" href="{{ caminho }}{{ b.id}}/editar">
@@ -49,6 +53,7 @@
           </form>
         </div>
       </td>
+      {% endif %}
     </tr>
     {% endfor %}
   </tbody>

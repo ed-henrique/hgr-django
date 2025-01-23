@@ -31,8 +31,14 @@
     </div>
   </td>
   {% if user|is_admin_or_higher %}
-  <td class="text-success text-end">
-    <i style="cursor: pointer;" class="fs-6 ti ti-lock-open"></i>
+  <td class="text-end">
+    <form action="/gestao/usuarios/{{ u.id }}/desbloquear" method="post">
+      {% csrf_token %}
+      <button class="p-0 text-success" type="submit"
+        style="cursor: pointer; background: none; border: none; outline: none;">
+        <i class="fs-6 ti ti-lock-open"></i>
+      </button>
+    </form>
   </td>
   {% endif %}
 </tr>

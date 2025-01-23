@@ -23,8 +23,10 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("autenticacao/", include("apps.autenticacao.urls")),
     path("dashboard/", include("apps.dashboard.urls")),
-    path("gestao/nacionalidades-etnias/", include("apps.nacionalidades_etnias.urls")),
-    path("gestao/medidas-de-precaucao/", include("apps.medidas_de_precaucao.urls")),
+    path("gestao/nacionalidades-etnias/",
+         include("apps.nacionalidades_etnias.urls")),
+    path("gestao/medidas-de-precaucao/",
+         include("apps.medidas_de_precaucao.urls")),
     path("gestao/portas-de-entrada/", include("apps.portas_de_entrada.urls")),
     path("gestao/tipos-de-cirurgia/", include("apps.tipos_de_cirurgia.urls")),
     path("gestao/tipos-de-vacuo/", include("apps.tipos_de_vacuo.urls")),
@@ -38,6 +40,7 @@ urlpatterns = [
     path("gestao/setores/", include("apps.setores.urls")),
     path("gestao/leitos/", include("apps.leitos.urls")),
     path("gestao/usuarios/", include("apps.usuarios.urls")),
+    path("configuracoes/", include("apps.configuracoes.urls")),
 ]
 
 urlpatterns += debug_toolbar_urls()

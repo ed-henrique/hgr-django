@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     "apps.unidades_de_saude",
     "apps.usuarios",
     "apps.dashboard",
+    "apps.configuracoes",
     "debug_toolbar",
 ]
 

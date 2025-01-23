@@ -41,8 +41,9 @@ def elevar_autoridade_usuario_view(request, id):
     obj = get_object_or_404(Usuario, id=id)
 
     if request.method == "POST":
-        tipo_de_usuario = TipoDeUsuario.objects.filter(nome="Administrador")
-        obj.status_de_usuario = tipo_de_usuario
+        tipo_de_usuario = TipoDeUsuario.objects.get(nome="Administrador")
+        obj.tipo_de_usuario = tipo_de_usuario
+        obj.save()
         return redirect("/gestao/usuarios/")
 
 
@@ -51,8 +52,10 @@ def remover_autoridade_usuario_view(request, id):
     obj = get_object_or_404(Usuario, id=id)
 
     if request.method == "POST":
-        tipo_de_usuario = TipoDeUsuario.objects.filter(nome="Profissional de Saúde")
-        obj.status_de_usuario = tipo_de_usuario
+        tipo_de_usuario = TipoDeUsuario.objects.get(
+            nome="Profissional de Saúde")
+        obj.tipo_de_usuario = tipo_de_usuario
+        obj.save()
         return redirect("/gestao/usuarios/")
 
 
@@ -61,8 +64,9 @@ def desbloquear_usuario_view(request, id):
     obj = get_object_or_404(Usuario, id=id)
 
     if request.method == "POST":
-        status_de_usuario = StatusDeUsuario.objects.filter(nome="Ativo")
+        status_de_usuario = StatusDeUsuario.objects.get(nome="Ativo")
         obj.status_de_usuario = status_de_usuario
+        obj.save()
         return redirect("/gestao/usuarios/")
 
 
@@ -71,8 +75,9 @@ def bloquear_usuario_view(request, id):
     obj = get_object_or_404(Usuario, id=id)
 
     if request.method == "POST":
-        status_de_usuario = StatusDeUsuario.objects.filter(nome="Bloqueado")
+        status_de_usuario = StatusDeUsuario.objects.get(nome="Bloqueado")
         obj.status_de_usuario = status_de_usuario
+        obj.save()
         return redirect("/gestao/usuarios/")
 
 

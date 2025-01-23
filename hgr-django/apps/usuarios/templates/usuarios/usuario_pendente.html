@@ -33,11 +33,23 @@
   {% if user|is_admin_or_higher %}
   <td class="text-success text-end">
     <div class="d-flex gap-3 align-items-center justify-content-end fs-6">
-      <span class="text-success">
-        <i style="cursor: pointer;" class="fs-6 ti ti-square-check"></i>
+      <span>
+        <form action="/gestao/usuarios/{{ u.id }}/desbloquear" method="post">
+          {% csrf_token %}
+          <button class="p-0 text-success" type="submit"
+            style="cursor: pointer; background: none; border: none; outline: none;">
+            <i class="fs-6 ti ti-square-check"></i>
+          </button>
+        </form>
       </span>
-      <span class="text-danger">
-        <i style="cursor: pointer;" class="fs-6 ti ti-square-x"></i>
+      <span>
+        <form action="/gestao/usuarios/{{ u.id }}/excluir" method="post">
+          {% csrf_token %}
+          <button class="p-0 text-danger" type="submit"
+            style="cursor: pointer; background: none; border: none; outline: none;">
+            <i class="fs-6 ti ti-square-x"></i>
+          </button>
+        </form>
       </span>
     </div>
   </td>

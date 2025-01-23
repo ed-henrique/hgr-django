@@ -1,0 +1,158 @@
+{% extends 'partials/base.html' %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12 col-lg-6">
+    <div class="card">
+      <div class="px-4 py-3 border-bottom">
+        <h4 class="card-title mb-0">Trocar Nome</h4>
+      </div>
+      <div class="card-body p-4">
+        <form method="post" action={% url 'mudar_nome' %}>
+          {% csrf_token %}
+          <label for="{{ name_form.name.id_for_label}}" class="form-label">
+            Novo Nome (Nome Atual: {{ user.first_name }})
+          </label>
+          <div class="input-group">
+            {{ name_form.name }}
+            <button type="submit" class="btn btn-primary">
+              Trocar Nome
+            </button>
+          </div>
+          <div class="invalid-feedback">Insira o seu novo nome, por favor.</div>
+          <div class="invalid-feedback">{{ name_form.name.errors }}</div>
+          <div id="erros-configuracoes-nome" class="d-flex flex-column text-danger gap-3" style="hyphens: auto;">
+            <style>
+              #erros-configuracoes-nome ul {
+                margin-bottom: 1.5rem;
+                padding-left: 0;
+                list-style-type: none;
+                text-align: justify;
+                text-align-last: center;
+              }
+            </style>
+            {{ name_form.non_field_errors }}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-6">
+    <div class="card">
+      <div class="px-4 py-3 border-bottom">
+        <h4 class="card-title mb-0">Trocar Nome de Usuário</h4>
+      </div>
+      <div class="card-body p-4">
+        <form method="post" action={% url 'mudar_nome_de_usuario' %}>
+          {% csrf_token %}
+          <label for="{{ username_form.username.id_for_label}}" class="form-label">
+            Novo Nome de Usuário (Nome de Usuário Atual: {{ user.username }})
+          </label>
+          <div class="input-group">
+            {{ username_form.username }}
+            <button type="submit" class="btn btn-primary">
+              Trocar Nome de Usuário
+            </button>
+          </div>
+          <div class="invalid-feedback">Insira o seu novo nome de usuário, por favor.</div>
+          <div class="invalid-feedback">{{ username_form.username.errors }}</div>
+          <div id="erros-configuracoes-nome-de-usuario" class="d-flex flex-column text-danger gap-3"
+            style="hyphens: auto;">
+            <style>
+              #erros-configuracoes-nome-de-usuario ul {
+                margin-bottom: 1.5rem;
+                padding-left: 0;
+                list-style-type: none;
+                text-align: justify;
+                text-align-last: center;
+              }
+            </style>
+            {{ username_form.non_field_errors }}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="card">
+      <div class="px-4 py-3 border-bottom">
+        <h4 class="card-title mb-0">Trocar Email</h4>
+      </div>
+      <div class="card-body p-4">
+        <form method="post" action={% url 'mudar_email' %}>
+          {% csrf_token %}
+          <label for="{{ email_form.email.id_for_label}}" class="form-label">
+            Novo Email (Email Atual: {{ user.email }})
+          </label>
+          <div class="input-group">
+            {{ email_form.email }}
+            <button type="submit" class="btn btn-primary">
+              Trocar Email
+            </button>
+          </div>
+          <div class="invalid-feedback">Insira o seu novo email, por favor.</div>
+          <div class="invalid-feedback">{{ email_form.email.errors }}</div>
+          <div id="erros-configuracoes-email" class="d-flex flex-column text-danger gap-3" style="hyphens: auto;">
+            <style>
+              #erros-configuracoes-email ul {
+                margin-bottom: 1.5rem;
+                padding-left: 0;
+                list-style-type: none;
+                text-align: justify;
+                text-align-last: center;
+              }
+            </style>
+            {{ email_form.non_field_errors }}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="card">
+      <div class="px-4 py-3 border-bottom">
+        <h4 class="card-title mb-0">Trocar Senha</h4>
+      </div>
+      <div class="card-body p-4">
+        <form class="d-flex flex-column align-items-end" method="post" action={% url 'mudar_senha' %}>
+          {% csrf_token %}
+          <div class="mb-4 w-100">
+            <label for="{{ password_form.old_password.id_for_label}}" class="form-label">Senha Atual</label>
+            {{ password_form.old_password }}
+            <div class="invalid-feedback">Insira a sua senha antiga, por favor.</div>
+            <div class="invalid-feedback">{{ password_form.old_password.errors }}</div>
+          </div>
+          <div class="mb-4 w-100">
+            <label for="{{ password_form.password.id_for_label}}" class="form-label">Nova Senha</label>
+            {{ password_form.password }}
+            <div class="invalid-feedback">Insira a sua nova senha, por favor.</div>
+            <div class="invalid-feedback">{{ password_form.password.errors }}</div>
+          </div>
+          <div class="mb-4 w-100">
+            <label for="{{ password_form.confirm_password.id_for_label}}" class="form-label">Confirme a Nova
+              Senha</label>
+            {{ password_form.confirm_password }}
+            <div class="invalid-feedback">Insira a sua nova senha, por favor.</div>
+            <div class="invalid-feedback">{{ password_form.confirm_password.errors }}</div>
+          </div>
+          <div id="erros-configuracoes-senha" class="d-flex flex-column text-danger gap-3 w-100" style="hyphens: auto;">
+            <style>
+              #erros-configuracoes-senha ul {
+                margin-bottom: 1.5rem;
+                padding-left: 0;
+                list-style-type: none;
+                text-align: justify;
+                text-align-last: center;
+              }
+            </style>
+            {{ password_form.non_field_errors }}
+          </div>
+          <button type="submit" class="btn btn-primary">
+            Trocar Senha
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
