@@ -34,6 +34,14 @@ class Leito(models.Model):
     def ocupado(self):
         return self.paciente_set.exists()
 
+    @property
+    def paciente(self):
+        return self.paciente_set.filter(removido_em__isnull=True).first() if self.ocupado else None
+
+    @property
+    def historico_de_ocupacao(self):
+        return self.historico_de_ocupacao_de_leito.all()
+
     class Meta:
         verbose_name = 'Leito'
         verbose_name_plural = 'Leitos'

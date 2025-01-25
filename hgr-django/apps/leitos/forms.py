@@ -1,5 +1,4 @@
 from django import forms
-from django.core.exceptions import ValidationError
 from .models import Leito
 
 
@@ -19,29 +18,31 @@ class LeitoForm(forms.ModelForm):
             self.add_error(
                 "tipo_de_o2", "O tipo de O2 é obrigatório se o leito tiver O2.")
         elif not tem_o2 and tipo_de_o2:
-            self.add_error(
-                "tem_o2", "Não é possível adicionar um tipo de O2 sem o leito ter O2.")
+            self.cleaned_data["tipo_de_o2"] = None
 
         # Validation for tem_vacuo and tipo_de_vacuo
         if tem_vacuo and not tipo_de_vacuo:
             self.add_error(
                 "tipo_de_vacuo", "O tipo de vácuo é obrigatório se o leito tiver vácuo.")
         elif not tem_vacuo and tipo_de_vacuo:
-            self.add_error(
-                "tem_vacuo", "Não é possível adicionar um tipo de vácuo sem o leito ter vácuo.")
+            self.cleaned_data["tipo_de_vacuo"] = None
 
         # Validation for tem_codigo_sus and codigo_sus
         if tem_codigo_sus and not codigo_sus:
             self.add_error(
                 "codigo_sus", "O código SUS é obrigatório se o leito tiver código SUS.")
         elif not tem_codigo_sus and codigo_sus:
-            self.add_error(
-                "tem_codigo_sus", "Não é possível adicionar um código SUS sem marcar a opção 'Tem Código SUS'.")
+            self.cleaned_data["codigo_sus"] = None
 
-        # Check if codigo_sus is unique
-        if codigo_sus and Leito.objects.filter(codigo_sus=codigo_sus).exists():
-            self.add_error(
-                "codigo_sus", "Este código SUS já está sendo usado.")
+        if codigo_sus:
+            # Get the original value of codigo_sus from the database
+            original_codigo_sus = Leito.objects.get(
+                pk=self.instance.pk).codigo_sus if self.instance.pk else None
+
+            # Check if codigo_sus has changed and if the new value already exists
+            if codigo_sus != original_codigo_sus and Leito.objects.filter(codigo_sus=codigo_sus).exists():
+                self.add_error(
+                    "codigo_sus", "Este código SUS já está sendo usado.")
 
         return cleaned_data
 

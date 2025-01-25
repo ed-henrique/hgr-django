@@ -1,6 +1,7 @@
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.timezone import now
 from django.db.models import Q
 from .models import Leito
 from .forms import LeitoForm
@@ -10,6 +11,7 @@ from apps.tipos_de_leito.models import TipoDeLeito
 from apps.status_de_leito.models import StatusDeLeito
 from apps.tipos_de_o2.models import TipoDeO2
 from apps.tipos_de_vacuo.models import TipoDeVacuo
+from apps.historico_de_ocupacao_de_leito.models import HistoricoDeOcupacaoDeLeito
 
 
 @login_required
@@ -23,9 +25,10 @@ def leitos_view(request):
             Q(tipo__icontains=query),
             Q(status__icontains=query),
             Q(codigo_sus__icontains=query),
+            removido_em__isnull=True,
         ).order_by('id')
     else:
-        objs = Leito.objects.all().order_by('id')
+        objs = Leito.objects.filter(removido_em__isnull=True).order_by('id')
 
     paginator = Paginator(objs, 10)
     page_number = request.GET.get('page')
@@ -37,8 +40,6 @@ def leitos_view(request):
     status_de_leito = StatusDeLeito.objects.all().order_by('nome')
     tipos_de_o2 = TipoDeO2.objects.all().order_by('nome')
     tipos_de_vacuo = TipoDeVacuo.objects.all().order_by('nome')
-
-    print(page_objs)
 
     context = {
         'setores': setores,
@@ -57,7 +58,7 @@ def leitos_view(request):
     if request.method == 'POST':
         form = LeitoForm(request.POST)
         if form.is_valid():
-            Leito.objects.create(
+            leito = Leito.objects.create(
                 setor=form.cleaned_data["setor"],
                 especialidade=form.cleaned_data["especialidade"],
                 status_de_leito=form.cleaned_data["status_de_leito"],
@@ -69,6 +70,8 @@ def leitos_view(request):
                 tem_vacuo=form.cleaned_data["tem_vacuo"],
                 tem_codigo_sus=form.cleaned_data["tem_codigo_sus"],
             )
+
+            HistoricoDeOcupacaoDeLeito.objects.create(leito=leito)
 
             return redirect("/gestao/leitos/")
 
@@ -83,36 +86,58 @@ def leitos_view(request):
 
 @login_required
 def leito_view(request, id):
-    obj = get_object_or_404(Leito, id=id)
+    obj = get_object_or_404(Leito, id=id, removido_em__isnull=True)
+
+    paginator = Paginator(
+        obj.historico_de_ocupacao.order_by('-ocorrido_em'), 10)
+    page_number = request.GET.get('page')
+    page_objs = paginator.get_page(page_number)
 
     context = {
         'leito': obj,
+        'historico_de_ocupacao': page_objs,
         'caminho': "/gestao/leitos/",
         'title': 'Gestão de ' + Leito._meta.verbose_name_plural,
         'titulo': Leito._meta.verbose_name_plural,
     }
 
-    return render(request, 'leitos/index.html', context)
+    return render(request, 'leitos/leito.html', context)
 
 
 @login_required
 def editar_leito_view(request, id):
-    obj = get_object_or_404(Leito, id=id)
+    obj = get_object_or_404(Leito, id=id, removido_em__isnull=True)
 
     if request.method == 'POST':
         form = LeitoForm(request.POST, instance=obj)
         if form.is_valid():
             form.save()
             return redirect("/gestao/leitos/")
+
+        print(form.errors)
     else:
         form = LeitoForm(instance=obj)
+
+    setores = Setor.objects.all().order_by('nome')
+    especialidades = Especialidade.objects.all().order_by('nome')
+    tipos_de_leito = TipoDeLeito.objects.all().order_by('nome')
+    status_de_leito = StatusDeLeito.objects.all().order_by('nome')
+    tipos_de_o2 = TipoDeO2.objects.all().order_by('nome')
+    tipos_de_vacuo = TipoDeVacuo.objects.all().order_by('nome')
 
     context = {
         'form': form,
         'leito': obj,
+        'setores': setores,
+        'especialidades': especialidades,
+        'tipos_de_leito': tipos_de_leito,
+        'status_de_leito': status_de_leito,
+        'tipos_de_o2': tipos_de_o2,
+        'tipos_de_vacuo': tipos_de_vacuo,
         'caminho': "/gestao/leitos/",
         'title': 'Gestão de ' + Leito._meta.verbose_name_plural,
-        'mensagem_de_edicao': 'Editar ' + Leito._meta.verbose_name,
+        'titulo': Leito._meta.verbose_name_plural,
+        'mensagem_de_cadastro': 'Cadastrar ' + Leito._meta.verbose_name,
     }
 
     return render(request, 'leitos/editar.html', context)
@@ -120,8 +145,9 @@ def editar_leito_view(request, id):
 
 @login_required
 def excluir_leito_view(request, id):
-    obj = get_object_or_404(Leito, id=id)
+    obj = get_object_or_404(Leito, id=id, removido_em__isnull=True)
 
     if request.method == 'POST':
-        obj.delete()
+        obj.removido_em = now()
+        obj.save()
         return redirect("/gestao/leitos/")

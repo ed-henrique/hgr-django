@@ -1,6 +1,153 @@
 {% extends 'layouts/edit_basic.html' %}
 {% load static %}
 
-{% block head_scripts %}
-<script src="{% static 'js/jscolor/jscolor.min.js' %}"></script>
+{% block content %}
+<div class="col-12">
+  <a style="margin-bottom: var(--bs-gutter-x);" class="fs-5 d-flex align-items-center gap-2" href="{% url 'leitos' %}">
+    <i class="ti ti-arrow-left fs-5"></i>
+    <span>Voltar</span>
+  </a>
+</div>
+<div class="col-12">
+  <form class="card" action="/gestao/leitos/{{ leito.id }}/editar" method="post">
+    {% csrf_token %}
+    <div class="px-4 py-3 border-bottom">
+      <h4 class="card-title mb-0">Editar Leito</h4>
+    </div>
+    <div class="card-body p-4 border-bottom d-flex flex-column align-items-end">
+      <div class="d-flex gap-3 align-items-center mb-3 w-100">
+        <div class="flex-grow-1">
+          <div>
+            <label for="setor" class="form-label">Setor</label>
+            <div class="form-group">
+              <select class="form-select mr-sm-2" id="setor" name="setor">
+                <option value="{{ leito.setor.id }}" selected>{{ leito.setor.nome }}</option>
+                {% for setor in setores %}
+                {% if setor.id != leito.setor.id %}
+                <option value="{{ setor.id }}">{{ setor.nome }}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="flex-grow-1">
+          <div>
+            <label for="tipo-de-leito" class="form-label">Especialidade</label>
+            <div class="form-group">
+              <select class="form-select mr-sm-2" id="especialidade" name="especialidade">
+                <option value="{{ leito.especialidade.id }}" selected>{{ leito.especialidade.nome }}</option>
+                {% for especialidade in especialidades %}
+                {% if especialidade.id != leito.especialidade.id %}
+                <option value="{{ especialidade.id }}">{{ especialidade.nome }}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex gap-3 align-items-center mb-3 w-100">
+        <div class="flex-grow-1">
+          <div>
+            <label for="tipo-de-leito" class="form-label">Tipo de Leito</label>
+            <div class="form-group">
+              <select class="form-select mr-sm-2" id="tipo_de_leito" name="tipo_de_leito">
+                <option value="{{ leito.tipo_de_leito.id }}" selected>{{ leito.tipo_de_leito.nome }}</option>
+                {% for tipo in tipos_de_leito %}
+                {% if tipo.id != leito.tipo_de_leito.id %}
+                <option value="{{ tipo.id }}">{{ tipo.nome }}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="flex-grow-1">
+          <div>
+            <label for="status-de-leito" class="form-label">Status de Leito</label>
+            <div class="form-group">
+              <select class="form-select mr-sm-2" id="status_de_leito" name="status_de_leito">
+                <option value="{{ leito.status_de_leito.id }}" selected>{{ leito.status_de_leito.nome }}</option>
+                {% for status in status_de_leito %}
+                {% if status.id != leito.status_de_leito.id %}
+                <option value="{{ status.id }}">{{ status.nome }}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex gap-3 align-items-center mb-3 w-100">
+        <div class="d-flex gap-3 align-items-center flex-grow-1">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="tem_codigo_sus" name="tem_codigo_sus"
+              onchange="toggleInput('tem_codigo_sus', 'codigo_sus')" {% if leito.tem_codigo_sus %} checked {% endif %} />
+            <label class="form-check-label" for="tem-codigo-sus">Tem Código SUS</label>
+          </div>
+          <div class="form-group flex-grow-1">
+            <input type="text" class="form-control" id="codigo_sus" name="codigo_sus" placeholder="Código do SUS"
+              value="{{ leito.codigo_sus }}" {% if not leito.tem_codigo_sus %} disabled {% endif %} />
+          </div>
+        </div>
+      </div>
+      <div class="d-flex gap-3 align-items-center w-100">
+        <div class="d-flex gap-3 align-items-center flex-grow-1">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="tem_vacuo" name="tem_vacuo"
+              onchange="toggleInput('tem_vacuo', 'tipo_de_vacuo')" {% if leito.tem_vacuo %} checked {% endif %} />
+            <label class="form-check-label" for="tem_vacuo">Tem Vácuo</label>
+          </div>
+          <div class="flex-grow-1">
+            <select id="tipo_de_vacuo" name="tipo_de_vacuo" class="form-select" {% if not leito.tem_vacuo %}disabled{% endif %}>
+              {% if leito.tipo_de_vacuo %}
+              {% for vacuo in tipos_de_vacuo %}
+              <option value="{{ vacuo.id }}" {% if leito.tipo_de_vacuo.id == vacuo.id %}selected{% endif %}>
+                {{ vacuo.nome }}
+              </option>
+              {% endfor %}
+              {% else %}
+              {% for vacuo in tipos_de_vacuo %}
+              <option value="{{ vacuo.id }}" {% if leito.tipo_de_vacuo.id == vacuo.id %}selected{% endif %}>
+                {{ vacuo.nome }}
+              </option>
+              {% endfor %}
+              {% endif %}
+            </select>
+          </div>
+        </div>
+        <div class="d-flex gap-3 align-items-center flex-grow-1">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="tem_o2" name="tem_o2"
+              onchange="toggleInput('tem_o2', 'tipo_de_o2')" {% if leito.tem_o2 %} checked {% endif %} />
+            <label class="form-check-label" for="tem_o2">Tem O2</label>
+          </div>
+          <div class="flex-grow-1">
+            <select id="tipo_de_o2" name="tipo_de_o2" class="form-select" {% if not leito.tem_o2 %}disabled{% endif %}>
+              {% if leito.tipo_de_o2 %}
+              {% for o2 in tipos_de_o2 %}
+              <option value="{{ o2.id }}" {% if leito.tipo_de_o2.id == o2.id %}selected{% endif %}>
+                {{ o2.nome }}
+              </option>
+              {% endfor %}
+              {% else %}
+              {% for o2 in tipos_de_o2 %}
+              <option value="{{ o2.id }}" {% if leito.tipo_de_o2.id == o2.id %}selected{% endif %}>
+                {{ o2.nome }}
+              </option>
+              {% endfor %}
+              {% endif %}
+            </select>
+          </div>
+        </div>
+      </div>
+      <button type="submit" style="max-width: fit-content;"
+        class="btn btn-primary d-flex align-items-center justify-content-center flex-grow-1 gap-2 mt-3">
+        <i class="ti ti-check fs-6"></i>
+        <span>Confirmar</span>
+      </button>
+    </div>
+  </form>
+</div>
 {% endblock %}

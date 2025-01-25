@@ -1,120 +1,181 @@
-<div id="gdatatables" class="datatables">
-  <table id="gwrapper" class="table text-nowrap my-3 align-middle table-responsive border rounded-1">
-    <thead class="text-dark fs-4">
-      <tr>
-        <th>
-          <h6 class="fs-4 fw-semibold mb-0">N°</h6>
-        </th>
-        <th>
-          <h6 class="fs-4 fw-semibold mb-0">Setor</h6>
-        </th>
-        <th>
-          <h6 class="fs-4 fw-semibold mb-0">Ocupado</h6>
-        </th>
-        <th>
-          <h6 class="fs-4 fw-semibold mb-0">Tipo</h6>
-        </th>
-        <th>
-          <h6 class="fs-4 fw-semibold mb-0">Status</h6>
-        </th>
-        <th>
-          <h6 class="fs-4 fw-semibold mb-0">O2</h6>
-        </th>
-        <th>
-          <h6 class="fs-4 fw-semibold mb-0">Vácuo</h6>
-        </th>
-        <th>
-          <h6 class="fs-4 fw-semibold mb-0">SUS</h6>
-        </th>
-        <th class="d-md-table-cell d-none"></th>
-      </tr>
-    </thead>
-    <tbody id="leitos">
-      {% for leito in leitos %}
-      <tr id="gb-{{ leito.id }}" class="align-items-center">
-        <td>
-          <h6 class="fw-semibold mb-0">{{ leito.id }}</h6>
-        </td>
-        <td>
-          <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
-            style="background-color:  {{ leito.setor.cor }};">
-            {{ leito.setor.nome }}
-          </span>
-        </td>
-        <td>
+<table id="gwrapper" class="table text-nowrap my-3 align-middle table-responsive border rounded-1">
+  <thead class="text-dark fs-4">
+    <tr>
+      <th>
+        <h6 class="fs-4 fw-semibold mb-0">N°</h6>
+      </th>
+      <th>
+        <h6 class="fs-4 fw-semibold mb-0">Setor</h6>
+      </th>
+      <th>
+        <h6 class="fs-4 fw-semibold mb-0">Ocupado</h6>
+      </th>
+      <th>
+        <h6 class="fs-4 fw-semibold mb-0">Tipo</h6>
+      </th>
+      <th>
+        <h6 class="fs-4 fw-semibold mb-0">Status</h6>
+      </th>
+      <th>
+        <h6 class="fs-4 fw-semibold mb-0">O2</h6>
+      </th>
+      <th>
+        <h6 class="fs-4 fw-semibold mb-0">Vácuo</h6>
+      </th>
+      <th>
+        <h6 class="fs-4 fw-semibold mb-0">SUS</h6>
+      </th>
+      <th class="d-md-table-cell d-none"></th>
+    </tr>
+  </thead>
+  <tbody id="leitos">
+    {% for leito in leitos %}
+    <tr id="gb-{{ leito.id }}" class="align-items-center">
+      <td>
+        <h6 class="fw-semibold mb-0">{{ leito.id }}</h6>
+      </td>
+      <td>
+        <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+          style="background-color:  {{ leito.setor.cor }};">
+          {{ leito.setor.nome }}
+        </span>
+      </td>
+      <td>
+        {% if leito.ocupado %}
+        <span class="d-flex align-items-center text-success text-center">
+          <i class="fs-6 ti ti-square-check"></i>
+        </span>
+        {% else %}
+        <span class="d-flex align-items-center text-danger text-center">
+          <i class="fs-6 ti ti-square-x"></i>
+        </span>
+        {% endif %}
+      </td>
+      <td>
+        <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+          style="background-color:  {{ leito.tipo_de_leito.cor }};">
+          {{ leito.tipo_de_leito.nome }}
+        </span>
+      </td>
+      <td>
+        <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+          style="background-color:  {{ leito.status_de_leito.cor }};">
+          {{ leito.status_de_leito.nome }}
+        </span>
+      </td>
+      <td>
+        {% if leito.tem_o2 %}
+        <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+          style="background-color:  {{ leito.tipo_de_o2.cor }};">
+          {{ leito.tipo_de_o2.nome }}
+        </span>
+        {% else %}
+        <span class="d-flex align-items-center text-danger text-center">
+          <i class="fs-6 ti ti-square-x"></i>
+        </span>
+        {% endif %}
+      </td>
+      <td>
+        {% if leito.tem_vacuo %}
+        <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+          style="background-color:  {{ leito.tipo_de_vacuo.cor }};">
+          {{ leito.tipo_de_vacuo.nome }}
+        </span>
+        {% else %}
+        <span class="d-flex align-items-center text-danger text-center">
+          <i class="fs-6 ti ti-square-x"></i>
+        </span>
+        {% endif %}
+      </td>
+      <td>
+        {% if leito.tem_codigo_sus %}
+        <span class="d-flex align-items-center text-success text-center">
+          <i class="fs-6 ti ti-square-check"></i>
+        </span>
+        {% else %}
+        <span class="d-flex align-items-center text-danger text-center">
+          <i class="fs-6 ti ti-square-x"></i>
+        </span>
+        {% endif %}
+      </td>
+      <td class="d-md-table-cell d-none text-end">
+        <div class="d-flex gap-3 align-items-center justify-content-end">
           {% if leito.ocupado %}
-          <span class="d-flex align-items-center text-success text-center">
-            <i class="fs-6 ti ti-square-check"></i>
-          </span>
+          <a class="text-primary" href="/gestao/pacientes/{{ leito.paciente.id }}" target="_self">
+            <i class="fs-6 ti ti-user"></i>
+          </a>
           {% else %}
-          <span class="d-flex align-items-center text-danger text-center">
-            <i class="fs-6 ti ti-square-x"></i>
-          </span>
+          <i class="text-muted fs-6 ti ti-user"></i>
           {% endif %}
-        </td>
-        <td>
-          <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
-            style="background-color:  {{ leito.tipo_de_leito.cor }};">
-            {{ leito.tipo_de_leito.nome }}
-          </span>
-        </td>
-        <td>
-          <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
-            style="background-color:  {{ leito.status_de_leito.cor }};">
-            {{ leito.status_de_leito.nome }}
-          </span>
-        </td>
-        <td>
-          {% if leito.tem_o2 %}
-          <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
-            style="background-color:  {{ leito.tipo_de_o2.cor }};">
-            {{ leito.tipo_de_o2.nome }}
-          </span>
-          {% else %}
-          <span class="d-flex align-items-center text-danger text-center">
-            <i class="fs-6 ti ti-square-x"></i>
-          </span>
-          {% endif %}
-        </td>
-        <td>
-          {% if leito.tem_vacuo %}
-          <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
-            style="background-color:  {{ leito.tipo_de_vacuo.cor }};">
-            {{ leito.tipo_de_vacuo.nome }}
-          </span>
-          {% else %}
-          <span class="d-flex align-items-center text-danger text-center">
-            <i class="fs-6 ti ti-square-x"></i>
-          </span>
-          {% endif %}
-        </td>
-        <td>
-          {% if leito.tem_codigo_sus %}
-          <span class="d-flex align-items-center text-success text-center">
-            <i class="fs-6 ti ti-square-check"></i>
-          </span>
-          {% else %}
-          <span class="d-flex align-items-center text-danger text-center">
-            <i class="fs-6 ti ti-square-x"></i>
-          </span>
-          {% endif %}
-        </td>
-        <td class="d-md-table-cell d-none text-end">
-          <div class="d-flex gap-3 align-items-center justify-content-end">
-            {% if leito.ocupado %}
-            <a class="text-primary" href="/gestao/pacientes/{{ leito.paciente.id }}" target="_self">
-              <i class="fs-6 ti ti-user"></i>
-            </a>
-            {% else %}
-            <i class="text-muted fs-6 ti ti-user"></i>
-            {% endif %}
-            <a class="text-dark" href="/gestao/leitos/{{ leito.id }}" target="_self">
-              <i class="fs-6 ti ti-eye"></i>
-            </a>
-          </div>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+          <a class="text-dark" href="/gestao/leitos/{{ leito.id }}" target="_self">
+            <i class="fs-6 ti ti-eye"></i>
+          </a>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<div class="d-flex justify-content-end pagination">
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center mb-0">
+
+      <!-- First Page -->
+      {% if leitos.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page=1" aria-label="Primeira Página">
+          <i class="ti ti-chevrons-left ti-xs"></i>
+        </a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ leitos.previous_page_number }}" aria-label="Página Anterior">
+          <i class="ti ti-chevron-left ti-xs"></i>
+        </a>
+      </li>
+      {% else %}
+      <li class="page-item disabled">
+        <span class="page-link">
+          <i class="ti ti-chevrons-left ti-xs"></i>
+        </span>
+      </li>
+      <li class="page-item disabled">
+        <span class="page-link">
+          <i class="ti ti-chevron-left ti-xs"></i>
+        </span>
+      </li>
+      {% endif %}
+
+      <!-- Current Page Display -->
+      <li class="page-item disabled">
+        <span class="page-link">
+          Página {{ leitos.number }} de {{ leitos.paginator.num_pages }}
+        </span>
+      </li>
+
+      <!-- Next Page -->
+      {% if leitos.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ leitos.next_page_number }}" aria-label="Pŕoxima Página">
+          <i class="ti ti-chevron-right ti-xs"></i>
+        </a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ leitos.paginator.num_pages }}" aria-label="Última Página">
+          <i class="ti ti-chevrons-right ti-xs"></i>
+        </a>
+      </li>
+      {% else %}
+      <li class="page-item disabled">
+        <span class="page-link">
+          <i class="ti ti-chevron-right ti-xs"></i>
+        </span>
+      </li>
+      <li class="page-item disabled">
+        <span class="page-link">
+          <i class="ti ti-chevrons-right ti-xs"></i>
+        </span>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
 </div>
