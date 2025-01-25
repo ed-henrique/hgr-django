@@ -36,8 +36,9 @@
           <h6 class="fw-semibold mb-0">{{ leito.id }}</h6>
         </td>
         <td>
-          <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center {{ leito.cor_setor }}">
-            {{ leito.setor }}
+          <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+            style="background-color:  {{ leito.setor.cor }};">
+            {{ leito.setor.nome }}
           </span>
         </td>
         <td>
@@ -52,19 +53,22 @@
           {% endif %}
         </td>
         <td>
-          <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center {{ leito.cor_tipo_leito }}">
-            {{ leito.tipo_leito }}
+          <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+            style="background-color:  {{ leito.tipo_de_leito.cor }};">
+            {{ leito.tipo_de_leito.nome }}
           </span>
         </td>
         <td>
-          <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center {{ leito.cor_status }}">
-            {{ leito.status }}
+          <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+            style="background-color:  {{ leito.status_de_leito.cor }};">
+            {{ leito.status_de_leito.nome }}
           </span>
         </td>
         <td>
-          {% if leito.o2 %}
-          <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center {{ leito.cor_tipo_o2 }}">
-            {{ leito.tipo_o2 }}
+          {% if leito.tem_o2 %}
+          <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+            style="background-color:  {{ leito.tipo_de_o2.cor }};">
+            {{ leito.tipo_de_o2.nome }}
           </span>
           {% else %}
           <span class="d-flex align-items-center text-danger text-center">
@@ -73,9 +77,10 @@
           {% endif %}
         </td>
         <td>
-          {% if leito.vacuo %}
-          <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center {{ leito.cor_tipo_vacuo }}">
-            {{ leito.tipo_vacuo }}
+          {% if leito.tem_vacuo %}
+          <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+            style="background-color:  {{ leito.tipo_de_vacuo.cor }};">
+            {{ leito.tipo_de_vacuo.nome }}
           </span>
           {% else %}
           <span class="d-flex align-items-center text-danger text-center">
@@ -84,7 +89,7 @@
           {% endif %}
         </td>
         <td>
-          {% if leito.cadastro_sus %}
+          {% if leito.tem_codigo_sus %}
           <span class="d-flex align-items-center text-success text-center">
             <i class="fs-6 ti ti-square-check"></i>
           </span>
@@ -97,7 +102,7 @@
         <td class="d-md-table-cell d-none text-end">
           <div class="d-flex gap-3 align-items-center justify-content-end">
             {% if leito.ocupado %}
-            <a class="text-primary" href="/gestao/pacientes/{{ leito.id_paciente }}" target="_self">
+            <a class="text-primary" href="/gestao/pacientes/{{ leito.paciente.id }}" target="_self">
               <i class="fs-6 ti ti-user"></i>
             </a>
             {% else %}

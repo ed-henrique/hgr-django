@@ -20,18 +20,17 @@
             </button>
           </div>
           <div class="invalid-feedback">Insira o seu novo nome, por favor.</div>
-          <div class="invalid-feedback">{{ name_form.name.errors }}</div>
           <div id="erros-configuracoes-nome" class="d-flex flex-column text-danger gap-3" style="hyphens: auto;">
             <style>
               #erros-configuracoes-nome ul {
-                margin-bottom: 1.5rem;
+                margin-top: .5rem;
+                margin-bottom: 0;
                 padding-left: 0;
                 list-style-type: none;
                 text-align: justify;
-                text-align-last: center;
               }
             </style>
-            {{ name_form.non_field_errors }}
+            {{ name_form.name.errors }}
           </div>
         </form>
       </div>
@@ -55,19 +54,18 @@
             </button>
           </div>
           <div class="invalid-feedback">Insira o seu novo nome de usuário, por favor.</div>
-          <div class="invalid-feedback">{{ username_form.username.errors }}</div>
           <div id="erros-configuracoes-nome-de-usuario" class="d-flex flex-column text-danger gap-3"
             style="hyphens: auto;">
             <style>
               #erros-configuracoes-nome-de-usuario ul {
-                margin-bottom: 1.5rem;
+                margin-top: .5rem;
+                margin-bottom: 0;
                 padding-left: 0;
                 list-style-type: none;
                 text-align: justify;
-                text-align-last: center;
               }
             </style>
-            {{ username_form.non_field_errors }}
+            {{ username_form.username.errors }}
           </div>
         </form>
       </div>
@@ -91,18 +89,17 @@
             </button>
           </div>
           <div class="invalid-feedback">Insira o seu novo email, por favor.</div>
-          <div class="invalid-feedback">{{ email_form.email.errors }}</div>
           <div id="erros-configuracoes-email" class="d-flex flex-column text-danger gap-3" style="hyphens: auto;">
             <style>
               #erros-configuracoes-email ul {
-                margin-bottom: 1.5rem;
+                margin-top: .5rem;
+                margin-bottom: 0;
                 padding-left: 0;
                 list-style-type: none;
                 text-align: justify;
-                text-align-last: center;
               }
             </style>
-            {{ email_form.non_field_errors }}
+            {{ email_form.email.errors }}
           </div>
         </form>
       </div>
@@ -119,30 +116,63 @@
           <div class="mb-4 w-100">
             <label for="{{ password_form.old_password.id_for_label}}" class="form-label">Senha Atual</label>
             {{ password_form.old_password }}
-            <div class="invalid-feedback">Insira a sua senha antiga, por favor.</div>
-            <div class="invalid-feedback">{{ password_form.old_password.errors }}</div>
+            <div id="erros-configuracoes-senha-antiga" class="d-flex flex-column text-danger gap-3 w-100"
+              style="hyphens: auto;">
+              <style>
+                #erros-configuracoes-senha-antiga ul {
+                  margin-top: .5rem;
+                  margin-bottom: 0;
+                  padding-left: 0;
+                  list-style-type: none;
+                  text-align: justify;
+                }
+              </style>
+              {{ password_form.old_password.errors }}
+            </div>
           </div>
           <div class="mb-4 w-100">
             <label for="{{ password_form.password.id_for_label}}" class="form-label">Nova Senha</label>
             {{ password_form.password }}
-            <div class="invalid-feedback">Insira a sua nova senha, por favor.</div>
-            <div class="invalid-feedback">{{ password_form.password.errors }}</div>
+            <div id="erros-configuracoes-senha-nova" class="d-flex flex-column text-danger gap-3 w-100"
+              style="hyphens: auto;">
+              <style>
+                #erros-configuracoes-senha-nova ul {
+                  margin-top: .5rem;
+                  margin-bottom: 0;
+                  padding-left: 0;
+                  list-style-type: none;
+                  text-align: justify;
+                }
+              </style>
+              {{ password_form.password.errors }}
+            </div>
           </div>
           <div class="mb-4 w-100">
             <label for="{{ password_form.confirm_password.id_for_label}}" class="form-label">Confirme a Nova
               Senha</label>
             {{ password_form.confirm_password }}
-            <div class="invalid-feedback">Insira a sua nova senha, por favor.</div>
-            <div class="invalid-feedback">{{ password_form.confirm_password.errors }}</div>
+            <div id="erros-configuracoes-senha-nova-confirmacao" class="d-flex flex-column text-danger gap-3 w-100"
+              style="hyphens: auto;">
+              <style>
+                #erros-configuracoes-senha-nova-confirmacao ul {
+                  margin-top: .5rem;
+                  margin-bottom: 0;
+                  padding-left: 0;
+                  list-style-type: none;
+                  text-align: justify;
+                }
+              </style>
+              {{ password_form.confirm_password.errors }}
+            </div>
           </div>
           <div id="erros-configuracoes-senha" class="d-flex flex-column text-danger gap-3 w-100" style="hyphens: auto;">
             <style>
               #erros-configuracoes-senha ul {
-                margin-bottom: 1.5rem;
+                margin-top: .5rem;
+                margin-bottom: 0;
                 padding-left: 0;
                 list-style-type: none;
                 text-align: justify;
-                text-align-last: center;
               }
             </style>
             {{ password_form.non_field_errors }}

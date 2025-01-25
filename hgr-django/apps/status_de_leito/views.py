@@ -5,6 +5,7 @@ from django.db.models import Q
 from django import forms
 from .models import StatusDeLeito
 
+
 class StatusDeLeitoForm(forms.ModelForm):
     class Meta:
         model = StatusDeLeito
@@ -18,6 +19,7 @@ class StatusDeLeitoForm(forms.ModelForm):
             },
         }
 
+
 @login_required
 def status_de_leito_view(request):
     if request.method == 'POST':
@@ -29,7 +31,8 @@ def status_de_leito_view(request):
 
     query = request.GET.get('q', '')
     if query:
-        objs = StatusDeLeito.objects.filter(Q(nome__icontains=query)).order_by('nome')
+        objs = StatusDeLeito.objects.filter(
+            Q(nome__icontains=query)).order_by('nome')
     else:
         objs = StatusDeLeito.objects.all().order_by('nome')
 
@@ -48,10 +51,11 @@ def status_de_leito_view(request):
 
     for p in page_objs:
         part = p.get_participacao()
-        p.participacao = part 
+        p.participacao = part
         p.participacao_formatada = f"{part:.2f}"
 
     return render(request, 'status_de_leito/index.html', context)
+
 
 @login_required
 def editar_status_de_leito_view(request, id):
@@ -74,6 +78,7 @@ def editar_status_de_leito_view(request, id):
     }
 
     return render(request, 'status_de_leito/editar.html', context)
+
 
 @login_required
 def excluir_status_de_leito_view(request, id):
