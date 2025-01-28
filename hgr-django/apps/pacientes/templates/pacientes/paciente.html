@@ -85,21 +85,25 @@
           <div class="d-flex gap-3">
             <span class="fw-semibold text-dark">Setor:</span>
             <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
-              style="background-color: {{ paciente.leito_paciente.setor.cor }};">
-              {{ paciente.leito_paciente.setor.nome }}
+              style="background-color: {{ paciente.leito.setor.cor }};">
+              {{ paciente.leito.setor.nome }}
             </span>
           </div>
           <div class="d-flex gap-3">
             <span class="fw-semibold text-dark">Leito:</span>
-            <span>{{ paciente.leito_paciente.id }}</span>
+            <a class="text-white" href="/gestao/pacientes/{{ paciente.leito.id }}" target="_self">
+              <span class="badge bg-success d-inline-flex align-items-center gap-1 fw-bolder text-center">
+                {{ paciente.leito.id }} <i class="fs-4 ti ti-bed"></i>
+              </span>
+            </a>
           </div>
           <div class="d-flex gap-3">
             <span class="fw-semibold text-dark">Data e Hora da Internação:</span>
-            <span>{{ paciente.data_de_internacao }} {{ paciente.hora_de_internacao }}</span>
+            <span>{{ paciente.data_de_internacao }} - {{ paciente.hora_de_internacao }}</span>
           </div>
           <div class="d-flex gap-3">
             <span class="fw-semibold text-dark">Data e Hora da Internação no Setor:</span>
-            <span>{{ paciente.data_de_internacao_no_setor }} {{ paciente.hora_de_internacao_no_setor }}</span>
+            <span>{{ paciente.data_de_internacao_no_setor }} - {{ paciente.hora_de_internacao_no_setor }}</span>
           </div>
           <div class="d-flex gap-3">
             <span class="fw-semibold text-dark">Setor de Origem:</span>
@@ -212,6 +216,7 @@
         </div>
       </div>
     </div>
+    {% if user|is_admin_or_higher %}
     <div class="form-actions border-top">
       <div class="card-body">
         <div class="row">
@@ -232,6 +237,7 @@
         </div>
       </div>
     </div>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

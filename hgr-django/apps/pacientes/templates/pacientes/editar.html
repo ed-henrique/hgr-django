@@ -1,153 +1,261 @@
-{% extends 'layouts/edit_basic.html' %}
+{% extends 'partials/base.html' %}
+
 {% load static %}
 
 {% block content %}
-<div class="col-12">
-  <a style="margin-bottom: var(--bs-gutter-x);" class="fs-5 d-flex align-items-center gap-2" href="{% url 'leitos' %}">
-    <i class="ti ti-arrow-left fs-5"></i>
-    <span>Voltar</span>
-  </a>
-</div>
-<div class="col-12">
-  <form class="card" action="/gestao/leitos/{{ leito.id }}/editar" method="post">
-    {% csrf_token %}
-    <div class="px-4 py-3 border-bottom">
-      <h4 class="card-title mb-0">Editar Leito</h4>
-    </div>
-    <div class="card-body p-4 border-bottom d-flex flex-column align-items-end">
-      <div class="d-flex gap-3 align-items-center mb-3 w-100">
-        <div class="flex-grow-1">
-          <div>
-            <label for="setor" class="form-label">Setor</label>
-            <div class="form-group">
-              <select class="form-select mr-sm-2" id="setor" name="setor">
-                <option value="{{ leito.setor.id }}" selected>{{ leito.setor.nome }}</option>
-                {% for setor in setores %}
-                {% if setor.id != leito.setor.id %}
-                <option value="{{ setor.id }}">{{ setor.nome }}</option>
-                {% endif %}
-                {% endfor %}
-              </select>
+<div class="row">
+  <div class="col-12">
+    <a style="margin-bottom: var(--bs-gutter-x);" class="fs-5 d-flex align-items-center gap-2"
+      href="{% url 'pacientes' %}">
+      <i class="ti ti-arrow-left fs-5"></i>
+      <span>Voltar</span>
+    </a>
+  </div>
+  <div class="col-12">
+    <form class="card" method="post" action="/gestao/pacientes/{{ paciente.id }}/editar">
+      {% csrf_token %}
+      <div class="px-4 py-3 border-bottom">
+        <h4 class="card-title mb-0">Cadastrar Novo Paciente</h4>
+      </div>
+      <div class="card-body p-4 border-bottom">
+        <h5 class="fs-5 fw-semibold mb-4">Dados Pessoais</h5>
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="mb-4">
+              <label for="{{ form.nome.id_for_label}}" class="form-label required">Nome</label>
+              {{ form.nome }}
             </div>
           </div>
-        </div>
-        <div class="flex-grow-1">
-          <div>
-            <label for="tipo-de-leito" class="form-label">Especialidade</label>
-            <div class="form-group">
-              <select class="form-select mr-sm-2" id="especialidade" name="especialidade">
-                <option value="{{ leito.especialidade.id }}" selected>{{ leito.especialidade.nome }}</option>
-                {% for especialidade in especialidades %}
-                {% if especialidade.id != leito.especialidade.id %}
-                <option value="{{ especialidade.id }}">{{ especialidade.nome }}</option>
-                {% endif %}
-                {% endfor %}
-              </select>
+          <div class="col-lg-3">
+            <div class="mb-4">
+              <label for="{{ form.data_de_nascimento.id_for_label}}" class="form-label">Data de
+                Nascimento</label>
+              {{ form.data_de_nascimento }}
+            </div>
+          </div>
+          <div class="col-lg-1">
+            <div class="mb-4">
+              <label class="form-label">Idade</label>
+              <div id="idade" class="form-control">-</div>
+              <script>
+                const data_de_nascimento = document.getElementById("{{ form.data_de_nascimento.id_for_label }}")
+                const birthDate = new Date(data_de_nascimento.value);
+                const today = new Date();
+
+                let age = today.getUTCFullYear() - birthDate.getUTCFullYear();
+                const monthDifference = today.getUTCMonth() - birthDate.getUTCMonth();
+                const dayDifference = today.getUTCDate() - birthDate.getUTCDate();
+
+                if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+                  age--;
+                }
+
+                if (!isNaN(age)) {
+                  document.getElementById("idade").innerHTML = age;
+                }
+
+                data_de_nascimento.addEventListener("change", (e) => {
+                  const birthDate = new Date(e.currentTarget.value);
+                  const today = new Date();
+
+                  let age = today.getUTCFullYear() - birthDate.getUTCFullYear();
+                  const monthDifference = today.getUTCMonth() - birthDate.getUTCMonth();
+                  const dayDifference = today.getUTCDate() - birthDate.getUTCDate();
+
+                  if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+                    age--;
+                  }
+
+                  if (isNaN(age)) {
+                    document.getElementById("idade").innerHTML = "-";
+                  } else {
+                    document.getElementById("idade").innerHTML = age;
+                  }
+                });
+              </script>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="mb-4">
+              <label for="{{ form.sexo.id_for_label}}" class="form-label required">Sexo</label>
+              {{ form.sexo }}
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="mb-4">
+              <label for="{{ form.genero.id_for_label}}" class="form-label required">Gênero</label>
+              {{ form.genero }}
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div>
+              <label for="{{ form.status_de_paciente.id_for_label}}" class="form-label required">Status de
+                Paciente</label>
+              {{ form.status_de_paciente }}
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div>
+              <label for="{{ form.nacionalidade_etnia.id_for_label}}"
+                class="form-label required">Nacionalidade/Etnia</label>
+              {{ form.nacionalidade_etnia }}
             </div>
           </div>
         </div>
       </div>
-      <div class="d-flex gap-3 align-items-center mb-3 w-100">
-        <div class="flex-grow-1">
-          <div>
-            <label for="tipo-de-leito" class="form-label">Tipo de Leito</label>
-            <div class="form-group">
-              <select class="form-select mr-sm-2" id="tipo_de_leito" name="tipo_de_leito">
-                <option value="{{ leito.tipo_de_leito.id }}" selected>{{ leito.tipo_de_leito.nome }}</option>
-                {% for tipo in tipos_de_leito %}
-                {% if tipo.id != leito.tipo_de_leito.id %}
-                <option value="{{ tipo.id }}">{{ tipo.nome }}</option>
-                {% endif %}
-                {% endfor %}
-              </select>
+      <div class="card-body p-4">
+        <h5 class="fs-5 fw-semibold mb-4">Dados Hospitalares</h5>
+        <div class="row">
+          <div class="col-lg-9">
+            <div class="mb-4">
+              <label for="{{ form.leito.id_for_label}}" class="form-label required">Leito</label>
+              {{ form.leito }}
             </div>
           </div>
-        </div>
-        <div class="flex-grow-1">
-          <div>
-            <label for="status-de-leito" class="form-label">Status de Leito</label>
-            <div class="form-group">
-              <select class="form-select mr-sm-2" id="status_de_leito" name="status_de_leito">
-                <option value="{{ leito.status_de_leito.id }}" selected>{{ leito.status_de_leito.nome }}</option>
-                {% for status in status_de_leito %}
-                {% if status.id != leito.status_de_leito.id %}
-                <option value="{{ status.id }}">{{ status.nome }}</option>
-                {% endif %}
-                {% endfor %}
-              </select>
+          <div class="col-lg-3">
+            <div class="mb-4">
+              <label for="{{ form.medida_de_precaucao.id_for_label}}" class="form-label required">Medida de
+                Precaução</label>
+              {{ form.medida_de_precaucao }}
             </div>
           </div>
+          <div class="col-lg-2">
+            <div class="mb-4">
+              <label for="{{ form.data_de_internacao.id_for_label}}" class="form-label required">Data de
+                Internação</label>
+              {{ form.data_de_internacao }}
+            </div>
+          </div>
+          <div class="col-lg-2">
+            <div class="mb-4">
+              <label for="{{ form.hora_de_internacao.id_for_label}}" class="form-label required">Hora de
+                Internação</label>
+              {{ form.hora_de_internacao }}
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="mb-4">
+              <label for="{{ form.especialidade.id_for_label}}" class="form-label required">Especialidade</label>
+              {{ form.especialidade }}
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="mb-4">
+              <label for="{{ form.responsavel.id_for_label}}" class="form-label required">Responsável</label>
+              {{ form.responsavel }}
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="mb-4">
+              <label for="{{ form.unidade_de_saude_de_origem.id_for_label}}" class="form-label required">Unidade de
+                Saúde de Origem</label>
+              {{ form.unidade_de_saude_de_origem }}
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="mb-4">
+              <label for="{{ form.porta_de_entrada.id_for_label}}" class="form-label required">Porta de Entrada</label>
+              {{ form.porta_de_entrada }}
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div class="mb-4">
+              <div class="form-group">
+                <label for="{{ form.diagnostico.id_for_label}}" class="form-label required">Diagnóstico</label>
+                {{ form.diagnostico }}
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div class="mb-4">
+              <div class="form-group">
+                <label for="{{ form.justificativas_pendencias.id_for_label}}"
+                  class="form-label required">Justificativas/Pendências</label>
+                {{ form.justificativas_pendencias }}
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div class="mb-4">
+              <div class="form-group">
+                <label for="{{ form.problemas_durante_transferencias.id_for_label}}" class="form-label">Problemas
+                  Durante Transferências</label>
+                {{ form.problemas_durante_transferencias }}
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12 mb-4">
+            <div class="d-flex gap-3 align-items-center justify-content-between">
+              <div class="form-check">
+                {{ form.precisa_de_o2 }}
+                <label class="form-check-label" for="{{ form.precisa_de_o2.id_for_label }}">O2</label>
+              </div>
+              <div class="flex-grow-1">
+                {{ form.tipo_de_o2 }}
+                {% if form.precisa_de_o2.value %}
+                <script>
+                  document.getElementById("{{ form.tipo_de_o2.id_for_label }}").disabled = false;
+                </script>
+                {% endif %}
+              </div>
+              <div class="form-check">
+                {{ form.precisa_de_vacuo }}
+                <label class="form-check-label" for="{{ form.precisa_de_vacuo.id_for_label }}">Vácuo</label>
+              </div>
+              <div class="flex-grow-1">
+                {{ form.tipo_de_vacuo }}
+                {% if form.precisa_de_vacuo.value %}
+                <script>
+                  document.getElementById("{{ form.tipo_de_vacuo.id_for_label }}").disabled = false;
+                </script>
+                {% endif %}
+              </div>
+              <div class="form-check">
+                {{ form.precisa_de_cirurgia }}
+                <label class="form-check-label" for="{{ form.precisa_de_cirurgia.id_for_label }}">Cirurgia</label>
+              </div>
+              <div class="flex-grow-1">
+                {{ form.tipo_de_cirurgia }}
+                {% if form.precisa_de_cirurgia.value %}
+                <script>
+                  document.getElementById("{{ form.tipo_de_cirurgia.id_for_label }}").disabled = false;
+                </script>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="d-flex gap-3 align-items-center justify-content-between">
+            <div class="d-flex gap-3 align-items-center justify-content-between">
+              <div class="form-check">
+                {{ form.gestante }}
+                <label for="{{ form.gestante.id_for_label}}" class="form-check-label">Gestante</label>
+              </div>
+              <div class="form-check">
+                {{ form.veio_de_ambulancia }}
+                <label for="{{ form.veio_de_ambulancia.id_for_label}}" class="form-check-label">Veio de
+                  Ambulância</label>
+              </div>
+            </div>
+            <button type="submit" style="width: fit-content;"
+              class="btn btn-primary d-flex align-items-center justify-content-center flex-grow-1 gap-2">
+              <i class="ti ti-edit fs-4"></i>
+              <span>Editar</span>
+            </button>
+          </div>
+          {% if form.errors %}
+          <div class="alert alert-danger mt-3 mb-0 text-danger fw-semibold">
+            <ul class="mb-0">
+              {% for field, errors in form.errors.items %}
+              {% for error in errors %}
+              <li>{{ error }}</li>
+              {% endfor %}
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
         </div>
       </div>
-      <div class="d-flex gap-3 align-items-center mb-3 w-100">
-        <div class="d-flex gap-3 align-items-center flex-grow-1">
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="tem_codigo_sus" name="tem_codigo_sus"
-              onchange="toggleInput('tem_codigo_sus', 'codigo_sus')" {% if leito.tem_codigo_sus %} checked {% endif %} />
-            <label class="form-check-label" for="tem-codigo-sus">Tem Código SUS</label>
-          </div>
-          <div class="form-group flex-grow-1">
-            <input type="text" class="form-control" id="codigo_sus" name="codigo_sus" placeholder="Código do SUS"
-              value="{{ leito.codigo_sus }}" {% if not leito.tem_codigo_sus %} disabled {% endif %} />
-          </div>
-        </div>
-      </div>
-      <div class="d-flex gap-3 align-items-center w-100">
-        <div class="d-flex gap-3 align-items-center flex-grow-1">
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="tem_vacuo" name="tem_vacuo"
-              onchange="toggleInput('tem_vacuo', 'tipo_de_vacuo')" {% if leito.tem_vacuo %} checked {% endif %} />
-            <label class="form-check-label" for="tem_vacuo">Tem Vácuo</label>
-          </div>
-          <div class="flex-grow-1">
-            <select id="tipo_de_vacuo" name="tipo_de_vacuo" class="form-select" {% if not leito.tem_vacuo %}disabled{% endif %}>
-              {% if leito.tipo_de_vacuo %}
-              {% for vacuo in tipos_de_vacuo %}
-              <option value="{{ vacuo.id }}" {% if leito.tipo_de_vacuo.id == vacuo.id %}selected{% endif %}>
-                {{ vacuo.nome }}
-              </option>
-              {% endfor %}
-              {% else %}
-              {% for vacuo in tipos_de_vacuo %}
-              <option value="{{ vacuo.id }}" {% if leito.tipo_de_vacuo.id == vacuo.id %}selected{% endif %}>
-                {{ vacuo.nome }}
-              </option>
-              {% endfor %}
-              {% endif %}
-            </select>
-          </div>
-        </div>
-        <div class="d-flex gap-3 align-items-center flex-grow-1">
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="tem_o2" name="tem_o2"
-              onchange="toggleInput('tem_o2', 'tipo_de_o2')" {% if leito.tem_o2 %} checked {% endif %} />
-            <label class="form-check-label" for="tem_o2">Tem O2</label>
-          </div>
-          <div class="flex-grow-1">
-            <select id="tipo_de_o2" name="tipo_de_o2" class="form-select" {% if not leito.tem_o2 %}disabled{% endif %}>
-              {% if leito.tipo_de_o2 %}
-              {% for o2 in tipos_de_o2 %}
-              <option value="{{ o2.id }}" {% if leito.tipo_de_o2.id == o2.id %}selected{% endif %}>
-                {{ o2.nome }}
-              </option>
-              {% endfor %}
-              {% else %}
-              {% for o2 in tipos_de_o2 %}
-              <option value="{{ o2.id }}" {% if leito.tipo_de_o2.id == o2.id %}selected{% endif %}>
-                {{ o2.nome }}
-              </option>
-              {% endfor %}
-              {% endif %}
-            </select>
-          </div>
-        </div>
-      </div>
-      <button type="submit" style="max-width: fit-content;"
-        class="btn btn-primary d-flex align-items-center justify-content-center flex-grow-1 gap-2 mt-3">
-        <i class="ti ti-check fs-6"></i>
-        <span>Confirmar</span>
-      </button>
-    </div>
-  </form>
+    </form>
+  </div>
 </div>
 {% endblock %}

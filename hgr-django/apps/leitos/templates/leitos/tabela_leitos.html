@@ -41,7 +41,7 @@
         </span>
       </td>
       <td>
-        {% if leito.paciente_leito %}
+        {% if leito.paciente %}
         <span class="d-flex align-items-center text-success text-center">
           <i class="fs-6 ti ti-square-check"></i>
         </span>
@@ -100,8 +100,8 @@
       </td>
       <td class="d-md-table-cell d-none text-end">
         <div class="d-flex gap-3 align-items-center justify-content-end">
-          {% if leito.paciente_leito %}
-          <a class="text-primary" href="/gestao/pacientes/{{ leito.paciente_leito.id }}" target="_self">
+          {% if leito.paciente %}
+          <a class="text-primary" href="/gestao/pacientes/{{ leito.paciente.id }}" target="_self">
             <i class="fs-6 ti ti-user"></i>
           </a>
           {% else %}

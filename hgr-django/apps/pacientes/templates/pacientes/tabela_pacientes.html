@@ -26,12 +26,12 @@
         <h6 class="mb-0">{{ p.nome }}</h6>
       </td>
       <td>
-        <h6 class="mb-0">{{ p.leito_paciente.id }}</h6>
+        <h6 class="mb-0">{{ p.leito.id }}</h6>
       </td>
       <td>
         <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
-          style="background-color:  {{ p.leito_paciente.setor.cor }};">
-          {{ p.leito_paciente.setor.nome }}
+          style="background-color:  {{ p.leito.setor.cor }};">
+          {{ p.leito.setor.nome }}
         </span>
       </td>
       <td>
@@ -45,8 +45,8 @@
       </td>
       <td class="d-md-table-cell d-none text-end">
         <div class="d-flex gap-3 align-items-center justify-content-end">
-          <a class="text-primary" href="/gestao/pacientes/{{ p.id }}" target="_self">
-            <i class="fs-6 ti ti-user"></i>
+          <a class="text-dark" href="/gestao/pacientes/{{ p.id }}" target="_self">
+            <i class="fs-6 ti ti-eye"></i>
           </a>
         </div>
       </td>
