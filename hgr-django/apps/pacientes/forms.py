@@ -21,7 +21,7 @@ class PacienteCreateForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         if self.user and self.user.is_authenticated:
-            self.fields['responsavel'].initial = self.user.id
+            self.fields['responsavel'].initial = self.user
             self.fields['responsavel'].disabled = True
 
     def clean(self):

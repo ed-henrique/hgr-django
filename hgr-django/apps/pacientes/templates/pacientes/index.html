@@ -21,7 +21,6 @@
         <h4 class="card-title mb-0">Pacientes</h4>
       </div>
       <div class="card-body p-4">
-        {% if pacientes %}
         <form method="get" class="d-flex mb-3">
           {% csrf_token %}
           <input type="text" name="q" class="form-control me-3"
@@ -30,6 +29,7 @@
             <i class="ti ti-search"></i>
           </button>
         </form>
+        {% if pacientes %}
         {% include "pacientes/tabela_pacientes.html" %}
         {% else %}
         <p class="mb-0 text-center">Não há nenhum registro.</p>

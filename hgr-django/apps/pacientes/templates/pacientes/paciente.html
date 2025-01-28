@@ -1,0 +1,237 @@
+{% extends 'partials/base.html' %}
+
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+<div class="col-12">
+  <a style="margin-bottom: var(--bs-gutter-x);" class="fs-5 d-flex align-items-center gap-2"
+    href="{% url 'pacientes' %}" target="_self">
+    <i class="ti ti-arrow-left fs-5"></i>
+    <span>Voltar</span>
+  </a>
+</div>
+<div class="card">
+  <div class="card-header text-bg-primary">
+    <h5 class="mb-0 text-white">Paciente</h5>
+  </div>
+  <div class="form-body">
+    <div class="card-body">
+      <h5 class="card-title mb-0">Dados Pessoais</h5>
+    </div>
+    <hr class="m-0" />
+    <div class="card-body">
+      <div class="d-flex gap-5">
+        <div class="d-flex flex-column gap-3">
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">Nome:</span>
+            <span>{{ paciente.nome }}</span>
+          </div>
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">Data de Nascimento:</span>
+            {% if paciente.data_de_nascimento %}
+            <span>{{ paciente.data_de_nascimento }}</span>
+            {% else %}
+            <span>-</span>
+            {% endif %}
+          </div>
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">Nacionalidade/Etnia:</span>
+            <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+              style="background-color: {{ paciente.nacionalidade_etnia.cor }};">
+              {{ paciente.nacionalidade_etnia.nome }}
+            </span>
+          </div>
+        </div>
+        <div class="d-flex flex-column gap-3">
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">Status:</span>
+            <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+              style="background-color: {{ paciente.status_de_paciente.cor }};">
+              {{ paciente.status_de_paciente.nome }}
+            </span>
+          </div>
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">Idade:</span>
+            <span id="idade">-</span>
+            <script>
+              {% if paciente.data_de_nascimento %}
+              const birthDate = new Date("{{ paciente.data_de_nascimento|date:"c" }}");
+              const today = new Date();
+              let age = today.getUTCFullYear() - birthDate.getUTCFullYear();
+              if (today.getUTCMonth() < birthDate.getUTCMonth() ||
+                (today.getUTCMonth() === birthDate.getUTCMonth() && today.getUTCDate() < birthDate.getUTCDate())) {
+                age--;
+              }
+              document.getElementById("idade").innerText = isNaN(age) ? "-" : age;
+              {% endif %}
+            </script>
+          </div>
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">Sexo:</span>
+            <span>{{ paciente.sexo }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr class="m-0" />
+    <div class="card-body">
+      <h5 class="card-title mb-0">Dados Hospitalares</h5>
+    </div>
+    <hr class="m-0" />
+    <div class="card-body">
+      <div class="d-flex gap-5">
+        <div class="d-flex flex-column gap-3">
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">Setor:</span>
+            <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+              style="background-color: {{ paciente.leito.setor.cor }};">
+              {{ paciente.leito.setor.nome }}
+            </span>
+          </div>
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">Leito:</span>
+            <span>{{ paciente.leito.id }}</span>
+          </div>
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">Data e Hora da Internação:</span>
+            <span>{{ paciente.data_de_internacao }} {{ paciente.hora_de_internacao }}</span>
+          </div>
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">Data e Hora da Internação no Setor:</span>
+            <span>{{ paciente.data_de_internacao_no_setor }} {{ paciente.hora_de_internacao_no_setor }}</span>
+          </div>
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">Setor de Origem:</span>
+            {% if paciente.unidade_de_saude_de_origem %}
+            <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+              style="background-color: {{ paciente.unidade_de_saude_de_origem.cor }};">
+              {{ paciente.unidade_de_saude_de_origem.nome }}
+            </span>
+            {% else %}
+            <span>-</span>
+            {% endif %}
+          </div>
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">Porta de Entrada:</span>
+            <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+              style="background-color: {{ paciente.porta_de_entrada.cor }};">
+              {{ paciente.porta_de_entrada.nome }}
+            </span>
+          </div>
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">Medida de Precaução:</span>
+            <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+              style="background-color: {{ paciente.medida_de_precaucao.cor }};">
+              {{ paciente.medida_de_precaucao.nome }}
+            </span>
+          </div>
+        </div>
+        <div class="d-flex flex-column gap-3">
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">Especialidade:</span>
+            <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+              style="background-color: {{ paciente.especialidade.cor }};">
+              {{ paciente.especialidade.nome }}
+            </span>
+          </div>
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">Enfermeiro:</span>
+            <span>{{ paciente.responsavel.first_name }}</span>
+          </div>
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">Gestante:</span>
+            {% if paciente.gestante %}
+            <span>Sim</span>
+            {% else %}
+            <span>Não</span>
+            {% endif %}
+          </div>
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">Veio de Ambulância:</span>
+            {% if paciente.veio_de_ambulancia %}
+            <span>Sim</span>
+            {% else %}
+            <span>Não</span>
+            {% endif %}
+          </div>
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">Cirurgia:</span>
+            {% if paciente.precisa_de_cirurgia %}
+            <span>
+              <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+                style="background-color: {{ paciente.tipo_de_cirurgia.cor }};">
+                {{ paciente.tipo_de_cirurgia.nome }}
+              </span>
+            </span>
+            {% else %}
+            <span>Não</span>
+            {% endif %}
+          </div>
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">O2:</span>
+            {% if paciente.precisa_de_o2 %}
+            <span>
+              <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+                style="background-color: {{ paciente.tipo_de_o2.cor }};">
+                {{ paciente.tipo_de_o2.nome }}
+              </span>
+            </span>
+            {% else %}
+            <span>Não</span>
+            {% endif %}
+          </div>
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">Vácuo:</span>
+            {% if paciente.precisa_de_vacuo %}
+            <span>
+              <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+                style="background-color: {{ paciente.tipo_de_vacuo.cor }};">
+                {{ paciente.tipo_de_vacuo.nome }}
+              </span>
+            </span>
+            {% else %}
+            <span>Não</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <hr class="my-3" />
+      <div class="d-flex flex-column justify-content-between gap-3">
+        <div class="d-flex flex-column gap-3">
+          <span class="fw-semibold text-dark d-block">Diagnóstico:</span>
+          <textarea class="form-control" rows="5" readonly>{{ paciente.diagnostico }}</textarea>
+        </div>
+        <div class="d-flex flex-column gap-3">
+          <span class="fw-semibold text-dark d-block">Justificativas/Pendências:</span>
+          <textarea class="form-control" rows="5" readonly>{{ paciente.justificativas_pendencias }}</textarea>
+        </div>
+        <div class="d-flex flex-column gap-3">
+          <span class="fw-semibold text-dark d-block">Problemas Durante Transferências</span>
+          <textarea class="form-control" rows="5" readonly>{{ paciente.problemas_durante_transferencias }}</textarea>
+        </div>
+      </div>
+    </div>
+    <div class="form-actions border-top">
+      <div class="card-body">
+        <div class="row">
+          <div class="d-flex gap-3 align-items-center justify-content-end">
+            <a href="/gestao/pacientes/{{ paciente.id }}/editar" type="submit"
+              class="btn btn-primary d-flex align-items-center gap-1 fw-semibold">
+              <i class="ti ti-edit fs-6"></i>
+              Editar
+            </a>
+            <form action="/gestao/pacientes/{{ paciente.id }}/excluir" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger d-flex align-items-center gap-1 fw-semibold">
+                <i class="ti ti-trash fs-6"></i>
+                Remover
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

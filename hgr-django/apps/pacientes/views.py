@@ -1,6 +1,7 @@
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.timezone import now
 from django.db.models import Q
 from .models import Paciente
 from .forms import PacienteCreateForm
@@ -12,9 +13,9 @@ def pacientes_view(request):
     if query:
 
         objs = Paciente.objects.filter(
-            Q(nome__icontains=query),
-            Q(leito__setor__icontains=query),
-            Q(responsavel__nome__icontains=query),
+            Q(nome__icontains=query) |
+            Q(leito__setor__nome__icontains=query) |
+            Q(responsavel__first_name__icontains=query) |
             Q(status_de_paciente__nome__icontains=query),
             removido_em__isnull=True,
         ).order_by('id')
@@ -38,7 +39,17 @@ def pacientes_view(request):
 
 @login_required
 def paciente_view(request, id):
-    pass
+    obj = get_object_or_404(Paciente, id=id, removido_em__isnull=True)
+
+    context = {
+        'paciente': obj,
+        'caminho': "/gestao/pacientes/",
+        'title': 'Gestão de ' + Paciente._meta.verbose_name_plural,
+        'titulo': Paciente._meta.verbose_name_plural,
+        'mensagem_de_cadastro': 'Cadastrar ' + Paciente._meta.verbose_name,
+    }
+
+    return render(request, 'pacientes/paciente.html', context)
 
 
 @login_required
@@ -59,8 +70,6 @@ def criar_paciente_view(request):
         'mensagem_de_cadastro': 'Cadastrar ' + Paciente._meta.verbose_name,
     }
 
-    print(form.errors)
-
     return render(request, 'pacientes/criar.html', context)
 
 
@@ -70,5 +79,10 @@ def editar_paciente_view(request):
 
 
 @login_required
-def excluir_paciente_view(request):
-    pass
+def excluir_paciente_view(request, id):
+    obj = get_object_or_404(Paciente, id=id, removido_em__isnull=True)
+
+    if request.method == 'POST':
+        obj.removido_em = now()
+        obj.save()
+        return redirect("/gestao/pacientes/")
