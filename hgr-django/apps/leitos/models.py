@@ -13,6 +13,8 @@ class Leito(models.Model):
         Setor, on_delete=models.PROTECT, verbose_name="Setor")
     especialidade = models.ForeignKey(
         Especialidade, on_delete=models.PROTECT, verbose_name="Especialidade")
+    paciente = models.ForeignKey(
+        'pacientes.Paciente', null=True, blank=True, on_delete=models.PROTECT, verbose_name="Paciente", related_name="leito_paciente")
     status_de_leito = models.ForeignKey(
         StatusDeLeito, on_delete=models.PROTECT, verbose_name="Status de Leito")
     tipo_de_leito = models.ForeignKey(
@@ -29,14 +31,6 @@ class Leito(models.Model):
         default=False, verbose_name="Tem Código SUS")
     removido_em = models.DateTimeField(
         null=True, blank=True, verbose_name="Removido em")
-
-    @property
-    def ocupado(self):
-        return self.paciente_set.exists()
-
-    @property
-    def paciente(self):
-        return self.paciente_set.filter(removido_em__isnull=True).first() if self.ocupado else None
 
     @property
     def historico_de_ocupacao(self):

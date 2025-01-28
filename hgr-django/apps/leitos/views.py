@@ -22,9 +22,9 @@ def leitos_view(request):
 
         objs = Leito.objects.filter(
             Q(id__icontains=query),
-            Q(setor__icontains=query),
-            Q(tipo__icontains=query),
-            Q(status__icontains=query),
+            Q(setor__nome__icontains=query),
+            Q(tipo_de_leito__nome__icontains=query),
+            Q(status_de_leito__nome__icontains=query),
             Q(codigo_sus__icontains=query),
             removido_em__isnull=True,
         ).order_by('id')

@@ -12,7 +12,6 @@
     </a>
   </div>
   <div class="col-12">
-    <div class="invalid-feedback">{{ form.non_field_errors }}</div>
     <form class="card" method="post" action="{% url 'criar_paciente' %}">
       {% csrf_token %}
       <div class="px-4 py-3 border-bottom">
@@ -25,8 +24,6 @@
             <div class="mb-4">
               <label for="{{ form.nome.id_for_label}}" class="form-label required">Nome</label>
               {{ form.nome }}
-              <div class="invalid-feedback">Insira o seu nome, por favor.</div>
-              <div class="invalid-feedback">{{ form.nome.errors }}</div>
             </div>
           </div>
           <div class="col-lg-3">
@@ -34,7 +31,6 @@
               <label for="{{ form.data_de_nascimento.id_for_label}}" class="form-label">Data de
                 Nascimento</label>
               {{ form.data_de_nascimento }}
-              <div class="invalid-feedback">{{ form.data_de_nascimento.errors }}</div>
             </div>
           </div>
           <div class="col-lg-1">
@@ -67,14 +63,12 @@
             <div class="mb-4">
               <label for="{{ form.sexo.id_for_label}}" class="form-label required">Sexo</label>
               {{ form.sexo }}
-              <div class="invalid-feedback">{{ form.sexo.errors }}</div>
             </div>
           </div>
           <div class="col-lg-4">
             <div class="mb-4">
               <label for="{{ form.genero.id_for_label}}" class="form-label required">Gênero</label>
               {{ form.genero }}
-              <div class="invalid-feedback">{{ form.genero.errors }}</div>
             </div>
           </div>
           <div class="col-lg-6">
@@ -82,7 +76,6 @@
               <label for="{{ form.status_de_paciente.id_for_label}}" class="form-label required">Status de
                 Paciente</label>
               {{ form.status_de_paciente }}
-              <div class="invalid-feedback">{{ form.status_de_paciente.errors }}</div>
             </div>
           </div>
           <div class="col-lg-6">
@@ -90,7 +83,6 @@
               <label for="{{ form.nacionalidade_etnia.id_for_label}}"
                 class="form-label required">Nacionalidade/Etnia</label>
               {{ form.nacionalidade_etnia }}
-              <div class="invalid-feedback">{{ form.nacionalidade_etnia.errors }}</div>
             </div>
           </div>
         </div>
@@ -102,7 +94,6 @@
             <div class="mb-4">
               <label for="{{ form.leito.id_for_label}}" class="form-label required">Leito</label>
               {{ form.leito }}
-              <div class="invalid-feedback">{{ form.leito.errors }}</div>
             </div>
           </div>
           <div class="col-lg-3">
@@ -110,7 +101,6 @@
               <label for="{{ form.medida_de_precaucao.id_for_label}}" class="form-label required">Medida de
                 Precaução</label>
               {{ form.medida_de_precaucao }}
-              <div class="invalid-feedback">{{ form.medida_de_precaucao.errors }}</div>
             </div>
           </div>
           <div class="col-lg-2">
@@ -118,7 +108,6 @@
               <label for="{{ form.data_de_internacao.id_for_label}}" class="form-label required">Data de
                 Internação</label>
               {{ form.data_de_internacao }}
-              <div class="invalid-feedback">{{ form.data_de_internacao.errors }}</div>
             </div>
           </div>
           <div class="col-lg-2">
@@ -126,14 +115,12 @@
               <label for="{{ form.hora_de_internacao.id_for_label}}" class="form-label required">Hora de
                 Internação</label>
               {{ form.hora_de_internacao }}
-              <div class="invalid-feedback">{{ form.hora_de_internacao.errors }}</div>
             </div>
           </div>
           <div class="col-lg-4">
             <div class="mb-4">
               <label for="{{ form.especialidade.id_for_label}}" class="form-label required">Especialidade</label>
               {{ form.especialidade }}
-              <div class="invalid-feedback">{{ form.especialidade.errors }}</div>
             </div>
           </div>
           <div class="col-lg-4">
@@ -147,14 +134,12 @@
               <label for="{{ form.unidade_de_saude_de_origem.id_for_label}}" class="form-label required">Unidade de
                 Saúde de Origem</label>
               {{ form.unidade_de_saude_de_origem }}
-              <div class="invalid-feedback">{{ form.unidade_de_saude_de_origem.errors }}</div>
             </div>
           </div>
           <div class="col-lg-6">
             <div class="mb-4">
               <label for="{{ form.porta_de_entrada.id_for_label}}" class="form-label required">Porta de Entrada</label>
               {{ form.porta_de_entrada }}
-              <div class="invalid-feedback">{{ form.porta_de_entrada.errors }}</div>
             </div>
           </div>
           <div class="col-lg-12">
@@ -162,7 +147,6 @@
               <div class="form-group">
                 <label for="{{ form.diagnostico.id_for_label}}" class="form-label required">Diagnóstico</label>
                 {{ form.diagnostico }}
-                <div class="invalid-feedback">{{ form.diagnostico.errors }}</div>
               </div>
             </div>
           </div>
@@ -172,7 +156,6 @@
                 <label for="{{ form.justificativas_pendencias.id_for_label}}"
                   class="form-label required">Justificativas/Pendências</label>
                 {{ form.justificativas_pendencias }}
-                <div class="invalid-feedback">{{ form.justificativas_pendencias.errors }}</div>
               </div>
             </div>
           </div>
@@ -182,7 +165,6 @@
                 <label for="{{ form.problemas_durante_transferencias.id_for_label}}" class="form-label">Problemas
                   Durante Transferências</label>
                 {{ form.problemas_durante_transferencias }}
-                <div class="invalid-feedback">{{ form.problemas_durante_transferencias.errors }}</div>
               </div>
             </div>
           </div>
@@ -195,7 +177,6 @@
               </div>
               <div class="flex-grow-1">
                 {{ form.tipo_de_o2 }}
-                <div class="invalid-feedback">{{ form.tipo_de_o2.errors }}</div>
               </div>
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="precisa_de_vacuo" name="precisa_de_vacuo"
@@ -204,7 +185,6 @@
               </div>
               <div class="flex-grow-1">
                 {{ form.tipo_de_vacuo }}
-                <div class="invalid-feedback">{{ form.tipo_de_vacuo.errors }}</div>
               </div>
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="precisa_de_cirurgia" name="precisa_de_cirurgia"
@@ -213,7 +193,6 @@
               </div>
               <div class="flex-grow-1">
                 {{ form.tipo_de_cirurgia }}
-                <div class="invalid-feedback">{{ form.tipo_de_cirurgia.errors }}</div>
               </div>
             </div>
           </div>
@@ -222,13 +201,11 @@
               <div class="form-check">
                 {{ form.gestante }}
                 <label for="{{ form.gestante.id_for_label}}" class="form-check-label">Gestante</label>
-                <div class="invalid-feedback">{{ form.gestante.errors }}</div>
               </div>
               <div class="form-check">
                 {{ form.veio_de_ambulancia }}
                 <label for="{{ form.veio_de_ambulancia.id_for_label}}" class="form-check-label">Veio de
                   Ambulância</label>
-                <div class="invalid-feedback">{{ form.veio_de_ambulancia.errors }}</div>
               </div>
             </div>
             <button type="submit" style="width: fit-content;"
@@ -237,6 +214,17 @@
               <span>Adicionar</span>
             </button>
           </div>
+          {% if form.errors %}
+          <div class="alert alert-danger mt-3 mb-0 text-danger fw-semibold">
+            <ul class="mb-0">
+              {% for field, errors in form.errors.items %}
+              {% for error in errors %}
+              <li>{{ error }}</li>
+              {% endfor %}
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
         </div>
       </div>
     </form>

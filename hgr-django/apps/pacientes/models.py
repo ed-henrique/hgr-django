@@ -1,7 +1,6 @@
 from django.db import models
 
 from apps.generos.models import Genero
-from apps.leitos.models import Leito
 from apps.usuarios.models import Usuario
 from apps.unidades_de_saude.models import UnidadeDeSaude
 from apps.medidas_de_precaucao.models import MedidaDePrecaucao
@@ -45,7 +44,7 @@ class Paciente(models.Model):
         Genero, on_delete=models.PROTECT, null=True, blank=True, verbose_name="Gênero"
     )
     leito = models.ForeignKey(
-        Leito, on_delete=models.PROTECT, verbose_name="Leito")
+        'leitos.Leito', on_delete=models.PROTECT, verbose_name="Leito", related_name="paciente_leito")
     responsavel = models.ForeignKey(
         Usuario,
         on_delete=models.PROTECT,

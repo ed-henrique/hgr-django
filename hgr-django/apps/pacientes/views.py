@@ -2,6 +2,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import now
+from django.db import transaction
 from django.db.models import Q
 from .models import Paciente
 from .forms import PacienteCreateForm
@@ -57,8 +58,12 @@ def criar_paciente_view(request):
     if request.method == 'POST':
         form = PacienteCreateForm(request.POST, user=request.user)
         if form.is_valid():
-            form.save()
-            return redirect("/gestao/pacientes/")
+            with transaction.atomic():
+                paciente = form.save()
+                leito = form.cleaned_data.get('leito')
+                leito.paciente = paciente
+                leito.save()
+                return redirect("/gestao/pacientes/")
     else:
         form = PacienteCreateForm(user=request.user)
 
@@ -83,6 +88,10 @@ def excluir_paciente_view(request, id):
     obj = get_object_or_404(Paciente, id=id, removido_em__isnull=True)
 
     if request.method == 'POST':
-        obj.removido_em = now()
-        obj.save()
+        with transaction.atomic():
+            obj.removido_em = now()
+            obj.save()
+            leito = obj.leito
+            leito.paciente = None
+            leito.save()
         return redirect("/gestao/pacientes/")
