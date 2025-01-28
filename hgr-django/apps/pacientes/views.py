@@ -6,6 +6,7 @@ from django.db import transaction
 from django.db.models import Q
 from .models import Paciente
 from apps.leitos.models import Leito
+from apps.entradas.models import Entrada
 from apps.historico_de_ocupacao_de_leito.models import HistoricoDeOcupacaoDeLeito
 from .forms import PacienteEditForm, PacienteCreateForm
 
@@ -61,9 +62,22 @@ def criar_paciente_view(request):
         if form.is_valid():
             with transaction.atomic():
                 paciente = form.save()
+
                 leito = form.cleaned_data.get("leito")
                 leito.paciente = paciente
                 leito.save()
+
+                HistoricoDeOcupacaoDeLeito.objects.create(
+                    paciente=paciente, leito=leito)
+
+                Entrada.objects.create(
+                    paciente=paciente,
+                    unidade_de_saude_de_origem=paciente.unidade_de_saude_de_origem,
+                    leito_de_destino=leito,
+                    data=paciente.data_de_internacao,
+                    hora=paciente.hora_de_internacao,
+                )
+
                 return redirect("/gestao/pacientes/")
     else:
         form = PacienteCreateForm(user=request.user)
@@ -99,7 +113,8 @@ def editar_paciente_view(request, id):
                     antigo_leito.paciente = None
                     antigo_leito.save()
 
-                    HistoricoDeOcupacaoDeLeito.objects.create(leito=antigo_leito)
+                    HistoricoDeOcupacaoDeLeito.objects.create(
+                        leito=antigo_leito)
 
                     leito.paciente = paciente
                     leito.save()
