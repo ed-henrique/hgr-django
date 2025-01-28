@@ -42,6 +42,13 @@ class Leito(models.Model):
     def historico_de_ocupacao(self):
         return self.historico_de_ocupacao_de_leito.all()
 
+    def __str__(self):
+        return f"{self.id} - Setor: {self.setor.nome} - Especialidade: {self.especialidade.nome}{f' - Código SUS: {self.codigo_sus}' if self.tem_codigo_sus else ''}{f' - Vácuo: {self.tipo_de_vacuo.nome}' if self.tem_vacuo else ''}{f' - O2: {self.tipo_de_o2.nome}' if self.tem_o2 else ''}"
+
     class Meta:
         verbose_name = 'Leito'
         verbose_name_plural = 'Leitos'
+
+        indexes = [
+            models.Index(fields=['removido_em']),
+        ]

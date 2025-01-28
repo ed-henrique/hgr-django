@@ -17,9 +17,10 @@ from apps.tipos_de_vacuo.models import TipoDeVacuo
 class Paciente(models.Model):
     nome = models.CharField(max_length=128, verbose_name="Nome")
     nome_social = models.CharField(
-        max_length=128, null=True, verbose_name="Nome Social"
+        max_length=128, null=True, blank=True, verbose_name="Nome Social"
     )
-    data_de_nascimento = models.DateField(null=True, verbose_name="Data de Nascimento")
+    data_de_nascimento = models.DateField(
+        null=True, blank=True, verbose_name="Data de Nascimento")
     data_de_internacao = models.DateField(verbose_name="Data de Internação")
     hora_de_internacao = models.TimeField(verbose_name="Hora de Internação")
     data_de_internacao_no_setor = models.DateField(
@@ -38,12 +39,13 @@ class Paciente(models.Model):
         max_length=2048, verbose_name="Justificativas de Pendências"
     )
     problemas_durante_transferencias = models.TextField(
-        max_length=2048, null=True, verbose_name="Problemas Durante Transferências"
+        max_length=2048, null=True, blank=True, verbose_name="Problemas Durante Transferências"
     )
     genero = models.ForeignKey(
-        Genero, on_delete=models.PROTECT, null=True, verbose_name="Gênero"
+        Genero, on_delete=models.PROTECT, null=True, blank=True, verbose_name="Gênero"
     )
-    leito = models.ForeignKey(Leito, on_delete=models.PROTECT, verbose_name="Leito")
+    leito = models.ForeignKey(
+        Leito, on_delete=models.PROTECT, verbose_name="Leito")
     responsavel = models.ForeignKey(
         Usuario,
         on_delete=models.PROTECT,
@@ -52,7 +54,7 @@ class Paciente(models.Model):
     unidade_de_saude_de_origem = models.ForeignKey(
         UnidadeDeSaude,
         on_delete=models.PROTECT,
-        null=True,
+        null=True, blank=True,
         verbose_name="Unidade de Saúde de Origem",
     )
     medida_de_precaucao = models.ForeignKey(
@@ -80,21 +82,28 @@ class Paciente(models.Model):
     tipo_de_cirurgia = models.ForeignKey(
         TipoDeCirurgia,
         on_delete=models.PROTECT,
-        null=True,
+        null=True, blank=True,
         verbose_name="Tipo de Cirurgia",
     )
-    precisa_de_o2 = models.BooleanField(default=False, verbose_name="Precisa de O2")
+    precisa_de_o2 = models.BooleanField(
+        default=False, verbose_name="Precisa de O2")
     tipo_de_o2 = models.ForeignKey(
-        TipoDeO2, on_delete=models.PROTECT, null=True, verbose_name="Tipo de O2"
+        TipoDeO2, on_delete=models.PROTECT, null=True, blank=True, verbose_name="Tipo de O2"
     )
     precisa_de_vacuo = models.BooleanField(
         default=False, verbose_name="Precisa de Vácuo"
     )
     tipo_de_vacuo = models.ForeignKey(
-        TipoDeVacuo, on_delete=models.PROTECT, null=True, verbose_name="Tipo de Vácuo"
+        TipoDeVacuo, on_delete=models.PROTECT, null=True, blank=True, verbose_name="Tipo de Vácuo"
     )
-    removido_em = models.DateTimeField(null=True, verbose_name="Removido em")
+    removido_em = models.DateTimeField(
+        null=True, blank=True, verbose_name="Removido em")
 
     class Meta:
         verbose_name = "Paciente"
         verbose_name_plural = "Pacientes"
+
+        indexes = [
+            models.Index(fields=['removido_em']),
+            models.Index(fields=['data_de_internacao', 'removido_em']),
+        ]

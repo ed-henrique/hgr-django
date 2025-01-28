@@ -14,3 +14,7 @@ class HistoricoDeOcupacaoDeLeito(models.Model):
     class Meta:
         verbose_name = 'Histórico de Ocupação de Leito'
         verbose_name_plural = 'Históricos de Ocupação de Leito'
+
+        indexes = [
+            models.Index(fields=['leito']),
+        ]

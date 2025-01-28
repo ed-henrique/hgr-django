@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import now
 from django.db.models import Q
+from django.db import transaction
 from .models import Leito
 from .forms import LeitoForm
 from apps.setores.models import Setor
@@ -58,22 +59,23 @@ def leitos_view(request):
     if request.method == 'POST':
         form = LeitoForm(request.POST)
         if form.is_valid():
-            leito = Leito.objects.create(
-                setor=form.cleaned_data["setor"],
-                especialidade=form.cleaned_data["especialidade"],
-                status_de_leito=form.cleaned_data["status_de_leito"],
-                tipo_de_leito=form.cleaned_data["tipo_de_leito"],
-                tipo_de_o2=form.cleaned_data["tipo_de_o2"],
-                tipo_de_vacuo=form.cleaned_data["tipo_de_vacuo"],
-                codigo_sus=form.cleaned_data["codigo_sus"],
-                tem_o2=form.cleaned_data["tem_o2"],
-                tem_vacuo=form.cleaned_data["tem_vacuo"],
-                tem_codigo_sus=form.cleaned_data["tem_codigo_sus"],
-            )
+            with transaction.atomic():
+                leito = Leito.objects.create(
+                    setor=form.cleaned_data["setor"],
+                    especialidade=form.cleaned_data["especialidade"],
+                    status_de_leito=form.cleaned_data["status_de_leito"],
+                    tipo_de_leito=form.cleaned_data["tipo_de_leito"],
+                    tipo_de_o2=form.cleaned_data["tipo_de_o2"],
+                    tipo_de_vacuo=form.cleaned_data["tipo_de_vacuo"],
+                    codigo_sus=form.cleaned_data["codigo_sus"],
+                    tem_o2=form.cleaned_data["tem_o2"],
+                    tem_vacuo=form.cleaned_data["tem_vacuo"],
+                    tem_codigo_sus=form.cleaned_data["tem_codigo_sus"],
+                )
 
-            HistoricoDeOcupacaoDeLeito.objects.create(leito=leito)
+                HistoricoDeOcupacaoDeLeito.objects.create(leito=leito)
 
-            return redirect("/gestao/leitos/")
+                return redirect("/gestao/leitos/")
 
         context['form'] = form
         return render(request, 'leitos/index.html', context)
@@ -113,8 +115,6 @@ def editar_leito_view(request, id):
         if form.is_valid():
             form.save()
             return redirect("/gestao/leitos/")
-
-        print(form.errors)
     else:
         form = LeitoForm(instance=obj)
 

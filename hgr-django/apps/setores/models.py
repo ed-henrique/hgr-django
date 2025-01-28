@@ -19,6 +19,13 @@ class Setor(models.Model):
 
         return (partial / total) * 100
 
+    def __str__(self):
+        return self.nome
+
     class Meta:
         verbose_name = 'Setor'
         verbose_name_plural = 'Setores'
+
+        indexes = [
+            models.Index(fields=['removido_em']),
+        ]

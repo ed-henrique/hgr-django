@@ -1,0 +1,236 @@
+{% extends 'partials/base.html' %}
+
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+<div class="col-12">
+  <a style="margin-bottom: var(--bs-gutter-x);" class="fs-5 d-flex align-items-center gap-2" href="/gestao/leitos"
+    target="_self">
+    <i class="ti ti-arrow-left fs-5"></i>
+    <span>Voltar</span>
+  </a>
+</div>
+<div class="card">
+  <div class="card-header text-bg-primary">
+    <h5 class="mb-0 text-white">Leito</h5>
+  </div>
+  <div class="form-body">
+    <div class="card-body">
+      <h5 class="card-title mb-0">Dados</h5>
+    </div>
+    <hr class="m-0" />
+    <div class="card-body">
+      <div class="d-flex gap-5">
+        <div class="d-flex flex-column gap-3">
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">Número:</span>
+            <span>{{ leito.id }}</span>
+          </div>
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">Código SUS:</span>
+            {% if leito.tem_codigo_sus %}
+            <span class="badge bg-success d-inline-flex align-items-center gap-1 fw-bolder text-center">
+              {{ leito.codigo_sus }}
+            </span>
+            {% else %}
+            <span>Não</span>
+            {% endif %}
+          </div>
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">Ocupado:</span>
+            {% if leito.ocupado %}
+            <a class="text-white" href="/gestao/pacientes/{{ leito.paciente.id }}" target="_self">
+              <span class="badge bg-success d-inline-flex align-items-center gap-1 fw-bolder text-center">
+                Sim <i class="fs-4 ti ti-user"></i>
+              </span>
+            </a>
+            {% else %}
+            <span class="badge bg-danger d-inline-flex align-items-center gap-1 fw-bolder text-center">
+              Não
+            </span>
+            {% endif %}
+          </div>
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">Setor:</span>
+            <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+              style="background-color:  {{ leito.setor.cor }};">
+              {{ leito.setor.nome }}
+            </span>
+          </div>
+        </div>
+        <div class="d-flex flex-column gap-3">
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">O2:</span>
+            {% if leito.tem_o2 %}
+            <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+              style="background-color:  {{ leito.tipo_de_o2.cor }};">
+              {{ leito.tipo_de_o2.nome }}
+            </span>
+            {% else %}
+            <span>Não</span>
+            {% endif %}
+          </div>
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">Vácuo:</span>
+            {% if leito.tem_vacuo %}
+            <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+              style="background-color:  {{ leito.tipo_de_vacuo.cor }};">
+              {{ leito.tipo_de_vacuo.nome }}
+            </span>
+            {% else %}
+            <span>Não</span>
+            {% endif %}
+          </div>
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">Tipo de Leito:</span>
+            <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+              style="background-color:  {{ leito.tipo_de_leito.cor }};">
+              {{ leito.tipo_de_leito.nome }}
+            </span>
+          </div>
+          <div class="d-flex gap-3">
+            <span class="fw-semibold text-dark">Status de Leito:</span>
+            <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+              style="background-color:  {{ leito.status_de_leito.cor }};">
+              {{ leito.status_de_leito.nome }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% if user|is_admin_or_higher %}
+  <div class="form-actions border-top">
+    <div class="card-body">
+      <div class="row">
+        <div class="d-flex gap-3 align-items-center justify-content-end">
+          <a href="/gestao/leitos/{{ leito.id }}/editar"
+            class="btn btn-primary d-flex align-items-center gap-1 fw-semibold">
+            <i class="ti ti-edit fs-6"></i>
+            Editar
+          </a>
+          <form action="/gestao/leitos/{{ leito.id }}/excluir" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger d-flex align-items-center gap-1 fw-semibold">
+              <i class="ti ti-trash fs-6"></i>
+              Remover
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+<div class="card w-100 position-relative overflow-hidden">
+  <div class="px-4 py-3 border-bottom">
+    <h4 class="card-title mb-0">Histórico</h4>
+  </div>
+  <div class="card-body p-4">
+    {% if historico_de_ocupacao %}
+    <div class="table-responsive border rounded-1">
+      <table class="table text-nowrap mb-0 align-middle">
+        <thead class="text-dark fs-4">
+          <tr>
+            <th>
+              <h6 class="fs-4 fw-semibold mb-0">Data e Hora</h6>
+            </th>
+            <th>
+              <h6 class="fs-4 fw-semibold mb-0">Ocupado</h6>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for h in historico_de_ocupacao %}
+          <tr>
+            <td>
+              <span class="d-inline-flex align-items-center text-center">
+                {{ h.ocorrido_em }}
+              </span>
+            </td>
+            <td>
+              <span class="d-inline-flex align-items-center text-center">
+                {% if h.paciente.id %}
+                Sim
+                {% else %}
+                Não
+                {% endif %}
+              </span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="d-flex justify-content-end pagination mt-3">
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center mb-0">
+
+          <!-- First Page -->
+          {% if historico_de_ocupacao.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page=1" aria-label="Primeira Página">
+              <i class="ti ti-chevrons-left ti-xs"></i>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="?page={{ historico_de_ocupacao.previous_page_number }}"
+              aria-label="Página Anterior">
+              <i class="ti ti-chevron-left ti-xs"></i>
+            </a>
+          </li>
+          {% else %}
+          <li class="page-item disabled">
+            <span class="page-link">
+              <i class="ti ti-chevrons-left ti-xs"></i>
+            </span>
+          </li>
+          <li class="page-item disabled">
+            <span class="page-link">
+              <i class="ti ti-chevron-left ti-xs"></i>
+            </span>
+          </li>
+          {% endif %}
+
+          <!-- Current Page Display -->
+          <li class="page-item disabled">
+            <span class="page-link">
+              Página {{ historico_de_ocupacao.number }} de {{ historico_de_ocupacao.paginator.num_pages }}
+            </span>
+          </li>
+
+          <!-- Next Page -->
+          {% if historico_de_ocupacao.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ historico_de_ocupacao.next_page_number }}" aria-label="Pŕoxima Página">
+              <i class="ti ti-chevron-right ti-xs"></i>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="?page={{ historico_de_ocupacao.paginator.num_pages }}"
+              aria-label="Última Página">
+              <i class="ti ti-chevrons-right ti-xs"></i>
+            </a>
+          </li>
+          {% else %}
+          <li class="page-item disabled">
+            <span class="page-link">
+              <i class="ti ti-chevron-right ti-xs"></i>
+            </span>
+          </li>
+          <li class="page-item disabled">
+            <span class="page-link">
+              <i class="ti ti-chevrons-right ti-xs"></i>
+            </span>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+    {% else %}
+    <p class="mb-0 text-center">Não há nenhum registro.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

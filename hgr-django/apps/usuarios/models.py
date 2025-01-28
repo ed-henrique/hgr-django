@@ -34,6 +34,9 @@ class Usuario(AbstractUser):
 
         return (partial / total) * 100
 
+    def __str__(self):
+        return self.first_name
+
     class Meta:
         verbose_name = "Usuário"
         verbose_name_plural = "Usuários"

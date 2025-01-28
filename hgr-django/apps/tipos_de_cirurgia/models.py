@@ -19,6 +19,13 @@ class TipoDeCirurgia(models.Model):
 
         return (partial / total) * 100
 
+    def __str__(self):
+        return self.nome
+
     class Meta:
         verbose_name = 'Tipo de Cirurgia'
         verbose_name_plural = 'Tipos de Cirurgia'
+
+        indexes = [
+            models.Index(fields=['removido_em']),
+        ]

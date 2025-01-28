@@ -19,6 +19,13 @@ class StatusDeLeito(models.Model):
 
         return (partial / total) * 100
 
+    def __str__(self):
+        return self.nome
+
     class Meta:
         verbose_name = 'Status de Leito'
         verbose_name_plural = 'Status de Leito'
+
+        indexes = [
+            models.Index(fields=['removido_em']),
+        ]
