@@ -33,12 +33,14 @@ class CirurgiaForm(forms.ModelForm):
         label="Data",
         widget=forms.DateInput(
             attrs={"class": "form-control", "type": "date"},
+            format="%Y-%m-%d",
         ),
     )
     hora = forms.TimeField(
         label="Hora",
         widget=forms.TimeInput(
             attrs={"class": "form-control", "type": "time"},
+            format="%H:%M",
         ),
     )
     concluida_com_sucesso = forms.BooleanField(

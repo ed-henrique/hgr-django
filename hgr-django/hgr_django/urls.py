@@ -23,6 +23,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("autenticacao/", include("apps.autenticacao.urls")),
     path("dashboard/", include("apps.dashboard.urls")),
+    path("dashboard/setores/", include("apps.dashboard_setores.urls")),
     path("gestao/nacionalidades-etnias/",
          include("apps.nacionalidades_etnias.urls")),
     path("gestao/medidas-de-precaucao/",

@@ -35,12 +35,17 @@ def leitos_view(request):
     page_number = request.GET.get('page')
     page_objs = paginator.get_page(page_number)
 
-    setores = Setor.objects.all().order_by('nome')
-    especialidades = Especialidade.objects.all().order_by('nome')
-    tipos_de_leito = TipoDeLeito.objects.all().order_by('nome')
-    status_de_leito = StatusDeLeito.objects.all().order_by('nome')
-    tipos_de_o2 = TipoDeO2.objects.all().order_by('nome')
-    tipos_de_vacuo = TipoDeVacuo.objects.all().order_by('nome')
+    setores = Setor.objects.filter(removido_em__isnull=True).order_by('nome')
+    especialidades = Especialidade.objects.filter(
+        removido_em__isnull=True).order_by('nome')
+    tipos_de_leito = TipoDeLeito.objects.filter(
+        removido_em__isnull=True).order_by('nome')
+    status_de_leito = StatusDeLeito.objects.filter(
+        removido_em__isnull=True).order_by('nome')
+    tipos_de_o2 = TipoDeO2.objects.filter(
+        removido_em__isnull=True).order_by('nome')
+    tipos_de_vacuo = TipoDeVacuo.objects.filter(
+        removido_em__isnull=True).order_by('nome')
 
     context = {
         'setores': setores,
@@ -114,16 +119,21 @@ def editar_leito_view(request, id):
         form = LeitoForm(request.POST, instance=obj)
         if form.is_valid():
             form.save()
-            return redirect("/gestao/leitos/")
+            return redirect(f"/gestao/leitos/{id}")
     else:
         form = LeitoForm(instance=obj)
 
-    setores = Setor.objects.all().order_by('nome')
-    especialidades = Especialidade.objects.all().order_by('nome')
-    tipos_de_leito = TipoDeLeito.objects.all().order_by('nome')
-    status_de_leito = StatusDeLeito.objects.all().order_by('nome')
-    tipos_de_o2 = TipoDeO2.objects.all().order_by('nome')
-    tipos_de_vacuo = TipoDeVacuo.objects.all().order_by('nome')
+    setores = Setor.objects.filter(removido_em__isnull=True).order_by('nome')
+    especialidades = Especialidade.objects.filter(
+        removido_em__isnull=True).order_by('nome')
+    tipos_de_leito = TipoDeLeito.objects.filter(
+        removido_em__isnull=True).order_by('nome')
+    status_de_leito = StatusDeLeito.objects.filter(
+        removido_em__isnull=True).order_by('nome')
+    tipos_de_o2 = TipoDeO2.objects.filter(
+        removido_em__isnull=True).order_by('nome')
+    tipos_de_vacuo = TipoDeVacuo.objects.filter(
+        removido_em__isnull=True).order_by('nome')
 
     context = {
         'form': form,

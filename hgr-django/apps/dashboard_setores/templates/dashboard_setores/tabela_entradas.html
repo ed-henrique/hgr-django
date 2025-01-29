@@ -2,51 +2,42 @@
   <thead class="text-dark fs-4">
     <tr>
       <th>
-        <h6 class="fs-4 fw-semibold mb-0">Nome</h6>
+        <h6 class="fs-4 fw-semibold mb-0">Data e Hora</h6>
+      </th>
+      <th>
+        <h6 class="fs-4 fw-semibold mb-0">Paciente</h6>
       </th>
       <th>
         <h6 class="fs-4 fw-semibold mb-0">Leito</h6>
       </th>
       <th>
-        <h6 class="fs-4 fw-semibold mb-0">Setor</h6>
-      </th>
-      <th>
-        <h6 class="fs-4 fw-semibold mb-0">Status</h6>
-      </th>
-      <th>
-        <h6 class="fs-4 fw-semibold mb-0">Responsável</h6>
+        <h6 class="fs-4 fw-semibold mb-0">Unidade de Saúde de Origem</h6>
       </th>
       <th class="d-md-table-cell d-none"></th>
     </tr>
   </thead>
-  <tbody id="leitos">
-    {% for p in pacientes %}
-    <tr id="gb-{{ leito.id }}" class="align-items-center">
+  <tbody>
+    {% for entrada in entradas %}
+    <tr class="align-items-center">
       <td>
-        <h6 class="mb-0">{{ p.nome }}</h6>
+        <h6 class="mb-0">{{ entrada.data }} {{ entrada.hora }}</h6>
       </td>
       <td>
-        <h6 class="mb-0">{{ p.leito.id }}</h6>
+        <h6 class="mb-0">{{ entrada.paciente.nome }}</h6>
       </td>
       <td>
-        <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
-          style="background-color:  {{ p.leito.setor.cor }};">
-          {{ p.leito.setor.nome }}
-        </span>
+        <h6 class="mb-0">{{ entrada.leito_de_destino.id }}</h6>
       </td>
       <td>
         <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
-          style="background-color:  {{ p.status_de_paciente.cor }};">
-          {{ p.status_de_paciente.nome }}
+          style="background-color:  {{ entrada.unidade_de_saude_de_origem.cor }};">
+          {{ entrada.unidade_de_saude_de_origem.nome }}
         </span>
-      </td>
-      <td>
-        <h6 class="mb-0">{{ p.responsavel.first_name }}</h6>
       </td>
       <td class="d-md-table-cell d-none text-end">
         <div class="d-flex gap-3 align-items-center justify-content-end">
-          <a class="text-primary" href="/gestao/pacientes/{{ p.id }}" target="_self">
-            <i class="fs-6 ti ti-eye"></i>
+          <a class="text-primary" href="/gestao/pacientes/{{ entrada.paciente.id }}" target="_self">
+            <i class="fs-6 ti ti-user"></i>
           </a>
         </div>
       </td>
@@ -59,14 +50,14 @@
     <ul class="pagination justify-content-center mb-0">
 
       <!-- First Page -->
-      {% if pacientes.has_previous %}
+      {% if entradas.has_previous %}
       <li class="page-item">
         <a class="page-link" href="?page=1" aria-label="Primeira Página">
           <i class="ti ti-chevrons-left ti-xs"></i>
         </a>
       </li>
       <li class="page-item">
-        <a class="page-link" href="?page={{ pacientes.previous_page_number }}" aria-label="Página Anterior">
+        <a class="page-link" href="?page={{ entradas.previous_page_number }}" aria-label="Página Anterior">
           <i class="ti ti-chevron-left ti-xs"></i>
         </a>
       </li>
@@ -86,19 +77,19 @@
       <!-- Current Page Display -->
       <li class="page-item disabled">
         <span class="page-link">
-          Página {{ pacientes.number }} de {{ pacientes.paginator.num_pages }}
+          Página {{ entradas.number }} de {{ entradas.paginator.num_pages }}
         </span>
       </li>
 
       <!-- Next Page -->
-      {% if pacientes.has_next %}
+      {% if entradas.has_next %}
       <li class="page-item">
-        <a class="page-link" href="?page={{ pacientes.next_page_number }}" aria-label="Pŕoxima Página">
+        <a class="page-link" href="?page={{ entradas.next_page_number }}" aria-label="Pŕoxima Página">
           <i class="ti ti-chevron-right ti-xs"></i>
         </a>
       </li>
       <li class="page-item">
-        <a class="page-link" href="?page={{ pacientes.paginator.num_pages }}" aria-label="Última Página">
+        <a class="page-link" href="?page={{ entradas.paginator.num_pages }}" aria-label="Última Página">
           <i class="ti ti-chevrons-right ti-xs"></i>
         </a>
       </li>

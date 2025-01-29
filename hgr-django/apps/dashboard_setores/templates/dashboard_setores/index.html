@@ -1,0 +1,54 @@
+{% extends 'partials/base.html' %}
+
+{% load static %}
+
+<!-- Setores template equivalent -->
+{% block content %}
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body d-flex flex-column align-items-center justify-content-center gap-3">
+        <h4 class="text-center">Legendas</h4>
+        <div class="d-flex gap-3 justify-content-center">
+          {% for status_leito in status_de_leito %}
+          <span class="d-inline badge fw-bolder text-center" style="background-color: {{ status_leito.cor }};">
+            {{ status_leito.nome }}
+          </span>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% for setor in setores %}
+  <div class="col-12 col-md-6">
+    <div class="card">
+      <div class="card-body d-flex flex-column align-items-center justify-content-between gap-3">
+        <h4 class="text-center">{{ setor.nome }}</h4>
+        <h5 class="text-center">
+          {% if setor.leito_set.count == 1 %}
+          Leito
+          {% else %}
+          Leitos
+          {% endif %}
+        </h5>
+        <div class="d-flex flex-wrap gap-1">
+          {% for l in setor.leito_set.all %}
+          <a style="width: 1.5rem; aspect-ratio: 1/1; background-color: {{l.status_de_leito.cor}};"
+            href="/gestao/leitos/{{ l.id }}" class="d-inline badge text-white position-relative"
+            data-bs-toggle="tooltip" data-bs-html="true"
+            data-bs-title="Leito <strong>{{ l.id }}</strong><br /> {% if l.tem_o2 %} Com O2 ({{ l.tipo_de_o2.nome }}) - {% else %} Sem O2 - {% endif %} {% if l.tem_vacuo %} Com Vácuo ({{ l.tipo_de_vacuo.nome }})<br /> {% else %} Sem Vácuo<br /> {% endif %} {% if l.paciente %} Paciente: <strong>{{ l.paciente.nome }}</strong> {% endif %}">
+            {% if l.paciente %}
+            <div class="d-flex align-items-center justify-content-center position-absolute"
+              style="margin: auto; left: 0; right: 0; top: 0; bottom: 0;">
+              <i class="fs-5 ti ti-user position-absolute"></i>
+            </div>
+            {% endif %}
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
