@@ -13,7 +13,8 @@ class Transferencia(models.Model):
         Leito, on_delete=models.PROTECT, verbose_name="Leito de Destino", related_name='leito_de_destino')
     data = models.DateField(verbose_name="Data")
     hora = models.TimeField(verbose_name="Hora")
-    removido_em = models.DateTimeField(null=True, verbose_name="Removido em")
+    removido_em = models.DateTimeField(
+        null=True, blank=True, verbose_name="Removido em")
 
     class Meta:
         verbose_name = 'Transferência'

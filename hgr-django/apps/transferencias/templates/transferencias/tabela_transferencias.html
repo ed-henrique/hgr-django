@@ -1,0 +1,125 @@
+<table id="gwrapper" class="table text-nowrap my-3 align-middle table-responsive border rounded-1">
+  <thead class="text-dark fs-4">
+    <tr>
+      <th>
+        <h6 class="fs-4 fw-semibold mb-0">Data e Hora</h6>
+      </th>
+      <th>
+        <h6 class="fs-4 fw-semibold mb-0">Paciente</h6>
+      </th>
+      <th>
+        <h6 class="fs-4 fw-semibold mb-0">Leito de Origem</h6>
+      </th>
+      <th>
+        <h6 class="fs-4 fw-semibold mb-0">Setor de Origem</h6>
+      </th>
+      <th>
+        <h6 class="fs-4 fw-semibold mb-0">Leito de Destino</h6>
+      </th>
+      <th>
+        <h6 class="fs-4 fw-semibold mb-0">Setor de Destino</h6>
+      </th>
+      <th class="d-md-table-cell d-none"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for transferencia in transferencias %}
+    <tr class="align-items-center">
+      <td>
+        <h6 class="mb-0">{{ transferencia.data }} {{ transferencia.hora }}</h6>
+      </td>
+      <td>
+        <h6 class="mb-0">{{ transferencia.paciente.nome }}</h6>
+      </td>
+      <td>
+        <h6 class="mb-0">{{ transferencia.leito_de_origem.id }}</h6>
+      </td>
+      <td>
+        <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+          style="background-color:  {{ transferencia.leito_de_origem.setor.cor }};">
+          {{ transferencia.leito_de_origem.setor.nome }}
+        </span>
+      </td>
+      <td>
+        <h6 class="mb-0">{{ transferencia.leito_de_destino.id }}</h6>
+      </td>
+      <td>
+        <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+          style="background-color:  {{ transferencia.leito_de_destino.setor.cor }};">
+          {{ transferencia.leito_de_destino.setor.nome }}
+        </span>
+      </td>
+      <td class="d-md-table-cell d-none text-end">
+        <div class="d-flex gap-3 align-items-center justify-content-end">
+          <a class="text-primary" href="/gestao/transferencias/{{ transferencia.id }}" target="_self">
+            <i class="fs-6 ti ti-eye"></i>
+          </a>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<div class="d-flex justify-content-end pagination">
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center mb-0">
+
+      <!-- First Page -->
+      {% if transferencias.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page=1" aria-label="Primeira Página">
+          <i class="ti ti-chevrons-left ti-xs"></i>
+        </a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ transferencias.previous_page_number }}" aria-label="Página Anterior">
+          <i class="ti ti-chevron-left ti-xs"></i>
+        </a>
+      </li>
+      {% else %}
+      <li class="page-item disabled">
+        <span class="page-link">
+          <i class="ti ti-chevrons-left ti-xs"></i>
+        </span>
+      </li>
+      <li class="page-item disabled">
+        <span class="page-link">
+          <i class="ti ti-chevron-left ti-xs"></i>
+        </span>
+      </li>
+      {% endif %}
+
+      <!-- Current Page Display -->
+      <li class="page-item disabled">
+        <span class="page-link">
+          Página {{ transferencias.number }} de {{ transferencias.paginator.num_pages }}
+        </span>
+      </li>
+
+      <!-- Next Page -->
+      {% if transferencias.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ transferencias.next_page_number }}" aria-label="Pŕoxima Página">
+          <i class="ti ti-chevron-right ti-xs"></i>
+        </a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ transferencias.paginator.num_pages }}" aria-label="Última Página">
+          <i class="ti ti-chevrons-right ti-xs"></i>
+        </a>
+      </li>
+      {% else %}
+      <li class="page-item disabled">
+        <span class="page-link">
+          <i class="ti ti-chevron-right ti-xs"></i>
+        </span>
+      </li>
+      <li class="page-item disabled">
+        <span class="page-link">
+          <i class="ti ti-chevrons-right ti-xs"></i>
+        </span>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
+</div>

@@ -1,0 +1,128 @@
+<table id="gwrapper" class="table text-nowrap my-3 align-middle table-responsive border rounded-1">
+  <thead class="text-dark fs-4">
+    <tr>
+      <th>
+        <h6 class="fs-4 fw-semibold mb-0">Data e Hora</h6>
+      </th>
+      <th>
+        <h6 class="fs-4 fw-semibold mb-0">Paciente</h6>
+      </th>
+      <th>
+        <h6 class="fs-4 fw-semibold mb-0">Tipo de Saída</h6>
+      </th>
+      <th>
+        <h6 class="fs-4 fw-semibold mb-0">Leito de Origem</h6>
+      </th>
+      <th>
+        <h6 class="fs-4 fw-semibold mb-0">Setor de Origem</h6>
+      </th>
+      <th>
+        <h6 class="fs-4 fw-semibold mb-0">Unidade de Saúde de Destino</h6>
+      </th>
+      <th class="d-md-table-cell d-none"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for saida in saidas %}
+    <tr class="align-items-center">
+      <td>
+        <h6 class="mb-0">{{ saida.data }} {{ saida.hora }}</h6>
+      </td>
+      <td>
+        <h6 class="mb-0">{{ saida.paciente.nome }}</h6>
+      </td>
+      <td>
+        <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+          style="background-color:  {{ saida.tipo_de_saida.cor }};">
+          {{ saida.tipo_de_saida.nome }}
+        </span>
+      </td>
+      <td>
+        <h6 class="mb-0">{{ saida.leito_de_origem.id }}</h6>
+      </td>
+      <td>
+        <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+          style="background-color:  {{ saida.leito_de_origem.setor.cor }};">
+          {{ saida.leito_de_origem.setor.nome }}
+        </span>
+      </td>
+      <td>
+        <span class="badge d-inline-flex align-items-center gap-1 fw-bolder text-center"
+          style="background-color:  {{ saida.unidade_de_saude_de_destino.cor }};">
+          {{ saida.unidade_de_saude_de_destino.nome }}
+        </span>
+      </td>
+      <td class="d-md-table-cell d-none text-end">
+        <div class="d-flex gap-3 align-items-center justify-content-end">
+          <a class="text-primary" href="/gestao/saidas/{{ saidas.id }}" target="_self">
+            <i class="fs-6 ti ti-eye"></i>
+          </a>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<div class="d-flex justify-content-end pagination">
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center mb-0">
+
+      <!-- First Page -->
+      {% if saidas.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page=1" aria-label="Primeira Página">
+          <i class="ti ti-chevrons-left ti-xs"></i>
+        </a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ saidas.previous_page_number }}" aria-label="Página Anterior">
+          <i class="ti ti-chevron-left ti-xs"></i>
+        </a>
+      </li>
+      {% else %}
+      <li class="page-item disabled">
+        <span class="page-link">
+          <i class="ti ti-chevrons-left ti-xs"></i>
+        </span>
+      </li>
+      <li class="page-item disabled">
+        <span class="page-link">
+          <i class="ti ti-chevron-left ti-xs"></i>
+        </span>
+      </li>
+      {% endif %}
+
+      <!-- Current Page Display -->
+      <li class="page-item disabled">
+        <span class="page-link">
+          Página {{ saidas.number }} de {{ saidas.paginator.num_pages }}
+        </span>
+      </li>
+
+      <!-- Next Page -->
+      {% if saidas.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ saidas.next_page_number }}" aria-label="Pŕoxima Página">
+          <i class="ti ti-chevron-right ti-xs"></i>
+        </a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ saidas.paginator.num_pages }}" aria-label="Última Página">
+          <i class="ti ti-chevrons-right ti-xs"></i>
+        </a>
+      </li>
+      {% else %}
+      <li class="page-item disabled">
+        <span class="page-link">
+          <i class="ti ti-chevron-right ti-xs"></i>
+        </span>
+      </li>
+      <li class="page-item disabled">
+        <span class="page-link">
+          <i class="ti ti-chevrons-right ti-xs"></i>
+        </span>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
+</div>
