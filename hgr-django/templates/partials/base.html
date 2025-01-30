@@ -75,6 +75,18 @@
   <script src="{% static '/js/theme/app.min.js' %}"></script>
   <script src="{% static '/js/theme/sidebarmenu.js' %}"></script>
   <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+  <script>
+    const forms = document.getElementsByTagName("form");
+
+    for (const form of forms) {
+      form.addEventListener("submit", (event) => {
+        const submitButton = form.querySelector('button:last-of-type');
+
+        submitButton.disabled = true;
+        submitButton.innerHTML = `<img src="{% static 'images/logos/preloader_white.svg' %}" alt="loader" class="img-fluid" style="max-height: 1rem;" />`;
+      });
+    }
+  </script>
   {% block foot_scripts %}{% endblock %}
   <!--<script src="/libs/apexcharts/dist/apexcharts.min.js"></script>
   <script src="/js/dashboards/dashboard2.js"></script>-->
