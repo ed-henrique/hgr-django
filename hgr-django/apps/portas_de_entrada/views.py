@@ -102,6 +102,6 @@ def excluir_porta_de_entrada_view(request, id):
         obj.save()
 
         Historico.objects.create(
-            usuario=request.user, descricao=f"Removeu a Porta de Entrada '{obj.nome}' de cor '{obj.cor}'.")
+            usuario=request.user, descricao=f"""Removeu a Porta de Entrada <span class="badge d-inline-flex align-items-center fw-bolder text-center" style="background-color: {obj.cor};">{obj.nome}</span>.""")
 
         return redirect("/gestao/portas-de-entrada")

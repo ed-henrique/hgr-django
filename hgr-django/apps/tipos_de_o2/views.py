@@ -102,6 +102,6 @@ def excluir_tipo_de_o2_view(request, id):
         obj.save()
 
         Historico.objects.create(
-            usuario=request.user, descricao=f"Removeu o Tipo de O2 '{obj.nome}' de cor '{obj.cor}'.")
+            usuario=request.user, descricao=f"""Removeu o Tipo de O2 <span class="badge d-inline-flex align-items-center fw-bolder text-center" style="background-color: {obj.cor};">{obj.nome}</span>.""")
 
         return redirect("/gestao/tipos-de-o2")

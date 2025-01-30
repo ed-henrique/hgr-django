@@ -102,6 +102,6 @@ def excluir_setor_view(request, id):
         obj.save()
 
         Historico.objects.create(
-            usuario=request.user, descricao=f"Removeu a Setor '{obj.nome}' de cor '{obj.cor}'.")
+            usuario=request.user, descricao=f"""Removeu a Setor <span class="badge d-inline-flex align-items-center fw-bolder text-center" style="background-color: {obj.cor};">{obj.nome}</span>.""")
 
         return redirect("/gestao/setores")

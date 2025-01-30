@@ -102,6 +102,6 @@ def excluir_especialidade_view(request, id):
         obj.save()
 
         Historico.objects.create(
-            usuario=request.user, descricao=f"Removeu a Especialidade '{obj.nome}' de cor '{obj.cor}'.")
+            usuario=request.user, descricao=f"""Removeu a Especialidade <span class="badge d-inline-flex align-items-center fw-bolder text-center" style="background-color: {obj.cor};">{obj.nome}</span>.""")
 
         return redirect("/gestao/especialidades")
