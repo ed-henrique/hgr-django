@@ -32,7 +32,7 @@ def tipos_de_vacuo_view(request):
             form.save()
             Historico.objects.create(
                 usuario=request.user,
-                descricao=f"Criou o Tipo de Vácuo '{form.cleaned_data['nome']}' de cor '{form.cleaned_data['cor']}'.",
+                descricao=f"""Criou o Tipo de Vácuo <span class="badge d-inline-flex align-items-center fw-bolder text-center" style="background-color: {form.cleaned_data["cor"]};">{form.cleaned_data["nome"]}</span>.""",
             )
     else:
         form = TipoDeVacuoForm()
@@ -78,7 +78,7 @@ def editar_tipo_de_vacuo_view(request, id):
 
             Historico.objects.create(
                 usuario=request.user,
-                descricao=f"Editou o Tipo de Vácuo '{form.initial['nome']}' de cor '{form.initial['cor']}' para o Tipo de Vácuo '{form.cleaned_data['nome']}' de cor '{form.cleaned_data['cor']}'.",
+                descricao=f"""Modificou o Tipo de Vácuo de <span class="badge d-inline-flex align-items-center fw-bolder text-center" style="background-color: {form.initial["cor"]};">{form.initial["nome"]}</span> para <span class="badge d-inline-flex align-items-center fw-bolder text-center" style="background-color: {form.cleaned_data["cor"]};">{form.cleaned_data["nome"]}</span>.""",
             )
 
             return redirect("/gestao/tipos-de-vacuo")
