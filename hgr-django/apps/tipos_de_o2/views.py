@@ -1,9 +1,13 @@
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.timezone import now
 from django.db.models import Q
+from django.db import transaction
 from django import forms
 from .models import TipoDeO2
+from apps.historico.models import Historico
+
 
 class TipoDeO2Form(forms.ModelForm):
     class Meta:
@@ -18,20 +22,26 @@ class TipoDeO2Form(forms.ModelForm):
             },
         }
 
+
 @login_required
+@transaction.atomic
 def tipos_de_o2_view(request):
     if request.method == 'POST':
         form = TipoDeO2Form(request.POST)
         if form.is_valid():
             form.save()
+            Historico.objects.create(
+                usuario=request.user, descricao=f"Criou o Tipo de O2 '{form.cleaned_data['nome']}' de cor '{form.cleaned_data['cor']}'.")
     else:
         form = TipoDeO2Form()
 
     query = request.GET.get('q', '')
     if query:
-        objs = TipoDeO2.objects.filter(Q(nome__icontains=query)).order_by('nome')
+        objs = TipoDeO2.objects.filter(
+            Q(nome__icontains=query), removido_em__isnull=True).order_by('nome')
     else:
-        objs = TipoDeO2.objects.all().order_by('nome')
+        objs = TipoDeO2.objects.filter(
+            removido_em__isnull=True).order_by('nome')
 
     paginator = Paginator(objs, 10)
     page_number = request.GET.get('page')
@@ -48,12 +58,14 @@ def tipos_de_o2_view(request):
 
     for p in page_objs:
         part = p.get_participacao()
-        p.participacao = part 
+        p.participacao = part
         p.participacao_formatada = f"{part:.2f}"
 
     return render(request, 'tipos_de_o2/index.html', context)
 
+
 @login_required
+@transaction.atomic
 def editar_tipo_de_o2_view(request, id):
     obj = get_object_or_404(TipoDeO2, id=id)
 
@@ -61,6 +73,10 @@ def editar_tipo_de_o2_view(request, id):
         form = TipoDeO2Form(request.POST, instance=obj)
         if form.is_valid():
             form.save()
+
+            Historico.objects.create(
+                usuario=request.user, descricao=f"Editou o Tipo de O2 '{form.initial['nome']}' de cor '{form.initial['cor']}' para o Tipo de O2 '{form.cleaned_data['nome']}' de cor '{form.cleaned_data['cor']}'.")
+
             return redirect("/gestao/tipos-de-o2")
     else:
         form = TipoDeO2Form(instance=obj)
@@ -75,10 +91,17 @@ def editar_tipo_de_o2_view(request, id):
 
     return render(request, 'tipos_de_o2/editar.html', context)
 
+
 @login_required
+@transaction.atomic
 def excluir_tipo_de_o2_view(request, id):
     obj = get_object_or_404(TipoDeO2, id=id)
 
     if request.method == 'POST':
-        obj.delete()
+        obj.removido_em = now()
+        obj.save()
+
+        Historico.objects.create(
+            usuario=request.user, descricao=f"Removeu o Tipo de O2 '{obj.nome}' de cor '{obj.cor}'.")
+
         return redirect("/gestao/tipos-de-o2")

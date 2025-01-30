@@ -1,9 +1,12 @@
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.timezone import now
 from django.db.models import Q
+from django.db import transaction
 from django import forms
 from .models import StatusDeLeito
+from apps.historico.models import Historico
 
 
 class StatusDeLeitoForm(forms.ModelForm):
@@ -21,20 +24,24 @@ class StatusDeLeitoForm(forms.ModelForm):
 
 
 @login_required
+@transaction.atomic
 def status_de_leito_view(request):
     if request.method == 'POST':
         form = StatusDeLeitoForm(request.POST)
         if form.is_valid():
             form.save()
+            Historico.objects.create(
+                usuario=request.user, descricao=f"Criou o Status de Leito '{form.cleaned_data['nome']}' de cor '{form.cleaned_data['cor']}'.")
     else:
         form = StatusDeLeitoForm()
 
     query = request.GET.get('q', '')
     if query:
         objs = StatusDeLeito.objects.filter(
-            Q(nome__icontains=query)).order_by('nome')
+            Q(nome__icontains=query), removido_em__isnull=True).order_by('nome')
     else:
-        objs = StatusDeLeito.objects.all().order_by('nome')
+        objs = StatusDeLeito.objects.filter(
+            removido_em__isnull=True).order_by('nome')
 
     paginator = Paginator(objs, 10)
     page_number = request.GET.get('page')
@@ -58,6 +65,7 @@ def status_de_leito_view(request):
 
 
 @login_required
+@transaction.atomic
 def editar_status_de_leito_view(request, id):
     obj = get_object_or_404(StatusDeLeito, id=id)
 
@@ -65,6 +73,10 @@ def editar_status_de_leito_view(request, id):
         form = StatusDeLeitoForm(request.POST, instance=obj)
         if form.is_valid():
             form.save()
+
+            Historico.objects.create(
+                usuario=request.user, descricao=f"Editou o Status de Leito '{form.initial['nome']}' de cor '{form.initial['cor']}' para o Status de Leito '{form.cleaned_data['nome']}' de cor '{form.cleaned_data['cor']}'.")
+
             return redirect("/gestao/status-de-leito")
     else:
         form = StatusDeLeitoForm(instance=obj)
@@ -81,9 +93,15 @@ def editar_status_de_leito_view(request, id):
 
 
 @login_required
+@transaction.atomic
 def excluir_status_de_leito_view(request, id):
     obj = get_object_or_404(StatusDeLeito, id=id)
 
     if request.method == 'POST':
-        obj.delete()
+        obj.removido_em = now()
+        obj.save()
+
+        Historico.objects.create(
+            usuario=request.user, descricao=f"Removeu o Status de Leito '{obj.nome}' de cor '{obj.cor}'.")
+
         return redirect("/gestao/status-de-leito")

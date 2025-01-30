@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     "apps.dashboard_setores",
     "apps.configuracoes",
     "apps.historico_de_ocupacao_de_leito",
+    "apps.historico",
     "debug_toolbar",
 ]
 
