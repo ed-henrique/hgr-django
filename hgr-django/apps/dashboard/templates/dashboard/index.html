@@ -1,5 +1,7 @@
 {% extends 'partials/base.html' %}
 
+{% load static %}
+
 {% block content %}
 <script>
   function toggleShowMore() {
@@ -104,7 +106,7 @@
               </span>
               <h3 class="mb-0 fs-8">{{ enfermeiros }}</h3>
             </div>
-            <h6 class="text-muted mb-0 fw-normal">Enfermeiros</h6>
+            <h6 class="text-muted mb-0 fw-normal">Profissionais de Saúde</h6>
           </div>
         </div>
       </div>
@@ -120,6 +122,18 @@
             </div>
             <h6 class="text-muted mb-0 fw-normal">Leitos</h6>
             <div id="show-more-leitos" class="d-none flex-column w-100">
+              <div class="text-end fw-bold fs-4">SITUAÇÃO DE OCUPAÇÃO</div>
+              <hr class="my-1" />
+              <div class="d-flex align-items-center justify-content-between">
+                <span class="fw-semibold">Ocupado</span>
+                <span>{{ leitos_ocupados }}</span>
+              </div>
+              <hr class="my-1" />
+              <div class="d-flex align-items-center justify-content-between">
+                <span class="fw-semibold">Livre</span>
+                <span>{{ leitos_livres }}</span>
+              </div>
+              <hr class="my-1" />
               <div class="text-end fw-bold fs-4">STATUS</div>
               <hr class="my-1" />
               {% for sl in status_de_leito %}
@@ -195,26 +209,8 @@
           </a>
           <div class="ms-3 ps-1">
             <h5 class="mb-1 fs-4">{{ e.paciente.nome }}</h5>
-            <h6 class="text-muted fw-normal mb-0 fs-3">{{ e.porta_de_entrada.nome }}</h6>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-4">
-    <div class="card">
-      <div class="card-body" style="min-height: 466.2px;">
-        <h4 class="card-title">Últimas Saídas</h4>
-        {% for s in ultimas_saidas %}
-        <div class="d-flex align-items-center mt-4 mb-3 pb-1">
-          <a href="{% url 'paciente' s.paciente.id %}"
-            class="btn fs-6 bg-info-subtle text-info round d-flex align-items-center justify-content-center rounded-circle">
-            <i class="ti ti-user flex-shrink-0"></i>
-          </a>
-          <div class="ms-3 ps-1">
-            <h5 class="mb-1 fs-4">{{ s.paciente.nome }}</h5>
-            <h6 class="text-muted fw-normal mb-0 fs-3">{{ s.tipo_de_saida.nome }}</h6>
+            <h6 class="text-muted fw-normal mb-0 fs-3">{{ e.leito_de_destino.setor.nome }}
+              ({{ e.paciente.porta_de_entrada.nome }})</h6>
           </div>
         </div>
         {% endfor %}
@@ -242,8 +238,30 @@
       </div>
     </div>
   </div>
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-body" style="min-height: 466.2px;">
+        <h4 class="card-title">Últimas Saídas</h4>
+        {% for s in ultimas_saidas %}
+        <div class="d-flex align-items-center mt-4 mb-3 pb-1">
+          <a href="{% url 'paciente' s.paciente.id %}"
+            class="btn fs-6 bg-info-subtle text-info round d-flex align-items-center justify-content-center rounded-circle">
+            <i class="ti ti-user flex-shrink-0"></i>
+          </a>
+          <div class="ms-3 ps-1">
+            <h5 class="mb-1 fs-4">{{ s.paciente.nome }}</h5>
+            <h6 class="text-muted fw-normal mb-0 fs-3">{{ s.leito_de_origem.setor.nome }}
+              {% if s.unidade_de_saude_de_destino %}<i class="ti ti-arrow-right"></i>
+              {{ s.unidade_de_saude_de_destino.nome }}{% endif %}</h6>
+            <h6 class="text-muted fw-normal mb-0 fs-3"></h6>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% include "dashboard/entradas_por_dia.html" %}
   {% comment %}
-  {% include "entradas_por_dia.html" with entradasPorDia=entradasPorDia %}
   {% include "cirurgias_por_dia.html" with cirurgiasPorDia=cirurgiasPorDia %}
   {% include "taxa_efetividade_cirurgica.html" with cirurgiasBemSucedidasPorDia=cirurgiasBemSucedidasPorDia %}
   {% include "entradas_pre_cirurgicas_por_dia.html" with entradasPreCirurgicas=entradasPreCirurgicas %}
@@ -269,4 +287,9 @@
   {% include "intervalo_substituicao_leito.html" %}
   {% endcomment %}
 </div>
+{% endblock %}
+
+{% block foot_scripts %}
+<script src="{% static '/libs/apexcharts/dist/apexcharts.min.js' %}"></script>
+<script src="{% static '/js/dashboards/dashboard2.js' %}"></script>
 {% endblock %}

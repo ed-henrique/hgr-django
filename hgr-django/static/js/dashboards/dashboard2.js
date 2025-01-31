@@ -24,32 +24,31 @@ document.addEventListener("DOMContentLoaded", function() {
   const dadosEntradasPorDiaPorSetor = {};
   const dadosEntradasPorDia = JSON.parse(document.getElementById('dados-entradas-por-dia').textContent);
   let tamanhoMaximoDadosEntradasPorDiaPorSetor = dadosEntradasPorDia.length;
+  console.log(dadosEntradasPorDia)
   dadosEntradasPorDia.forEach((el, i) => {
-    el["EntradasPorDiaPorSetor"].forEach((eli) => {
-      const quantidade = eli["Quantidade"];
-      const cor = eli["CorSetorDeDestino"];
-      const nome = eli["NomeSetorDeDestino"];
-      let itemSetor = dadosEntradasPorDiaPorSetor[nome];
+    const quantidade = el["total"];
+    const cor = el["leito_de_destino__setor__cor"];
+    const nome = el["leito_de_destino__setor__nome"];
+    let itemSetor = dadosEntradasPorDiaPorSetor[nome];
 
-      if (itemSetor !== undefined) {
-        if (itemSetor.data.length === i) {
-          itemSetor.data.push(quantidade)
-        } else if (itemSetor.data.length < i) {
-          for (let j = itemSetor.data.length; j < i; j++) {
-            itemSetor.data.push(null);
-          }
-          itemSetor.data.push(quantidade)
+    if (itemSetor !== undefined) {
+      if (itemSetor.data.length === i) {
+        itemSetor.data.push(quantidade)
+      } else if (itemSetor.data.length < i) {
+        for (let j = itemSetor.data.length; j < i; j++) {
+          itemSetor.data.push(null);
         }
-      } else {
-        itemSetor = {};
-        itemSetor.data = Array(i).fill(null);
-        itemSetor.data.push(quantidade);
-        itemSetor.color = cor;
-        itemSetor.name = nome;
+        itemSetor.data.push(quantidade)
       }
+    } else {
+      itemSetor = {};
+      itemSetor.data = Array(i).fill(null);
+      itemSetor.data.push(quantidade);
+      itemSetor.color = cor;
+      itemSetor.name = nome;
+    }
 
-      dadosEntradasPorDiaPorSetor[eli["NomeSetorDeDestino"]] = itemSetor;
-    });
+    dadosEntradasPorDiaPorSetor[el["leito_de_destino__setor__nome"]] = itemSetor;
   });
   Object.keys(dadosEntradasPorDiaPorSetor).forEach((el) => {
     if (dadosEntradasPorDiaPorSetor[el].data.length < tamanhoMaximoDadosEntradasPorDiaPorSetor) {
@@ -93,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function() {
       opacity: 1,
     },
     labels: dadosEntradasPorDia.map((el) => {
-      const data = el["Data"];
+      const data = el["dia"];
       return data.substring(8, 10) + "/" + data.substring(5, 7) + "/" + data.substring(0, 4)
     }),
     markers: {
@@ -139,6 +138,7 @@ document.addEventListener("DOMContentLoaded", function() {
     },
   };
 
+  /*
   const dadosCirurgiasPorDiaPorSetor = {};
   const dadosCirurgiasPorDia = JSON.parse(document.getElementById('dados-cirurgias-por-dia').textContent);
   let tamanhoMaximoDadosCirurgiasPorDiaPorSetor = dadosCirurgiasPorDia.length;
@@ -2270,7 +2270,15 @@ document.addEventListener("DOMContentLoaded", function() {
       },
     ],
   };
+  */
 
+  const entradasPorDia = new ApexCharts(
+    document.querySelector("#entradas-por-dia"),
+    entradasPorDiaOpcoes,
+  );
+  entradasPorDia.render();
+
+  /*
   const leitosDia = new ApexCharts(
     document.querySelector("#leitos-dia"),
     leitosDiaOpcoes,
@@ -2283,11 +2291,6 @@ document.addEventListener("DOMContentLoaded", function() {
   );
   pacientesDia.render();
 
-  const entradasPorDia = new ApexCharts(
-    document.querySelector("#entradas-por-dia"),
-    entradasPorDiaOpcoes,
-  );
-  entradasPorDia.render();
 
   const cirurgiasPorDia = new ApexCharts(
     document.querySelector("#cirurgias-por-dia"),
@@ -2390,4 +2393,5 @@ document.addEventListener("DOMContentLoaded", function() {
     intervaloSubstituicaoLeitoOpcoes,
   );
   intervaloSubstituicaoLeito.render();
+  */
 });

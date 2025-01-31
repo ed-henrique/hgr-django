@@ -6,22 +6,31 @@ from apps.leitos.models import Leito
 
 class Transferencia(models.Model):
     paciente = models.ForeignKey(
-        Paciente, on_delete=models.PROTECT, verbose_name="Paciente")
+        Paciente, on_delete=models.PROTECT, verbose_name="Paciente"
+    )
     leito_de_origem = models.ForeignKey(
-        Leito, on_delete=models.PROTECT, verbose_name="Leito de Origem", related_name='leito_de_origem')
+        Leito,
+        on_delete=models.PROTECT,
+        verbose_name="Leito de Origem",
+        related_name="leito_de_origem",
+    )
     leito_de_destino = models.ForeignKey(
-        Leito, on_delete=models.PROTECT, verbose_name="Leito de Destino", related_name='leito_de_destino')
-    data = models.DateField(verbose_name="Data")
-    hora = models.TimeField(verbose_name="Hora")
+        Leito,
+        on_delete=models.PROTECT,
+        verbose_name="Leito de Destino",
+        related_name="leito_de_destino",
+    )
+    data = models.DateTimeField(verbose_name="Data")
     removido_em = models.DateTimeField(
-        null=True, blank=True, verbose_name="Removido em")
+        null=True, blank=True, verbose_name="Removido em"
+    )
 
     class Meta:
-        verbose_name = 'Transferência'
-        verbose_name_plural = 'Transferências'
+        verbose_name = "Transferência"
+        verbose_name_plural = "Transferências"
 
         indexes = [
-            models.Index(fields=['removido_em']),
-            models.Index(fields=['data', 'removido_em']),
-            models.Index(fields=['paciente', 'removido_em']),
+            models.Index(fields=["removido_em"]),
+            models.Index(fields=["data", "removido_em"]),
+            models.Index(fields=["paciente", "removido_em"]),
         ]

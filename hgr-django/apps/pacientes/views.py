@@ -68,14 +68,14 @@ def criar_paciente_view(request):
                 leito.save()
 
                 HistoricoDeOcupacaoDeLeito.objects.create(
-                    paciente=paciente, leito=leito)
+                    paciente=paciente, leito=leito
+                )
 
                 Entrada.objects.create(
                     paciente=paciente,
                     unidade_de_saude_de_origem=paciente.unidade_de_saude_de_origem,
                     leito_de_destino=leito,
                     data=paciente.data_de_internacao,
-                    hora=paciente.hora_de_internacao,
                 )
 
                 return redirect("/gestao/pacientes/")
@@ -113,8 +113,7 @@ def editar_paciente_view(request, id):
                     antigo_leito.paciente = None
                     antigo_leito.save()
 
-                    HistoricoDeOcupacaoDeLeito.objects.create(
-                        leito=antigo_leito)
+                    HistoricoDeOcupacaoDeLeito.objects.create(leito=antigo_leito)
 
                     leito.paciente = paciente
                     leito.save()

@@ -1,0 +1,16 @@
+{{ entradas_por_dia|json_script:"dados-entradas-por-dia"}}
+<div class="col-12 col-lg-6">
+  <div class="card overflow-hidden">
+    <div class="card-body">
+      <div class="d-flex align-items-start">
+        <div>
+          <h4 class="card-title">
+            Total de Entradas <i class="ti ti-help-square text-muted" data-bs-toggle="tooltip"
+              data-bs-title="Altas médicas, evasões, transferências externas ou óbitos hospitalares. Não são incluídas as transferências internas entre setores."></i>
+          </h4>
+        </div>
+      </div>
+      <div id="entradas-por-dia"></div>
+    </div>
+  </div>
+</div>

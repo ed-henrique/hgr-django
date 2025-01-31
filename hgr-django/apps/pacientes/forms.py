@@ -17,6 +17,19 @@ from apps.usuarios.models import Usuario
 from django.utils.timezone import now
 
 
+class DateTimeLocalInput(forms.DateTimeInput):
+    input_type = "datetime-local"
+
+
+class DateTimeLocalField(forms.DateTimeField):
+    input_formats = [
+        "%Y-%m-%dT%H:%M:%S",
+        "%Y-%m-%dT%H:%M:%S.%f",
+        "%Y-%m-%dT%H:%M",
+    ]
+    widget = DateTimeLocalInput(format="%Y-%m-%dT%H:%M")
+
+
 class PacienteCreateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user", None)
@@ -38,10 +51,9 @@ class PacienteCreateForm(forms.ModelForm):
         tipo_de_cirurgia = cleaned_data.get("tipo_de_cirurgia")
         data_de_nascimento = cleaned_data.get("data_de_nascimento")
         data_de_internacao = cleaned_data.get("data_de_internacao")
-        hora_de_internacao = cleaned_data.get("hora_de_internacao")
 
-        current_date = now().date()
-        current_time = now().time()
+        current_datetime = now()
+        current_date = current_datetime.date()
 
         if data_de_nascimento and data_de_nascimento > current_date:
             self.add_error(
@@ -49,18 +61,10 @@ class PacienteCreateForm(forms.ModelForm):
             )
 
         # Validate data_de_internacao (date of admission)
-        if data_de_internacao and data_de_internacao > current_date:
+        if data_de_internacao and data_de_internacao > current_datetime:
             self.add_error(
                 "data_de_internacao", "A data de internação não pode estar no futuro."
             )
-
-        # Validate hora_de_internacao (time of admission)
-        if data_de_internacao and hora_de_internacao:
-            if data_de_internacao == current_date and hora_de_internacao > current_time:
-                self.add_error(
-                    "hora_de_internacao",
-                    "A hora de internação não pode estar no futuro.",
-                )
 
         # Validation for precisa_de_o2 and tipo_de_o2
         if precisa_de_o2 and not tipo_de_o2:
@@ -112,8 +116,6 @@ class PacienteCreateForm(forms.ModelForm):
 
         if not instance.data_de_internacao_no_setor:
             instance.data_de_internacao_no_setor = instance.data_de_internacao
-        if not instance.hora_de_internacao_no_setor:
-            instance.hora_de_internacao_no_setor = instance.hora_de_internacao
 
         if commit:
             instance.save()
@@ -140,16 +142,10 @@ class PacienteCreateForm(forms.ModelForm):
         ),
         required=False,
     )
-    data_de_internacao = forms.DateField(
+    data_de_internacao = DateTimeLocalField(
         label="Data de Internação",
-        widget=forms.DateInput(
-            attrs={"class": "form-control", "type": "date"},
-        ),
-    )
-    hora_de_internacao = forms.TimeField(
-        label="Hora de Internação",
-        widget=forms.TimeInput(
-            attrs={"class": "form-control", "type": "time"},
+        widget=DateTimeLocalInput(
+            attrs={"class": "form-control"},
         ),
     )
     sexo = forms.ChoiceField(
@@ -314,7 +310,6 @@ class PacienteCreateForm(forms.ModelForm):
             "nome_social",
             "data_de_nascimento",
             "data_de_internacao",
-            "hora_de_internacao",
             "sexo",
             "diagnostico",
             "justificativas_pendencias",
@@ -361,10 +356,9 @@ class PacienteEditForm(forms.ModelForm):
         tipo_de_cirurgia = cleaned_data.get("tipo_de_cirurgia")
         data_de_nascimento = cleaned_data.get("data_de_nascimento")
         data_de_internacao = cleaned_data.get("data_de_internacao")
-        hora_de_internacao = cleaned_data.get("hora_de_internacao")
 
-        current_date = now().date()
-        current_time = now().time()
+        current_datetime = now()
+        current_date = current_datetime.date()
 
         if data_de_nascimento and data_de_nascimento > current_date:
             self.add_error(
@@ -372,18 +366,10 @@ class PacienteEditForm(forms.ModelForm):
             )
 
         # Validate data_de_internacao (date of admission)
-        if data_de_internacao and data_de_internacao > current_date:
+        if data_de_internacao and data_de_internacao > current_datetime:
             self.add_error(
                 "data_de_internacao", "A data de internação não pode estar no futuro."
             )
-
-        # Validate hora_de_internacao (time of admission)
-        if data_de_internacao and hora_de_internacao:
-            if data_de_internacao == current_date and hora_de_internacao > current_time:
-                self.add_error(
-                    "hora_de_internacao",
-                    "A hora de internação não pode estar no futuro.",
-                )
 
         # Validation for precisa_de_o2 and tipo_de_o2
         if precisa_de_o2 and not tipo_de_o2:
@@ -431,7 +417,6 @@ class PacienteEditForm(forms.ModelForm):
         instance = super().save(commit=False)
 
         instance.data_de_internacao_no_setor = instance.data_de_internacao
-        instance.hora_de_internacao_no_setor = instance.hora_de_internacao
 
         if commit:
             instance.save()
@@ -459,18 +444,10 @@ class PacienteEditForm(forms.ModelForm):
         ),
         required=False,
     )
-    data_de_internacao = forms.DateField(
+    data_de_internacao = DateTimeLocalField(
         label="Data de Internação",
-        widget=forms.DateInput(
-            attrs={"class": "form-control", "type": "date"},
-            format="%Y-%m-%d",
-        ),
-    )
-    hora_de_internacao = forms.TimeField(
-        label="Hora de Internação",
-        widget=forms.TimeInput(
-            attrs={"class": "form-control", "type": "time"},
-            format="%H:%M",
+        widget=DateTimeLocalInput(
+            attrs={"class": "form-control"},
         ),
     )
     sexo = forms.ChoiceField(
@@ -656,7 +633,6 @@ class PacienteEditForm(forms.ModelForm):
             "nome_social",
             "data_de_nascimento",
             "data_de_internacao",
-            "hora_de_internacao",
             "sexo",
             "diagnostico",
             "justificativas_pendencias",

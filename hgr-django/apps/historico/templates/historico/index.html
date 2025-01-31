@@ -12,7 +12,7 @@
       <div class="card-body p-4">
         <form method="get" class="d-flex mb-3">
           {% csrf_token %}
-          <input type="text" name="q" class="form-control me-3" placeholder="Busca por ID, Setor ou Paciente"
+          <input type="text" name="q" class="form-control me-3" placeholder="Busca por Data ou Usuário"
             value="{{ request.GET.q }}" />
           <button type="submit" class="btn btn-primary">
             <i class="ti ti-search"></i>
