@@ -55,8 +55,8 @@ class DashboardFilterForm(forms.Form):
 def dashboard_view(request):
     form = DashboardFilterForm(request.GET or None)
 
-    inicio_do_periodo = now().replace(day=1).date()
-    fim_do_periodo = now().date()
+    inicio_do_periodo = now().replace(day=1)
+    fim_do_periodo = now()
 
     # Data Aggregation
     enfermeiros = Usuario.objects.filter(status_de_usuario__nome="Ativo").count()
