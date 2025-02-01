@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator
+from utils.decorators import is_admin_or_higher_required
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import now
@@ -23,7 +24,8 @@ def cirurgias_view(request):
             removido_em__isnull=True,
         ).order_by("id")
     else:
-        objs = Cirurgia.objects.filter(removido_em__isnull=True).order_by("-data")
+        objs = Cirurgia.objects.filter(
+            removido_em__isnull=True).order_by("-data")
 
     paginator = Paginator(objs, 10)
     page_number = request.GET.get("page")
@@ -92,6 +94,7 @@ def cirurgia_view(request, id):
 
 
 @login_required
+@is_admin_or_higher_required
 def editar_cirurgia_view(request, id):
     obj = get_object_or_404(Cirurgia, id=id, removido_em__isnull=True)
 
@@ -133,6 +136,7 @@ def editar_cirurgia_view(request, id):
 
 
 @login_required
+@is_admin_or_higher_required
 def excluir_cirurgia_view(request, id):
     obj = get_object_or_404(Cirurgia, id=id, removido_em__isnull=True)
 

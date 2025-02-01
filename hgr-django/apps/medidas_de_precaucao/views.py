@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator
+from utils.decorators import is_admin_or_higher_required
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import now
@@ -70,6 +71,7 @@ def medidas_de_precaucao_view(request):
 
 @login_required
 @transaction.atomic
+@is_admin_or_higher_required
 def editar_medida_de_precaucao_view(request, id):
     obj = get_object_or_404(MedidaDePrecaucao, id=id)
 
@@ -100,6 +102,7 @@ def editar_medida_de_precaucao_view(request, id):
 
 @login_required
 @transaction.atomic
+@is_admin_or_higher_required
 def excluir_medida_de_precaucao_view(request, id):
     obj = get_object_or_404(MedidaDePrecaucao, id=id)
 

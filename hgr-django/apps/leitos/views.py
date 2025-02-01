@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator
+from utils.decorators import is_admin_or_higher_required
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import now
@@ -22,11 +23,11 @@ def leitos_view(request):
     query = request.GET.get("q", "")
     if query:
         objs = Leito.objects.filter(
-            Q(id__icontains=query),
-            Q(setor__nome__icontains=query),
-            Q(tipo_de_leito__nome__icontains=query),
-            Q(status_de_leito__nome__icontains=query),
-            Q(codigo_sus__icontains=query),
+            Q(id__icontains=query)
+            | Q(setor__nome__icontains=query)
+            | Q(tipo_de_leito__nome__icontains=query)
+            | Q(status_de_leito__nome__icontains=query)
+            | Q(codigo_sus__icontains=query),
             removido_em__isnull=True,
         ).order_by("id")
     else:
@@ -46,7 +47,8 @@ def leitos_view(request):
     status_de_leito = StatusDeLeito.objects.filter(removido_em__isnull=True).order_by(
         "nome"
     )
-    tipos_de_o2 = TipoDeO2.objects.filter(removido_em__isnull=True).order_by("nome")
+    tipos_de_o2 = TipoDeO2.objects.filter(
+        removido_em__isnull=True).order_by("nome")
     tipos_de_vacuo = TipoDeVacuo.objects.filter(removido_em__isnull=True).order_by(
         "nome"
     )
@@ -98,7 +100,8 @@ def leitos_view(request):
 def leito_view(request, id):
     obj = get_object_or_404(Leito, id=id, removido_em__isnull=True)
 
-    paginator = Paginator(obj.historico_de_ocupacao.order_by("-ocorrido_em"), 10)
+    paginator = Paginator(
+        obj.historico_de_ocupacao.order_by("-ocorrido_em"), 10)
     page_number = request.GET.get("page")
     page_objs = paginator.get_page(page_number)
 
@@ -114,6 +117,8 @@ def leito_view(request, id):
 
 
 @login_required
+@transaction.atomic
+@is_admin_or_higher_required
 def editar_leito_view(request, id):
     obj = get_object_or_404(Leito, id=id, removido_em__isnull=True)
 
@@ -135,7 +140,8 @@ def editar_leito_view(request, id):
     status_de_leito = StatusDeLeito.objects.filter(removido_em__isnull=True).order_by(
         "nome"
     )
-    tipos_de_o2 = TipoDeO2.objects.filter(removido_em__isnull=True).order_by("nome")
+    tipos_de_o2 = TipoDeO2.objects.filter(
+        removido_em__isnull=True).order_by("nome")
     tipos_de_vacuo = TipoDeVacuo.objects.filter(removido_em__isnull=True).order_by(
         "nome"
     )
@@ -160,6 +166,7 @@ def editar_leito_view(request, id):
 
 @login_required
 @transaction.atomic
+@is_admin_or_higher_required
 def excluir_leito_view(request, id):
     obj = get_object_or_404(Leito, id=id, removido_em__isnull=True)
 

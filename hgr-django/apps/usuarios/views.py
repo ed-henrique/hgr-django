@@ -1,7 +1,7 @@
 from django.core.paginator import Paginator
+from utils.decorators import is_superadmin_required, is_admin_or_higher_required
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
-from django.utils.timezone import now
 from django.db import transaction
 from django.db.models import Q
 from .models import Usuario
@@ -16,8 +16,7 @@ def usuarios_view(request):
     query = request.GET.get("q", "")
     if query:
         objs = Usuario.objects.filter(
-            Q(first_name__icontains=query),
-            Q(email__icontains=query),
+            Q(first_name__icontains=query) | Q(email__icontains=query),
         ).order_by("status_de_usuario", "tipo_de_usuario", "first_name")
     else:
         objs = Usuario.objects.all().order_by(
@@ -44,6 +43,7 @@ def usuarios_view(request):
 
 @login_required
 @transaction.atomic
+@is_superadmin_required
 def elevar_autoridade_usuario_view(request, id):
     obj = get_object_or_404(Usuario, id=id)
 
@@ -62,11 +62,13 @@ def elevar_autoridade_usuario_view(request, id):
 
 @login_required
 @transaction.atomic
+@is_superadmin_required
 def remover_autoridade_usuario_view(request, id):
     obj = get_object_or_404(Usuario, id=id)
 
     if request.method == "POST":
-        tipo_de_usuario = TipoDeUsuario.objects.get(nome="Profissional de Saúde")
+        tipo_de_usuario = TipoDeUsuario.objects.get(
+            nome="Profissional de Saúde")
         obj.tipo_de_usuario = tipo_de_usuario
         obj.save()
 
@@ -80,6 +82,7 @@ def remover_autoridade_usuario_view(request, id):
 
 @login_required
 @transaction.atomic
+@is_admin_or_higher_required
 def desbloquear_usuario_view(request, id):
     obj = get_object_or_404(Usuario, id=id)
 
@@ -98,6 +101,7 @@ def desbloquear_usuario_view(request, id):
 
 @login_required
 @transaction.atomic
+@is_admin_or_higher_required
 def bloquear_usuario_view(request, id):
     obj = get_object_or_404(Usuario, id=id)
 
@@ -116,6 +120,7 @@ def bloquear_usuario_view(request, id):
 
 @login_required
 @transaction.atomic
+@is_admin_or_higher_required
 def excluir_usuario_view(request, id):
     obj = get_object_or_404(Usuario, id=id)
 

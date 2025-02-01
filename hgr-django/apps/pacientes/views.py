@@ -1,5 +1,6 @@
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
+from utils.decorators import is_admin_or_higher_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import now
 from django.db import transaction
@@ -7,6 +8,8 @@ from django.db.models import Q
 from .models import Paciente
 from apps.leitos.models import Leito
 from apps.entradas.models import Entrada
+from apps.transferencias.models import Transferencia
+from apps.saidas.models import Saida
 from apps.historico_de_ocupacao_de_leito.models import HistoricoDeOcupacaoDeLeito
 from .forms import PacienteEditForm, PacienteCreateForm
 
@@ -56,29 +59,29 @@ def paciente_view(request, id):
 
 
 @login_required
+@transaction.atomic
 def criar_paciente_view(request):
     if request.method == "POST":
         form = PacienteCreateForm(request.POST, user=request.user)
         if form.is_valid():
-            with transaction.atomic():
-                paciente = form.save()
+            paciente = form.save()
 
-                leito = form.cleaned_data.get("leito")
-                leito.paciente = paciente
-                leito.save()
+            leito = form.cleaned_data.get("leito")
+            leito.paciente = paciente
+            leito.save()
 
-                HistoricoDeOcupacaoDeLeito.objects.create(
-                    paciente=paciente, leito=leito
-                )
+            HistoricoDeOcupacaoDeLeito.objects.create(
+                paciente=paciente, leito=leito
+            )
 
-                Entrada.objects.create(
-                    paciente=paciente,
-                    unidade_de_saude_de_origem=paciente.unidade_de_saude_de_origem,
-                    leito_de_destino=leito,
-                    data=paciente.data_de_internacao,
-                )
+            Entrada.objects.create(
+                paciente=paciente,
+                unidade_de_saude_de_origem=paciente.unidade_de_saude_de_origem,
+                leito_de_destino=leito,
+                data=paciente.data_de_internacao,
+            )
 
-                return redirect("/gestao/pacientes/")
+            return redirect("/gestao/pacientes/")
     else:
         form = PacienteCreateForm(user=request.user)
 
@@ -94,35 +97,50 @@ def criar_paciente_view(request):
 
 
 @login_required
+@transaction.atomic
+@is_admin_or_higher_required
 def editar_paciente_view(request, id):
     obj = get_object_or_404(Paciente, id=id, removido_em__isnull=True)
 
     if request.method == "POST":
         form = PacienteEditForm(request.POST, instance=obj, paciente=obj)
         if form.is_valid():
-            with transaction.atomic():
-                antigo_leito = obj.leito
-                leito = form.cleaned_data.get("leito")
+            antigo_leito = obj.leito
+            leito = form.cleaned_data.get("leito")
+            unidade_de_saude_de_origem = form.cleaned_data.get(
+                "unidade_de_saude_de_origem")
+            data_de_internacao = form.cleaned_data.get(
+                "data_de_internacao")
+            data_de_internacao_no_setor = form.cleaned_data.get(
+                "data_de_internacao_no_setor")
 
-                antigo_leito = Leito.objects.select_for_update().get(pk=antigo_leito.pk)
-                leito = Leito.objects.select_for_update().get(pk=leito.pk)
+            antigo_leito = Leito.objects.select_for_update().get(pk=antigo_leito.pk)
+            leito = Leito.objects.select_for_update().get(pk=leito.pk)
 
-                paciente = form.save()
+            paciente = form.save()
 
-                if antigo_leito != leito:
-                    antigo_leito.paciente = None
-                    antigo_leito.save()
+            if antigo_leito != leito:
+                antigo_leito.paciente = None
+                antigo_leito.save()
 
-                    HistoricoDeOcupacaoDeLeito.objects.create(leito=antigo_leito)
+                HistoricoDeOcupacaoDeLeito.objects.create(
+                    leito=antigo_leito)
 
-                    leito.paciente = paciente
-                    leito.save()
+                leito.paciente = paciente
+                leito.save()
 
-                    HistoricoDeOcupacaoDeLeito.objects.create(
-                        leito=leito, paciente=paciente
-                    )
+                HistoricoDeOcupacaoDeLeito.objects.create(
+                    leito=leito, paciente=paciente
+                )
 
-                return redirect(f"/gestao/pacientes/{id}")
+                Entrada.objects.select_for_update().filter(paciente=obj).update(
+                    leito_de_destino=leito,
+                    unidade_de_saude_de_origem=unidade_de_saude_de_origem,
+                    data_de_internacao=data_de_internacao,
+                    data_de_internacao_no_setor=data_de_internacao_no_setor
+                )
+
+            return redirect(f"/gestao/pacientes/{id}")
     else:
         form = PacienteEditForm(instance=obj, paciente=obj)
 
@@ -138,15 +156,26 @@ def editar_paciente_view(request, id):
     return render(request, "pacientes/editar.html", context)
 
 
-@login_required
+@ login_required
+@ transaction.atomic
+@is_admin_or_higher_required
 def excluir_paciente_view(request, id):
     obj = get_object_or_404(Paciente, id=id, removido_em__isnull=True)
 
     if request.method == "POST":
-        with transaction.atomic():
-            obj.removido_em = now()
-            obj.save()
-            leito = obj.leito
-            leito.paciente = None
-            leito.save()
+        obj.removido_em = now()
+        obj.save()
+
+        leito = obj.leito
+        leito.paciente = None
+        leito.save()
+
+        Entrada.objects.select_for_update().filter(
+            paciente=obj).update(removido_em=now())
+        Transferencia.objects.select_for_update().filter(
+            paciente=obj).update(removido_em=now())
+        Saida.objects.select_for_update().filter(
+            paciente=obj).update(removido_em=now())
+        HistoricoDeOcupacaoDeLeito.objects.select_for_update().filter(paciente=obj).delete()
+
         return redirect("/gestao/pacientes/")

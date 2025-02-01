@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator
+from utils.decorators import is_admin_or_higher_required
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import now
@@ -20,7 +21,8 @@ def transferencias_view(request):
             removido_em__isnull=True,
         ).order_by("id")
     else:
-        objs = Transferencia.objects.filter(removido_em__isnull=True).order_by("-data")
+        objs = Transferencia.objects.filter(
+            removido_em__isnull=True).order_by("-data")
 
     paginator = Paginator(objs, 10)
     page_number = request.GET.get("page")
@@ -81,6 +83,7 @@ def transferencia_view(request, id):
 
 
 @login_required
+@is_admin_or_higher_required
 def editar_transferencia_view(request, id):
     obj = get_object_or_404(Transferencia, id=id, removido_em__isnull=True)
 
@@ -118,6 +121,7 @@ def editar_transferencia_view(request, id):
 
 
 @login_required
+@is_admin_or_higher_required
 def excluir_transferencia_view(request, id):
     obj = get_object_or_404(Transferencia, id=id, removido_em__isnull=True)
 

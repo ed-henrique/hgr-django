@@ -42,12 +42,14 @@ class DashboardFilterForm(forms.Form):
     inicio_periodo = forms.DateField(
         required=False,
         label="Início do Período",
-        widget=forms.DateInput(attrs={"class": "form-control", "type": "date"}),
+        widget=forms.DateInput(
+            attrs={"class": "form-control", "type": "date"}),
     )
     fim_periodo = forms.DateField(
         required=False,
         label="Fim do Período",
-        widget=forms.DateInput(attrs={"class": "form-control", "type": "date"}),
+        widget=forms.DateInput(
+            attrs={"class": "form-control", "type": "date"}),
     )
 
 
@@ -55,11 +57,12 @@ class DashboardFilterForm(forms.Form):
 def dashboard_view(request):
     form = DashboardFilterForm(request.GET or None)
 
-    inicio_do_periodo = now().replace(day=1)
-    fim_do_periodo = now()
+    inicio_do_periodo = now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    fim_do_periodo = now().replace(hour=23, minute=59, second=59, microsecond=999999)
 
     # Data Aggregation
-    enfermeiros = Usuario.objects.filter(status_de_usuario__nome="Ativo").count()
+    enfermeiros = Usuario.objects.filter(
+        status_de_usuario__nome="Ativo").count()
     leitos = Leito.objects.filter(removido_em__isnull=True)
     pacientes = Paciente.objects.filter(removido_em__isnull=True).exclude(
         saida__isnull=False

@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator
+from utils.decorators import is_admin_or_higher_required
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import now
@@ -43,7 +44,8 @@ def unidades_de_saude_view(request):
             Q(nome__icontains=query), removido_em__isnull=True
         ).order_by("nome")
     else:
-        objs = UnidadeDeSaude.objects.filter(removido_em__isnull=True).order_by("nome")
+        objs = UnidadeDeSaude.objects.filter(
+            removido_em__isnull=True).order_by("nome")
 
     paginator = Paginator(objs, 10)
     page_number = request.GET.get("page")
@@ -68,6 +70,7 @@ def unidades_de_saude_view(request):
 
 @login_required
 @transaction.atomic
+@is_admin_or_higher_required
 def editar_unidade_de_saude_view(request, id):
     obj = get_object_or_404(UnidadeDeSaude, id=id)
 
@@ -98,6 +101,7 @@ def editar_unidade_de_saude_view(request, id):
 
 @login_required
 @transaction.atomic
+@is_admin_or_higher_required
 def excluir_unidade_de_saude_view(request, id):
     obj = get_object_or_404(UnidadeDeSaude, id=id)
 

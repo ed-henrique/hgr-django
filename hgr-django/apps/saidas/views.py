@@ -1,11 +1,11 @@
 from django.core.paginator import Paginator
+from utils.decorators import is_admin_or_higher_required
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import now
 from django.db.models import Q
 from .models import Saida
 from .forms import SaidaForm
-from apps.leitos.models import Leito
 from apps.pacientes.models import Paciente
 from apps.unidades_de_saude.models import UnidadeDeSaude
 from apps.tipos_de_saida.models import TipoDeSaida
@@ -90,6 +90,7 @@ def saida_view(request, id):
 
 
 @login_required
+@is_admin_or_higher_required
 def editar_saida_view(request, id):
     obj = get_object_or_404(Saida, id=id, removido_em__isnull=True)
 
@@ -129,6 +130,7 @@ def editar_saida_view(request, id):
 
 
 @login_required
+@is_admin_or_higher_required
 def excluir_saida_view(request, id):
     obj = get_object_or_404(Saida, id=id, removido_em__isnull=True)
 

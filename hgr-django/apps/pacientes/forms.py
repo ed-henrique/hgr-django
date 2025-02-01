@@ -61,6 +61,12 @@ class PacienteCreateForm(forms.ModelForm):
             )
 
         # Validate data_de_internacao (date of admission)
+        if data_de_internacao and data_de_internacao.date() < data_de_nascimento:
+            self.add_error(
+                "data_de_internacao", "A data de internação não pode estar antes da data de nascimento."
+            )
+
+        # Validate data_de_internacao (date of admission)
         if data_de_internacao and data_de_internacao > current_datetime:
             self.add_error(
                 "data_de_internacao", "A data de internação não pode estar no futuro."
@@ -92,7 +98,8 @@ class PacienteCreateForm(forms.ModelForm):
         elif not precisa_de_cirurgia and tipo_de_cirurgia:
             self.cleaned_data["tipo_de_cirurgia"] = None
 
-        ocupantes = Paciente.objects.filter(leito=leito, removido_em__isnull=True)
+        ocupantes = Paciente.objects.filter(
+            leito=leito, removido_em__isnull=True)
 
         # If editing an existing Paciente, exclude it from the query
         if self.instance and self.instance.pk:
@@ -177,7 +184,7 @@ class PacienteCreateForm(forms.ModelForm):
     )
     genero = forms.ModelChoiceField(
         label="Gênero",
-        queryset=Genero.objects.all(),
+        queryset=Genero.objects.all().order_by("id"),
         widget=forms.Select(
             attrs={"class": "form-select"},
         ),
@@ -185,7 +192,8 @@ class PacienteCreateForm(forms.ModelForm):
     )
     leito = forms.ModelChoiceField(
         label="Leito",
-        queryset=Leito.objects.filter(paciente__isnull=True, removido_em__isnull=True),
+        queryset=Leito.objects.filter(
+            paciente__isnull=True, removido_em__isnull=True),
         widget=forms.Select(
             attrs={"class": "form-select"},
         ),
@@ -371,6 +379,12 @@ class PacienteEditForm(forms.ModelForm):
                 "data_de_internacao", "A data de internação não pode estar no futuro."
             )
 
+        # Validate data_de_internacao (date of admission)
+        if data_de_internacao and data_de_internacao.date() < data_de_nascimento:
+            self.add_error(
+                "data_de_internacao", "A data de internação não pode estar antes da data de nascimento."
+            )
+
         # Validation for precisa_de_o2 and tipo_de_o2
         if precisa_de_o2 and not tipo_de_o2:
             self.add_error(
@@ -397,7 +411,8 @@ class PacienteEditForm(forms.ModelForm):
         elif not precisa_de_cirurgia and tipo_de_cirurgia:
             self.cleaned_data["tipo_de_cirurgia"] = None
 
-        ocupantes = Paciente.objects.filter(leito=leito, removido_em__isnull=True)
+        ocupantes = Paciente.objects.filter(
+            leito=leito, removido_em__isnull=True)
 
         # If editing an existing Paciente, exclude it from the query
         if self.instance and self.instance.pk:
@@ -448,6 +463,7 @@ class PacienteEditForm(forms.ModelForm):
         label="Data de Internação",
         widget=DateTimeLocalInput(
             attrs={"class": "form-control"},
+            format="%Y-%m-%dT%H:%M",
         ),
     )
     sexo = forms.ChoiceField(
@@ -487,7 +503,7 @@ class PacienteEditForm(forms.ModelForm):
     )
     genero = forms.ModelChoiceField(
         label="Gênero",
-        queryset=Genero.objects.all(),
+        queryset=Genero.objects.all().order_by("id"),
         widget=forms.Select(
             attrs={"class": "form-select"},
         ),

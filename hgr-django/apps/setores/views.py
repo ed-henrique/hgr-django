@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator
+from utils.decorators import is_admin_or_higher_required
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import now
@@ -68,6 +69,7 @@ def setores_view(request):
 
 @login_required
 @transaction.atomic
+@is_admin_or_higher_required
 def editar_setor_view(request, id):
     obj = get_object_or_404(Setor, id=id)
 
@@ -98,6 +100,7 @@ def editar_setor_view(request, id):
 
 @login_required
 @transaction.atomic
+@is_admin_or_higher_required
 def excluir_setor_view(request, id):
     obj = get_object_or_404(Setor, id=id)
 
