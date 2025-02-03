@@ -13,7 +13,8 @@ RUN python3 -m pip install -r requirements.txt --no-cache-dir
 
 COPY ./hgr-django /app
 RUN printf $HGRPGPASSFILE > $PGPASSFILE && printf $HGRPGSERVICEFILE > $PGSERVICEFILE && chmod 600 $PGPASSFILE $PGSERVICEFILE
-# RUN python3 manage.py migrate
+RUN python3 manage.py makemigrations
+RUN python3 manage.py migrate
 
 ENTRYPOINT ["python3"]
 CMD ["manage.py", "runserver", "0.0.0.0:8000"]
