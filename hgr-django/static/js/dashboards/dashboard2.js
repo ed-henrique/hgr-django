@@ -24,7 +24,6 @@ document.addEventListener("DOMContentLoaded", function() {
   const dadosEntradasPorDiaPorSetor = {};
   const dadosEntradasPorDia = JSON.parse(document.getElementById('dados-entradas-por-dia').textContent);
   let tamanhoMaximoDadosEntradasPorDiaPorSetor = dadosEntradasPorDia.length;
-  console.log(dadosEntradasPorDia)
   dadosEntradasPorDia.forEach((el, i) => {
     const quantidade = el["total"];
     const cor = el["leito_de_destino__setor__cor"];
@@ -138,36 +137,33 @@ document.addEventListener("DOMContentLoaded", function() {
     },
   };
 
-  /*
   const dadosCirurgiasPorDiaPorSetor = {};
   const dadosCirurgiasPorDia = JSON.parse(document.getElementById('dados-cirurgias-por-dia').textContent);
   let tamanhoMaximoDadosCirurgiasPorDiaPorSetor = dadosCirurgiasPorDia.length;
   dadosCirurgiasPorDia.forEach((el, i) => {
-    el["CirurgiasPorDiaPorSetor"].forEach((eli) => {
-      const quantidade = eli["Quantidade"];
-      const cor = eli["CorSetor"];
-      const nome = eli["NomeSetor"];
-      let itemSetor = dadosCirurgiasPorDiaPorSetor[nome];
+    const quantidade = el["total"];
+    const cor = el["setor__cor"];
+    const nome = el["setor__nome"];
+    let itemSetor = dadosCirurgiasPorDiaPorSetor[nome];
 
-      if (itemSetor !== undefined) {
-        if (itemSetor.data.length === i) {
-          itemSetor.data.push(quantidade)
-        } else if (itemSetor.data.length < i) {
-          for (let j = itemSetor.data.length; j < i; j++) {
-            itemSetor.data.push(null);
-          }
-          itemSetor.data.push(quantidade)
+    if (itemSetor !== undefined) {
+      if (itemSetor.data.length === i) {
+        itemSetor.data.push(quantidade)
+      } else if (itemSetor.data.length < i) {
+        for (let j = itemSetor.data.length; j < i; j++) {
+          itemSetor.data.push(null);
         }
-      } else {
-        itemSetor = {};
-        itemSetor.data = Array(i).fill(null);
-        itemSetor.data.push(quantidade);
-        itemSetor.color = cor;
-        itemSetor.name = nome;
+        itemSetor.data.push(quantidade)
       }
+    } else {
+      itemSetor = {};
+      itemSetor.data = Array(i).fill(null);
+      itemSetor.data.push(quantidade);
+      itemSetor.color = cor;
+      itemSetor.name = nome;
+    }
 
-      dadosCirurgiasPorDiaPorSetor[eli["NomeSetor"]] = itemSetor;
-    });
+    dadosCirurgiasPorDiaPorSetor[el["setor__nome"]] = itemSetor;
   });
   Object.keys(dadosCirurgiasPorDiaPorSetor).forEach((el) => {
     if (dadosCirurgiasPorDiaPorSetor[el].data.length < tamanhoMaximoDadosCirurgiasPorDiaPorSetor) {
@@ -211,7 +207,7 @@ document.addEventListener("DOMContentLoaded", function() {
       opacity: 1,
     },
     labels: dadosCirurgiasPorDia.map((el) => {
-      const data = el["Data"];
+      const data = el["dia"];
       return data.substring(8, 10) + "/" + data.substring(5, 7) + "/" + data.substring(0, 4)
     }),
     markers: {
@@ -257,6 +253,7 @@ document.addEventListener("DOMContentLoaded", function() {
     },
   };
 
+  /*
   const dadosCirurgiasBemSucedidasPorDiaPorSetor = {};
   const dadosCirurgiasBemSucedidasPorDia = JSON.parse(document.getElementById('dados-taxa-efetividade-cirurgica').textContent);
   let tamanhoMaximoDadosCirurgiasBemSucedidasPorDiaPorSetor = dadosCirurgiasBemSucedidasPorDia.length;
@@ -266,7 +263,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const cor = eli["CorSetor"];
       const nome = eli["NomeSetor"];
       let itemSetor = dadosCirurgiasBemSucedidasPorDiaPorSetor[nome];
-
+  
       if (itemSetor !== undefined) {
         if (itemSetor.data.length === i) {
           itemSetor.data.push(quantidade)
@@ -283,7 +280,7 @@ document.addEventListener("DOMContentLoaded", function() {
         itemSetor.color = cor;
         itemSetor.name = nome;
       }
-
+  
       dadosCirurgiasBemSucedidasPorDiaPorSetor[eli["NomeSetor"]] = itemSetor;
     });
   });
@@ -301,11 +298,11 @@ document.addEventListener("DOMContentLoaded", function() {
         const iCirurgiasBemSucedidas = Object.values(dadosCirurgiasBemSucedidasPorDiaPorSetor).reduce((acc, cur) => {
           return acc + (cur.data[i] === null ? 0 : cur.data[i]);
         }, 0);
-
+  
         const iCirurgiasDia = Object.values(dadosCirurgiasPorDiaPorSetor).reduce((acc, cur) => {
           return acc + (cur.data[i] === null ? 0 : cur.data[i]);
         }, 0);
-
+  
         return iCirurgiasBemSucedidas / (iCirurgiasDia === 0 ? 1 : iCirurgiasDia);
       }),
     }],
@@ -378,7 +375,7 @@ document.addEventListener("DOMContentLoaded", function() {
       showForSingleSeries: true,
     },
   };
-
+  
   const dadosEntradasPreCirurgicasPorDiaPorSetor = {};
   const dadosEntradasPreCirurgicasPorDia = JSON.parse(document.getElementById('dados-entradas-pre-cirurgicas-por-dia').textContent);
   let tamanhoMaximoDadosEntradasPreCirurgicasPorDiaPorSetor = dadosEntradasPreCirurgicasPorDia.length;
@@ -388,7 +385,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const cor = eli["CorSetorDeDestino"];
       const nome = eli["NomeSetorDeDestino"];
       let itemSetor = dadosEntradasPreCirurgicasPorDiaPorSetor[nome];
-
+  
       if (itemSetor !== undefined) {
         if (itemSetor.data.length === i) {
           itemSetor.data.push(quantidade)
@@ -405,7 +402,7 @@ document.addEventListener("DOMContentLoaded", function() {
         itemSetor.color = cor;
         itemSetor.name = nome;
       }
-
+  
       dadosEntradasPreCirurgicasPorDiaPorSetor[eli["NomeSetorDeDestino"]] = itemSetor;
     });
   });
@@ -478,15 +475,15 @@ document.addEventListener("DOMContentLoaded", function() {
             if (cur !== null) {
               return acc + cur;
             }
-
+  
             return acc;
           }, 0);
           total = total === 0 ? 1 : total;
-
+  
           if (isNaN(value)) {
             return `${numberFormatter.format(0)} (${percentFormatter.format(0)})`;
           }
-
+  
           return `${numberFormatter.format(value === null ? 0 : value)} (${percentFormatter.format(value / total)})`;
         }
       }
@@ -496,7 +493,7 @@ document.addEventListener("DOMContentLoaded", function() {
       showForSingleSeries: true,
     },
   };
-
+  
   const dadosSaidasPorDiaPorSetor = {};
   const dadosSaidasPorDia = JSON.parse(document.getElementById('dados-saidas-por-dia-por-setor').textContent);
   let tamanhoMaximoDadosSaidasPorDiaPorSetor = dadosSaidasPorDia.length;
@@ -506,7 +503,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const cor = eli["CorSetorDeOrigem"];
       const nome = eli["NomeSetorDeOrigem"];
       let itemSetor = dadosSaidasPorDiaPorSetor[nome];
-
+  
       if (itemSetor !== undefined) {
         if (itemSetor.data.length === i) {
           itemSetor.data.push(quantidade)
@@ -523,7 +520,7 @@ document.addEventListener("DOMContentLoaded", function() {
         itemSetor.color = cor;
         itemSetor.name = nome;
       }
-
+  
       dadosSaidasPorDiaPorSetor[eli["NomeSetorDeOrigem"]] = itemSetor;
     });
   });
@@ -596,15 +593,15 @@ document.addEventListener("DOMContentLoaded", function() {
             if (cur !== null) {
               return acc + cur;
             }
-
+  
             return acc;
           }, 0);
           total = total === 0 ? 1 : total;
-
+  
           if (isNaN(value)) {
             return `${numberFormatter.format(0)} (${percentFormatter.format(0)})`;
           }
-
+  
           return `${numberFormatter.format(value === null ? 0 : value)} (${percentFormatter.format(value / total)})`;
         }
       }
@@ -614,7 +611,7 @@ document.addEventListener("DOMContentLoaded", function() {
       showForSingleSeries: true,
     },
   };
-
+  
   const dadosSaidasPorDiaPorTipoDeSaida = {};
   const dadosSaidasPorDia2 = JSON.parse(document.getElementById('dados-saidas-por-dia-por-tipo-de-saida').textContent);
   let tamanhoMaximoDadosSaidasPorDiaPorTipoDeSaida = dadosSaidasPorDia2.length;
@@ -624,7 +621,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const cor = eli["CorTipoDeSaida"];
       const nome = eli["NomeTipoDeSaida"];
       let itemSetor = dadosSaidasPorDiaPorTipoDeSaida[nome];
-
+  
       if (itemSetor !== undefined) {
         if (itemSetor.data.length === i) {
           itemSetor.data.push(quantidade)
@@ -641,7 +638,7 @@ document.addEventListener("DOMContentLoaded", function() {
         itemSetor.color = cor;
         itemSetor.name = nome;
       }
-
+  
       dadosSaidasPorDiaPorTipoDeSaida[eli["NomeTipoDeSaida"]] = itemSetor;
     });
   });
@@ -714,15 +711,15 @@ document.addEventListener("DOMContentLoaded", function() {
             if (cur !== null) {
               return acc + cur;
             }
-
+  
             return acc;
           }, 0);
           total = total === 0 ? 1 : total;
-
+  
           if (isNaN(value)) {
             return `${numberFormatter.format(0)} (${percentFormatter.format(0)})`;
           }
-
+  
           return `${numberFormatter.format(value === null ? 0 : value)} (${percentFormatter.format(value / total)})`;
         }
       }
@@ -732,7 +729,7 @@ document.addEventListener("DOMContentLoaded", function() {
       showForSingleSeries: true,
     },
   };
-
+  
   const dadosSaidasAntes24PorDiaPorSetor = {};
   const dadosSaidasAntes24PorDia = JSON.parse(document.getElementById('dados-saidas-antes-24-por-dia-por-setor').textContent);
   let tamanhoMaximoDadosSaidasAntes24PorDiaPorSetor = dadosSaidasAntes24PorDia.length;
@@ -742,7 +739,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const cor = eli["CorSetorDeOrigem"];
       const nome = eli["NomeSetorDeOrigem"];
       let itemSetor = dadosSaidasAntes24PorDiaPorSetor[nome];
-
+  
       if (itemSetor !== undefined) {
         if (itemSetor.data.length === i) {
           itemSetor.data.push(quantidade)
@@ -759,7 +756,7 @@ document.addEventListener("DOMContentLoaded", function() {
         itemSetor.color = cor;
         itemSetor.name = nome;
       }
-
+  
       dadosSaidasAntes24PorDiaPorSetor[eli["NomeSetorDeOrigem"]] = itemSetor;
     });
   });
@@ -832,15 +829,15 @@ document.addEventListener("DOMContentLoaded", function() {
             if (cur !== null) {
               return acc + cur;
             }
-
+  
             return acc;
           }, 0);
           total = total === 0 ? 1 : total;
-
+  
           if (isNaN(value)) {
             return `${numberFormatter.format(0)} (${percentFormatter.format(0)})`;
           }
-
+  
           return `${numberFormatter.format(value === null ? 0 : value)} (${percentFormatter.format(value / total)})`;
         }
       }
@@ -850,7 +847,7 @@ document.addEventListener("DOMContentLoaded", function() {
       showForSingleSeries: true,
     },
   };
-
+  
   const dadosSaidasAntes24PorDiaPorTipoDeSaida = {};
   const dadosSaidasAntes24PorDia2 = JSON.parse(document.getElementById('dados-saidas-antes-24-por-dia-por-tipo-de-saida').textContent);
   let tamanhoMaximoDadosSaidasAntes24PorDiaPorTipoDeSaida = dadosSaidasAntes24PorDia2.length;
@@ -860,7 +857,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const cor = eli["CorTipoDeSaida"];
       const nome = eli["NomeTipoDeSaida"];
       let itemSetor = dadosSaidasAntes24PorDiaPorTipoDeSaida[nome];
-
+  
       if (itemSetor !== undefined) {
         if (itemSetor.data.length === i) {
           itemSetor.data.push(quantidade)
@@ -877,7 +874,7 @@ document.addEventListener("DOMContentLoaded", function() {
         itemSetor.color = cor;
         itemSetor.name = nome;
       }
-
+  
       dadosSaidasAntes24PorDiaPorTipoDeSaida[eli["NomeTipoDeSaida"]] = itemSetor;
     });
   });
@@ -950,15 +947,15 @@ document.addEventListener("DOMContentLoaded", function() {
             if (cur !== null) {
               return acc + cur;
             }
-
+  
             return acc;
           }, 0);
           total = total === 0 ? 1 : total;
-
+  
           if (isNaN(value)) {
             return `${numberFormatter.format(0)} (${percentFormatter.format(0)})`;
           }
-
+  
           return `${numberFormatter.format(value === null ? 0 : value)} (${percentFormatter.format(value / total)})`;
         }
       }
@@ -968,7 +965,7 @@ document.addEventListener("DOMContentLoaded", function() {
       showForSingleSeries: true,
     },
   };
-
+  
   const dadosSaidasDepois24PorDiaPorSetor = {};
   const dadosSaidasDepois24PorDia = JSON.parse(document.getElementById('dados-saidas-depois-24-por-dia-por-setor').textContent);
   let tamanhoMaximoDadosSaidasDepois24PorDiaPorSetor = dadosSaidasDepois24PorDia.length;
@@ -978,7 +975,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const cor = eli["CorSetorDeOrigem"];
       const nome = eli["NomeSetorDeOrigem"];
       let itemSetor = dadosSaidasDepois24PorDiaPorSetor[nome];
-
+  
       if (itemSetor !== undefined) {
         if (itemSetor.data.length === i) {
           itemSetor.data.push(quantidade)
@@ -995,7 +992,7 @@ document.addEventListener("DOMContentLoaded", function() {
         itemSetor.color = cor;
         itemSetor.name = nome;
       }
-
+  
       dadosSaidasDepois24PorDiaPorSetor[eli["NomeSetorDeOrigem"]] = itemSetor;
     });
   });
@@ -1068,15 +1065,15 @@ document.addEventListener("DOMContentLoaded", function() {
             if (cur !== null) {
               return acc + cur;
             }
-
+  
             return acc;
           }, 0);
           total = total === 0 ? 1 : total;
-
+  
           if (isNaN(value)) {
             return `${numberFormatter.format(0)} (${percentFormatter.format(0)})`;
           }
-
+  
           return `${numberFormatter.format(value === null ? 0 : value)} (${percentFormatter.format(value / total)})`;
         }
       }
@@ -1086,7 +1083,7 @@ document.addEventListener("DOMContentLoaded", function() {
       showForSingleSeries: true,
     },
   };
-
+  
   const dadosSaidasDepois24PorDiaPorTipoDeSaida = {};
   const dadosSaidasDepois24PorDia2 = JSON.parse(document.getElementById('dados-saidas-depois-24-por-dia-por-tipo-de-saida').textContent);
   let tamanhoMaximoDadosSaidasDepois24PorDiaPorTipoDeSaida = dadosSaidasDepois24PorDia2.length;
@@ -1096,7 +1093,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const cor = eli["CorTipoDeSaida"];
       const nome = eli["NomeTipoDeSaida"];
       let itemSetor = dadosSaidasDepois24PorDiaPorTipoDeSaida[nome];
-
+  
       if (itemSetor !== undefined) {
         if (itemSetor.data.length === i) {
           itemSetor.data.push(quantidade)
@@ -1113,7 +1110,7 @@ document.addEventListener("DOMContentLoaded", function() {
         itemSetor.color = cor;
         itemSetor.name = nome;
       }
-
+  
       dadosSaidasDepois24PorDiaPorTipoDeSaida[eli["NomeTipoDeSaida"]] = itemSetor;
     });
   });
@@ -1186,15 +1183,15 @@ document.addEventListener("DOMContentLoaded", function() {
             if (cur !== null) {
               return acc + cur;
             }
-
+  
             return acc;
           }, 0);
           total = total === 0 ? 1 : total;
-
+  
           if (isNaN(value)) {
             return `${numberFormatter.format(0)} (${percentFormatter.format(0)})`;
           }
-
+  
           return `${numberFormatter.format(value === null ? 0 : value)} (${percentFormatter.format(value / total)})`;
         }
       }
@@ -1204,7 +1201,7 @@ document.addEventListener("DOMContentLoaded", function() {
       showForSingleSeries: true,
     },
   };
-
+  
   const dadosSaidasPosCirurgicasPorDiaPorSetor = {};
   const dadosSaidasPosCirurgicasPorDia = JSON.parse(document.getElementById('dados-saidas-pos-cirurgicas-por-dia-por-setor').textContent);
   let tamanhoMaximoDadosSaidasPosCirurgicasPorDiaPorSetor = dadosSaidasPosCirurgicasPorDia.length;
@@ -1214,7 +1211,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const cor = eli["CorSetorDeOrigem"];
       const nome = eli["NomeSetorDeOrigem"];
       let itemSetor = dadosSaidasPosCirurgicasPorDiaPorSetor[nome];
-
+  
       if (itemSetor !== undefined) {
         if (itemSetor.data.length === i) {
           itemSetor.data.push(quantidade)
@@ -1231,7 +1228,7 @@ document.addEventListener("DOMContentLoaded", function() {
         itemSetor.color = cor;
         itemSetor.name = nome;
       }
-
+  
       dadosSaidasPosCirurgicasPorDiaPorSetor[eli["NomeSetorDeOrigem"]] = itemSetor;
     });
   });
@@ -1304,15 +1301,15 @@ document.addEventListener("DOMContentLoaded", function() {
             if (cur !== null) {
               return acc + cur;
             }
-
+  
             return acc;
           }, 0);
           total = total === 0 ? 1 : total;
-
+  
           if (isNaN(value)) {
             return `${numberFormatter.format(0)} (${percentFormatter.format(0)})`;
           }
-
+  
           return `${numberFormatter.format(value === null ? 0 : value)} (${percentFormatter.format(value / total)})`;
         }
       }
@@ -1322,7 +1319,7 @@ document.addEventListener("DOMContentLoaded", function() {
       showForSingleSeries: true,
     },
   };
-
+  
   const dadosSaidasPosCirurgicasPorDiaPorTipoDeSaida = {};
   const dadosSaidasPosCirurgicasPorDia2 = JSON.parse(document.getElementById('dados-saidas-pos-cirurgicas-por-dia-por-tipo-de-saida').textContent);
   let tamanhoMaximoDadosSaidasPosCirurgicasPorDiaPorTipoDeSaida = dadosSaidasPosCirurgicasPorDia2.length;
@@ -1332,7 +1329,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const cor = eli["CorTipoDeSaida"];
       const nome = eli["NomeTipoDeSaida"];
       let itemSetor = dadosSaidasPosCirurgicasPorDiaPorTipoDeSaida[nome];
-
+  
       if (itemSetor !== undefined) {
         if (itemSetor.data.length === i) {
           itemSetor.data.push(quantidade)
@@ -1349,7 +1346,7 @@ document.addEventListener("DOMContentLoaded", function() {
         itemSetor.color = cor;
         itemSetor.name = nome;
       }
-
+  
       dadosSaidasPosCirurgicasPorDiaPorTipoDeSaida[eli["NomeTipoDeSaida"]] = itemSetor;
     });
   });
@@ -1422,15 +1419,15 @@ document.addEventListener("DOMContentLoaded", function() {
             if (cur !== null) {
               return acc + cur;
             }
-
+  
             return acc;
           }, 0);
           total = total === 0 ? 1 : total;
-
+  
           if (isNaN(value)) {
             return `${numberFormatter.format(0)} (${percentFormatter.format(0)})`;
           }
-
+  
           return `${numberFormatter.format(value === null ? 0 : value)} (${percentFormatter.format(value / total)})`;
         }
       }
@@ -1440,7 +1437,7 @@ document.addEventListener("DOMContentLoaded", function() {
       showForSingleSeries: true,
     },
   };
-
+  
   const dadosPacientesDiaPorSetor = {};
   const dadosPacientesDia = JSON.parse(document.getElementById('dados-pacientes-dia').textContent);
   let tamanhoMaximoDadosPacientesDiaPorSetor = dadosPacientesDia.length;
@@ -1450,7 +1447,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const cor = eli["CorSetor"];
       const nome = eli["NomeSetor"];
       let itemSetor = dadosPacientesDiaPorSetor[nome];
-
+  
       if (itemSetor !== undefined) {
         if (itemSetor.data.length === i) {
           itemSetor.data.push(quantidade)
@@ -1467,7 +1464,7 @@ document.addEventListener("DOMContentLoaded", function() {
         itemSetor.color = cor;
         itemSetor.name = nome;
       }
-
+  
       dadosPacientesDiaPorSetor[eli["NomeSetor"]] = itemSetor;
     });
   });
@@ -1540,15 +1537,15 @@ document.addEventListener("DOMContentLoaded", function() {
             if (cur !== null) {
               return acc + cur;
             }
-
+  
             return acc;
           }, 0);
           total = total === 0 ? 1 : total;
-
+  
           if (isNaN(value)) {
             return `${numberFormatter.format(0)} (${percentFormatter.format(0)})`;
           }
-
+  
           return `${numberFormatter.format(value === null ? 0 : value)} (${percentFormatter.format(value / total)})`;
         }
       }
@@ -1558,7 +1555,7 @@ document.addEventListener("DOMContentLoaded", function() {
       showForSingleSeries: true,
     },
   };
-
+  
   const dadosLeitosDiaPorSetor = {};
   const dadosLeitosDia = JSON.parse(document.getElementById('dados-leitos-dia').textContent);
   let tamanhoMaximoDadosLeitosDiaPorSetor = dadosLeitosDia.length;
@@ -1568,7 +1565,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const cor = eli["CorSetor"];
       const nome = eli["NomeSetor"];
       let itemSetor = dadosLeitosDiaPorSetor[nome];
-
+  
       if (itemSetor !== undefined) {
         if (itemSetor.data.length === i) {
           itemSetor.data.push(quantidade)
@@ -1585,7 +1582,7 @@ document.addEventListener("DOMContentLoaded", function() {
         itemSetor.color = cor;
         itemSetor.name = nome;
       }
-
+  
       dadosLeitosDiaPorSetor[eli["NomeSetor"]] = itemSetor;
     });
   });
@@ -1658,15 +1655,15 @@ document.addEventListener("DOMContentLoaded", function() {
             if (cur !== null) {
               return acc + cur;
             }
-
+  
             return acc;
           }, 0);
           total = total === 0 ? 1 : total;
-
+  
           if (isNaN(value)) {
             return `${numberFormatter.format(0)} (${percentFormatter.format(0)})`;
           }
-
+  
           return `${numberFormatter.format(value === null ? 0 : value)} (${percentFormatter.format(value / total)})`;
         }
       }
@@ -1676,7 +1673,7 @@ document.addEventListener("DOMContentLoaded", function() {
       showForSingleSeries: true,
     },
   };
-
+  
   const dadosTransferenciasEnviadasPorSetor = {};
   const dadosTransferenciasEnviadas = JSON.parse(document.getElementById('dados-transferencias-enviadas').textContent);
   let tamanhoMaximoDadosTransferenciasEnviadasPorSetor = dadosTransferenciasEnviadas.length;
@@ -1686,7 +1683,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const cor = eli["CorSetorDeOrigem"];
       const nome = eli["NomeSetorDeOrigem"];
       let itemSetor = dadosTransferenciasEnviadasPorSetor[nome];
-
+  
       if (itemSetor !== undefined) {
         if (itemSetor.data.length === i) {
           itemSetor.data.push(quantidade)
@@ -1703,7 +1700,7 @@ document.addEventListener("DOMContentLoaded", function() {
         itemSetor.color = cor;
         itemSetor.name = nome;
       }
-
+  
       dadosTransferenciasEnviadasPorSetor[eli["NomeSetorDeOrigem"]] = itemSetor;
     });
   });
@@ -1776,15 +1773,15 @@ document.addEventListener("DOMContentLoaded", function() {
             if (cur !== null) {
               return acc + cur;
             }
-
+  
             return acc;
           }, 0);
           total = total === 0 ? 1 : total;
-
+  
           if (isNaN(value)) {
             return `${numberFormatter.format(0)} (${percentFormatter.format(0)})`;
           }
-
+  
           return `${numberFormatter.format(value === null ? 0 : value)} (${percentFormatter.format(value / total)})`;
         }
       }
@@ -1794,7 +1791,7 @@ document.addEventListener("DOMContentLoaded", function() {
       showForSingleSeries: true,
     },
   };
-
+  
   const dadosTransferenciasRecebidasPorSetor = {};
   const dadosTransferenciasRecebidas = JSON.parse(document.getElementById('dados-transferencias-recebidas').textContent);
   let tamanhoMaximoDadosTransferenciasRecebidasPorSetor = dadosTransferenciasRecebidas.length;
@@ -1804,7 +1801,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const cor = eli["CorSetorDeDestino"];
       const nome = eli["NomeSetorDeDestino"];
       let itemSetor = dadosTransferenciasRecebidasPorSetor[nome];
-
+  
       if (itemSetor !== undefined) {
         if (itemSetor.data.length === i) {
           itemSetor.data.push(quantidade)
@@ -1821,7 +1818,7 @@ document.addEventListener("DOMContentLoaded", function() {
         itemSetor.color = cor;
         itemSetor.name = nome;
       }
-
+  
       dadosTransferenciasRecebidasPorSetor[eli["NomeSetorDeDestino"]] = itemSetor;
     });
   });
@@ -1894,15 +1891,15 @@ document.addEventListener("DOMContentLoaded", function() {
             if (cur !== null) {
               return acc + cur;
             }
-
+  
             return acc;
           }, 0);
           total = total === 0 ? 1 : total;
-
+  
           if (isNaN(value)) {
             return `${numberFormatter.format(0)} (${percentFormatter.format(0)})`;
           }
-
+  
           return `${numberFormatter.format(value === null ? 0 : value)} (${percentFormatter.format(value / total)})`;
         }
       }
@@ -1912,7 +1909,7 @@ document.addEventListener("DOMContentLoaded", function() {
       showForSingleSeries: true,
     },
   };
-
+  
   var taxaDeOcupacaoHospitalarOpcoes = {
     legend: {
       position: 'top',
@@ -1952,7 +1949,7 @@ document.addEventListener("DOMContentLoaded", function() {
           const ileitosDias = Object.values(dadosLeitosDiaPorSetor).reduce((acc, cur) => {
             return acc + (cur.data[i] === null ? 0 : cur.data[i]);
           }, 0);
-
+  
           return {
             x: data.substring(8, 10) + "/" + data.substring(5, 7) + "/" + data.substring(0, 4),
             y: ipacientesDias / (ileitosDias === 0 ? 1 : ileitosDias),
@@ -2013,7 +2010,7 @@ document.addEventListener("DOMContentLoaded", function() {
       },
     ],
   };
-
+  
   var giroDeLeitoOpcoes = {
     series: [{
       name: "HGR",
@@ -2024,7 +2021,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const iLeitosDia = Object.values(dadosLeitosDiaPorSetor).reduce((acc, cur) => {
           return acc + (cur.data[i] === null ? 0 : cur.data[i]);
         }, 0);
-
+  
         return numberLiteralFormatter.format(iSaidasDia / (iLeitosDia === 0 ? 1 : iLeitosDia));
       }),
     }],
@@ -2093,7 +2090,7 @@ document.addEventListener("DOMContentLoaded", function() {
       showForSingleSeries: true,
     },
   };
-
+  
   var mediaDePermanenciaOpcoes = {
     series: [{
       name: "HGR",
@@ -2104,7 +2101,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const iSaidasDia = Object.values(dadosSaidasPorDiaPorSetor).reduce((acc, cur) => {
           return acc + (cur.data[i] === null ? 0 : cur.data[i]);
         }, 0);
-
+  
         return numberLiteralFormatter.format(iPacientesDia / (iSaidasDia === 0 ? 1 : iSaidasDia));
       }),
     }],
@@ -2173,7 +2170,7 @@ document.addEventListener("DOMContentLoaded", function() {
       showForSingleSeries: true,
     },
   };
-
+  
   var intervaloSubstituicaoLeitoOpcoes = {
     legend: {
       position: 'top',
@@ -2198,7 +2195,7 @@ document.addEventListener("DOMContentLoaded", function() {
           const iDadosPacientesDiaPorSetor = { ...dadosPacientesDiaPorSetor };
           const iDadosLeitosDiaPorSetor = { ...dadosLeitosDiaPorSetor };
           const iDadosSaidasPorDiaPorSetor = { ...dadosSaidasPorDiaPorSetor };
-
+  
           const data = dadosPacientesDia[i]["Data"];
           const iPacientesDias = Object.values(iDadosPacientesDiaPorSetor).reduce((acc, cur) => {
             return acc + (cur.data[i] === null ? 0 : cur.data[i]);
@@ -2209,10 +2206,10 @@ document.addEventListener("DOMContentLoaded", function() {
           const iSaidasDia = Object.values(iDadosSaidasPorDiaPorSetor).reduce((acc, cur) => {
             return acc + (cur.data[i] === null ? 0 : cur.data[i]);
           }, 0);
-
+  
           const taxaDeOcupacao = iPacientesDias / (iLeitosDias === 0 ? 1 : iLeitosDias);
           const mediaDePermanencia = iPacientesDias / (iSaidasDia === 0 ? 1 : iSaidasDia);
-
+  
           return {
             x: data.substring(8, 10) + "/" + data.substring(5, 7) + "/" + data.substring(0, 4),
             y: (((1 - taxaDeOcupacao) * mediaDePermanencia) / (taxaDeOcupacao === 0 ? 1 : taxaDeOcupacao)) * 24,
@@ -2278,6 +2275,12 @@ document.addEventListener("DOMContentLoaded", function() {
   );
   entradasPorDia.render();
 
+  const cirurgiasPorDia = new ApexCharts(
+    document.querySelector("#cirurgias-por-dia"),
+    cirurgiasPorDiaOpcoes,
+  );
+  cirurgiasPorDia.render();
+
   /*
   const leitosDia = new ApexCharts(
     document.querySelector("#leitos-dia"),
@@ -2291,12 +2294,6 @@ document.addEventListener("DOMContentLoaded", function() {
   );
   pacientesDia.render();
 
-
-  const cirurgiasPorDia = new ApexCharts(
-    document.querySelector("#cirurgias-por-dia"),
-    cirurgiasPorDiaOpcoes,
-  );
-  cirurgiasPorDia.render();
 
   const entradasPreCirurgicasPorDia = new ApexCharts(
     document.querySelector("#entradas-pre-cirurgicas-por-dia"),
